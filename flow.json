@@ -87,8 +87,8 @@
         "y": 220,
         "wires": [
             [
-                "abbf3973084aaa99",
-                "532d9c7b03bccd0f"
+                "532d9c7b03bccd0f",
+                "918c16f76c9e2fbb"
             ],
             []
         ]
@@ -104,7 +104,7 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 530,
+        "x": 690,
         "y": 220,
         "wires": [
             [
@@ -126,7 +126,7 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 670,
+        "x": 830,
         "y": 320,
         "wires": []
     },
@@ -136,7 +136,7 @@
         "z": "c6e1822c71f940ee",
         "client": "725f4c36dd3c91a4",
         "output": "output1",
-        "x": 830,
+        "x": 990,
         "y": 220,
         "wires": []
     },
@@ -190,5 +190,32 @@
         "x": 360,
         "y": 340,
         "wires": []
+    },
+    {
+        "id": "918c16f76c9e2fbb",
+        "type": "change",
+        "z": "c6e1822c71f940ee",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload.emeters.0",
+                "pt": "msg",
+                "to": "$number(msg.payload)",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 440,
+        "y": 220,
+        "wires": [
+            [
+                "abbf3973084aaa99"
+            ]
+        ]
     }
 ]
