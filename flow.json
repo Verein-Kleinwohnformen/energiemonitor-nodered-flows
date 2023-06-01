@@ -3,7 +3,7 @@
         "id": "9c0c3a4b8b12cc6b",
         "type": "tab",
         "label": "Flow 1",
-        "disabled": false,
+        "disabled": true,
         "info": ""
     },
     {
@@ -30,6 +30,7 @@
         "id": "98d824f9d889e8de",
         "type": "shelly-gen1",
         "z": "9c0c3a4b8b12cc6b",
+        "d": true,
         "hostname": "192.168.33.1",
         "description": "",
         "mode": "polling",
@@ -54,6 +55,7 @@
         "id": "cc7bea2ad0c84039",
         "type": "debug",
         "z": "9c0c3a4b8b12cc6b",
+        "d": true,
         "name": "",
         "active": true,
         "tosidebar": true,
@@ -101,7 +103,7 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 770,
+        "x": 510,
         "y": 220,
         "wires": [
             [
@@ -123,7 +125,7 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 930,
+        "x": 670,
         "y": 320,
         "wires": []
     },
@@ -133,7 +135,7 @@
         "z": "c6e1822c71f940ee",
         "client": "725f4c36dd3c91a4",
         "output": "output1",
-        "x": 1090,
+        "x": 830,
         "y": 220,
         "wires": []
     },
