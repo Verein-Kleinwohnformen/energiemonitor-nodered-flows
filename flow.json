@@ -29,7 +29,6 @@
         "y": 220,
         "wires": [
             [
-                "532d9c7b03bccd0f",
                 "abbf3973084aaa99"
             ],
             []
@@ -115,22 +114,5 @@
                 "4a3d24f7fd97cee1"
             ]
         ]
-    },
-    {
-        "id": "532d9c7b03bccd0f",
-        "type": "debug",
-        "z": "c6e1822c71f940ee",
-        "name": "",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "payload.emeters",
-        "targetType": "jsonata",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 360,
-        "y": 340,
-        "wires": []
     }
 ]
