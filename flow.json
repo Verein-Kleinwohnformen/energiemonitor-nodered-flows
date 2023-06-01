@@ -78,7 +78,7 @@
         "server": "",
         "outputmode": "event",
         "uploadretryinterval": 5000,
-        "pollinginterval": "60000",
+        "pollinginterval": "6000",
         "pollstatus": true,
         "getstatusoncommand": true,
         "devicetype": "Measure",
@@ -90,9 +90,7 @@
                 "abbf3973084aaa99",
                 "532d9c7b03bccd0f"
             ],
-            [
-                "1522383269c2d15c"
-            ]
+            []
         ]
     },
     {
@@ -185,29 +183,12 @@
         "tosidebar": true,
         "console": false,
         "tostatus": false,
-        "complete": "payload",
-        "targetType": "msg",
+        "complete": "payload.emeters",
+        "targetType": "jsonata",
         "statusVal": "",
         "statusType": "auto",
-        "x": 430,
-        "y": 320,
-        "wires": []
-    },
-    {
-        "id": "1522383269c2d15c",
-        "type": "debug",
-        "z": "c6e1822c71f940ee",
-        "name": "",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "payload",
-        "targetType": "msg",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 430,
-        "y": 380,
+        "x": 360,
+        "y": 340,
         "wires": []
     }
 ]
