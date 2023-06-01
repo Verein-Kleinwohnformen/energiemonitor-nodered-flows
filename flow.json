@@ -1,15 +1,8 @@
 [
     {
-        "id": "9c0c3a4b8b12cc6b",
-        "type": "tab",
-        "label": "Flow 1",
-        "disabled": false,
-        "info": ""
-    },
-    {
         "id": "c6e1822c71f940ee",
         "type": "tab",
-        "label": "Flow 1",
+        "label": "Shelly",
         "disabled": false,
         "info": ""
     },
