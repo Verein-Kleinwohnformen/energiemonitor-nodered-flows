@@ -78,7 +78,7 @@
         "server": "",
         "outputmode": "event",
         "uploadretryinterval": 5000,
-        "pollinginterval": "6000",
+        "pollinginterval": "10000",
         "pollstatus": true,
         "getstatusoncommand": true,
         "devicetype": "Measure",
