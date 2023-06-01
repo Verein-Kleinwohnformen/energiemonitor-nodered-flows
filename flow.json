@@ -98,13 +98,13 @@
         "type": "function",
         "z": "c6e1822c71f940ee",
         "name": "JSON",
-        "func": "let measurement = \"sensors\"\n\nfunction addsensordata(device, value){\n    let record = {\n        \"measurement\": measurement,\n        \"tags\":{\n            \"device\": device\n        },\n        \"fields\": {\n            \"power\": value.power,\n            \"total\": value.total\n        }\n    };\n    return record;\n}\n\nlet data = [];\n\ndata.push(addsensordata(\"shelly_phase0\", msg.payload));\n\nmsg.payload = data\n\nreturn msg;",
+        "func": "let measurement = \"sensors\"\n\nfunction addsensordata(device, value){\n    let record = {\n        \"measurement\": measurement,\n        \"tags\":{\n            \"device\": device\n        },\n        \"fields\": {\n            \"power\": value.power,\n            \"total\": value.total\n        }\n    };\n    return record;\n}\n\nlet data = [];\n\ndata.push(addsensordata(\"shelly_phase0\", msg.payload.emeters[0]));\n\nmsg.payload = data\n\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 690,
+        "x": 550,
         "y": 220,
         "wires": [
             [
@@ -126,7 +126,7 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 830,
+        "x": 690,
         "y": 320,
         "wires": []
     },
@@ -136,7 +136,7 @@
         "z": "c6e1822c71f940ee",
         "client": "725f4c36dd3c91a4",
         "output": "output1",
-        "x": 990,
+        "x": 850,
         "y": 220,
         "wires": []
     },
@@ -189,23 +189,6 @@
         "statusType": "auto",
         "x": 360,
         "y": 340,
-        "wires": []
-    },
-    {
-        "id": "283522af8e8484c7",
-        "type": "debug",
-        "z": "c6e1822c71f940ee",
-        "name": "",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "payload",
-        "targetType": "msg",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 630,
-        "y": 320,
         "wires": []
     }
 ]
