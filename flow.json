@@ -1,1 +1,49 @@
-[]
+[
+    {
+        "id": "9c0c3a4b8b12cc6b",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "98d824f9d889e8de",
+        "type": "shelly-gen1",
+        "z": "9c0c3a4b8b12cc6b",
+        "hostname": "192.168.33.1",
+        "description": "",
+        "mode": "polling",
+        "server": "",
+        "outputmode": "event",
+        "uploadretryinterval": 5000,
+        "pollinginterval": 5000,
+        "pollstatus": false,
+        "getstatusoncommand": true,
+        "devicetype": "Measure",
+        "outputs": 2,
+        "x": 220,
+        "y": 220,
+        "wires": [
+            [
+                "cc7bea2ad0c84039"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "cc7bea2ad0c84039",
+        "type": "debug",
+        "z": "9c0c3a4b8b12cc6b",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 460,
+        "y": 120,
+        "wires": []
+    }
+]
