@@ -183,7 +183,7 @@
         "tosidebar": true,
         "console": false,
         "tostatus": false,
-        "complete": "payload.emeters",
+        "complete": "payload.emeters.0",
         "targetType": "jsonata",
         "statusVal": "",
         "statusType": "auto",
