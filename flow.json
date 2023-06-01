@@ -201,8 +201,8 @@
                 "t": "set",
                 "p": "payload.emeters.0",
                 "pt": "msg",
-                "to": "$number(msg.payload)",
-                "tot": "jsonata"
+                "to": "msg.payload",
+                "tot": "msg"
             }
         ],
         "action": "",
