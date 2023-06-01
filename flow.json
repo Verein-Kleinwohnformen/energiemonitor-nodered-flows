@@ -78,7 +78,7 @@
         "server": "",
         "outputmode": "event",
         "uploadretryinterval": 5000,
-        "pollinginterval": "10000",
+        "pollinginterval": "60000",
         "pollstatus": true,
         "getstatusoncommand": true,
         "devicetype": "Measure",
@@ -88,7 +88,7 @@
         "wires": [
             [
                 "532d9c7b03bccd0f",
-                "918c16f76c9e2fbb"
+                "abbf3973084aaa99"
             ],
             []
         ]
@@ -190,34 +190,6 @@
         "x": 360,
         "y": 340,
         "wires": []
-    },
-    {
-        "id": "918c16f76c9e2fbb",
-        "type": "change",
-        "z": "c6e1822c71f940ee",
-        "name": "",
-        "rules": [
-            {
-                "t": "set",
-                "p": "payload.emeters",
-                "pt": "msg",
-                "to": "msg.payload",
-                "tot": "msg"
-            }
-        ],
-        "action": "",
-        "property": "",
-        "from": "",
-        "to": "",
-        "reg": false,
-        "x": 440,
-        "y": 220,
-        "wires": [
-            [
-                "abbf3973084aaa99",
-                "283522af8e8484c7"
-            ]
-        ]
     },
     {
         "id": "283522af8e8484c7",
