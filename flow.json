@@ -199,7 +199,7 @@
         "rules": [
             {
                 "t": "set",
-                "p": "payload.emeters.0",
+                "p": "payload.emeters[0]",
                 "pt": "msg",
                 "to": "msg.payload",
                 "tot": "msg"
@@ -210,7 +210,7 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 440,
+        "x": 450,
         "y": 220,
         "wires": [
             [
