@@ -7,6 +7,26 @@
         "info": ""
     },
     {
+        "id": "c6e1822c71f940ee",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "725f4c36dd3c91a4",
+        "type": "edgeclient"
+    },
+    {
+        "id": "1761015091063073",
+        "type": "node-inst-server",
+        "name": "WeatherData",
+        "port": "8080",
+        "useHttps": false,
+        "keyPath": "",
+        "certPath": ""
+    },
+    {
         "id": "98d824f9d889e8de",
         "type": "shelly-gen1",
         "z": "9c0c3a4b8b12cc6b",
@@ -45,5 +65,110 @@
         "x": 460,
         "y": 120,
         "wires": []
+    },
+    {
+        "id": "8e2e1ca31341359b",
+        "type": "shelly-gen1",
+        "z": "c6e1822c71f940ee",
+        "hostname": "192.168.33.1",
+        "description": "",
+        "mode": "polling",
+        "server": "",
+        "outputmode": "event",
+        "uploadretryinterval": 5000,
+        "pollinginterval": "60000",
+        "pollstatus": true,
+        "getstatusoncommand": true,
+        "devicetype": "Measure",
+        "outputs": 2,
+        "x": 250,
+        "y": 220,
+        "wires": [
+            [
+                "abbf3973084aaa99"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "abbf3973084aaa99",
+        "type": "function",
+        "z": "c6e1822c71f940ee",
+        "name": "JSON",
+        "func": "let measurement = \"sensors\"\n\nfunction addsensordata(device, value){\n    let record = {\n        \"measurement\": measurement,\n        \"tags\":{\n            \"device\": device\n        },\n        \"fields\": {\n            \"power\": value.power,\n            \"total\": value.total\n        }\n    };\n    return record;\n}\n\nlet data = [];\n\ndata.push(addsensordata(\"shelly_phase0\", msg.payload));\n\nmsg.payload = data\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 770,
+        "y": 220,
+        "wires": [
+            [
+                "dd5ac29acd77c682",
+                "a739b9d546ad0a1b"
+            ]
+        ]
+    },
+    {
+        "id": "dd5ac29acd77c682",
+        "type": "debug",
+        "z": "c6e1822c71f940ee",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 930,
+        "y": 320,
+        "wires": []
+    },
+    {
+        "id": "a739b9d546ad0a1b",
+        "type": "moduleoutput",
+        "z": "c6e1822c71f940ee",
+        "client": "725f4c36dd3c91a4",
+        "output": "output1",
+        "x": 1090,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "4a3d24f7fd97cee1",
+        "type": "debug",
+        "z": "c6e1822c71f940ee",
+        "name": "test",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 590,
+        "y": 500,
+        "wires": []
+    },
+    {
+        "id": "6779b83d5c20178b",
+        "type": "http in",
+        "z": "c6e1822c71f940ee",
+        "name": "",
+        "url": "/weatherstation/updateweatherstation",
+        "method": "get",
+        "upload": true,
+        "swaggerDoc": "",
+        "x": 260,
+        "y": 500,
+        "wires": [
+            [
+                "4a3d24f7fd97cee1"
+            ]
+        ]
     }
 ]
