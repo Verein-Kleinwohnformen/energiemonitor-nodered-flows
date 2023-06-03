@@ -1,5 +1,12 @@
 [
     {
+        "id": "0914f028aec835b0",
+        "type": "tab",
+        "label": "Config",
+        "disabled": false,
+        "info": ""
+    },
+    {
         "id": "c6e1822c71f940ee",
         "type": "tab",
         "label": "Shelly",
@@ -10,13 +17,6 @@
         "id": "ab257fb0cc5ba8f5",
         "type": "tab",
         "label": "WeatherScreen Pro",
-        "disabled": false,
-        "info": ""
-    },
-    {
-        "id": "0914f028aec835b0",
-        "type": "tab",
-        "label": "Config",
         "disabled": false,
         "info": ""
     },
@@ -35,7 +35,7 @@
         "id": "8e2e1ca31341359b",
         "type": "shelly-gen1",
         "z": "c6e1822c71f940ee",
-        "hostname": "192.168.33.1",
+        "hostname": "shellyhouse",
         "description": "",
         "mode": "polling",
         "server": "",
@@ -46,7 +46,7 @@
         "getstatusoncommand": true,
         "devicetype": "Measure",
         "outputs": 2,
-        "x": 250,
+        "x": 650,
         "y": 240,
         "wires": [
             [
@@ -104,7 +104,7 @@
         "getstatusoncommand": true,
         "devicetype": "Measure",
         "outputs": 1,
-        "x": 240,
+        "x": 640,
         "y": 320,
         "wires": [
             [
@@ -120,7 +120,7 @@
         "links": [
             "5ee90d3319bef9d3"
         ],
-        "x": 495,
+        "x": 895,
         "y": 240,
         "wires": []
     },
@@ -186,5 +186,84 @@
         "x": 590,
         "y": 260,
         "wires": []
+    },
+    {
+        "id": "48083ec369276e3d",
+        "type": "inject",
+        "z": "e48ca2e6e4e7cd76",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 240,
+        "y": 120,
+        "wires": [
+            [
+                "7c825ba3b2109ba0"
+            ]
+        ]
+    },
+    {
+        "id": "9d85171f36cacfe7",
+        "type": "change",
+        "z": "0914f028aec835b0",
+        "name": "UID",
+        "rules": [
+            {
+                "t": "set",
+                "p": "installation",
+                "pt": "global",
+                "to": "13456789",
+                "tot": "num"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 170,
+        "y": 80,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "b7414f3bb45f6746",
+        "type": "change",
+        "z": "0914f028aec835b0",
+        "name": "Shelly Hausanschluss",
+        "rules": [
+            {
+                "t": "set",
+                "p": "192.168.33.1",
+                "pt": "global",
+                "to": "shellyhous",
+                "tot": "env"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 390,
+        "y": 80,
+        "wires": [
+            []
+        ]
     }
 ]
