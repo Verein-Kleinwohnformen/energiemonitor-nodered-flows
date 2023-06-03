@@ -7,6 +7,27 @@
         "info": ""
     },
     {
+        "id": "ab257fb0cc5ba8f5",
+        "type": "tab",
+        "label": "WeatherScreen Pro",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "0914f028aec835b0",
+        "type": "tab",
+        "label": "Config",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "e48ca2e6e4e7cd76",
+        "type": "tab",
+        "label": "IoTHub",
+        "disabled": false,
+        "info": ""
+    },
+    {
         "id": "725f4c36dd3c91a4",
         "type": "edgeclient"
     },
@@ -25,66 +46,19 @@
         "getstatusoncommand": true,
         "devicetype": "Measure",
         "outputs": 2,
-        "x": 150,
-        "y": 220,
+        "x": 250,
+        "y": 240,
         "wires": [
             [
-                "abbf3973084aaa99"
+                "74e01a6004d724e8"
             ],
             []
         ]
     },
     {
-        "id": "abbf3973084aaa99",
-        "type": "function",
-        "z": "c6e1822c71f940ee",
-        "name": "JSON",
-        "func": "let measurement = \"sensors\"\n\nfunction addsensordata(device, value){\n    let record = {\n        \"measurement\": measurement,\n        \"tags\":{\n            \"device\": device\n        },\n        \"fields\": {\n            \"power\": value.power,\n            \"total\": value.total\n        }\n    };\n    return record;\n}\n\nlet data = [];\n\ndata.push(addsensordata(\"shelly_phase0\", msg.payload.emeters[0]));\n\nmsg.payload = data\n\nreturn msg;",
-        "outputs": 1,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 550,
-        "y": 220,
-        "wires": [
-            [
-                "dd5ac29acd77c682",
-                "a739b9d546ad0a1b"
-            ]
-        ]
-    },
-    {
-        "id": "dd5ac29acd77c682",
+        "id": "d6c46e526c044915",
         "type": "debug",
-        "z": "c6e1822c71f940ee",
-        "name": "",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "payload",
-        "targetType": "msg",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 690,
-        "y": 320,
-        "wires": []
-    },
-    {
-        "id": "a739b9d546ad0a1b",
-        "type": "moduleoutput",
-        "z": "c6e1822c71f940ee",
-        "client": "725f4c36dd3c91a4",
-        "output": "output1",
-        "x": 850,
-        "y": 220,
-        "wires": []
-    },
-    {
-        "id": "4a3d24f7fd97cee1",
-        "type": "debug",
-        "z": "c6e1822c71f940ee",
+        "z": "ab257fb0cc5ba8f5",
         "name": "test",
         "active": true,
         "tosidebar": true,
@@ -94,25 +68,123 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 550,
-        "y": 500,
+        "x": 590,
+        "y": 220,
         "wires": []
     },
     {
-        "id": "6779b83d5c20178b",
+        "id": "d25006e45f987b52",
         "type": "http in",
-        "z": "c6e1822c71f940ee",
+        "z": "ab257fb0cc5ba8f5",
         "name": "",
         "url": "/weatherstation/updateweatherstation",
         "method": "get",
         "upload": true,
         "swaggerDoc": "",
-        "x": 260,
-        "y": 500,
+        "x": 300,
+        "y": 220,
         "wires": [
             [
-                "4a3d24f7fd97cee1"
+                "d6c46e526c044915"
             ]
         ]
+    },
+    {
+        "id": "42f5d918c1ce014d",
+        "type": "shelly-gen2",
+        "z": "c6e1822c71f940ee",
+        "hostname": "",
+        "description": "",
+        "mode": "polling",
+        "server": "",
+        "outputmode": "event",
+        "uploadretryinterval": 5000,
+        "pollinginterval": 5000,
+        "pollstatus": false,
+        "getstatusoncommand": true,
+        "devicetype": "Measure",
+        "outputs": 1,
+        "x": 240,
+        "y": 320,
+        "wires": [
+            [
+                "74e01a6004d724e8"
+            ]
+        ]
+    },
+    {
+        "id": "74e01a6004d724e8",
+        "type": "link out",
+        "z": "c6e1822c71f940ee",
+        "name": "IoTHub",
+        "links": [
+            "5ee90d3319bef9d3"
+        ],
+        "x": 495,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "5ee90d3319bef9d3",
+        "type": "link in",
+        "z": "e48ca2e6e4e7cd76",
+        "name": "",
+        "links": [
+            "74e01a6004d724e8"
+        ],
+        "x": 255,
+        "y": 200,
+        "wires": [
+            [
+                "7c825ba3b2109ba0"
+            ]
+        ]
+    },
+    {
+        "id": "62418716caaba7d7",
+        "type": "moduleoutput",
+        "z": "e48ca2e6e4e7cd76",
+        "client": "725f4c36dd3c91a4",
+        "output": "output1",
+        "x": 630,
+        "y": 200,
+        "wires": []
+    },
+    {
+        "id": "7c825ba3b2109ba0",
+        "type": "function",
+        "z": "e48ca2e6e4e7cd76",
+        "name": "JSON",
+        "func": "let measurement = \"sensors\"\n\nfunction addsensordata(device, value){\n    let record = {\n        \"measurement\": measurement,\n        \"tags\":{\n            \"device\": device\n        },\n        \"fields\": {\n            \"power\": value.power,\n            \"total\": value.total\n        }\n    };\n    return record;\n}\n\nlet data = [];\n\ndata.push(addsensordata(\"shelly_phase0\", msg.payload.emeters[0]));\n\nmsg.payload = data\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 390,
+        "y": 200,
+        "wires": [
+            [
+                "d81ed84f4bdc6063",
+                "62418716caaba7d7"
+            ]
+        ]
+    },
+    {
+        "id": "d81ed84f4bdc6063",
+        "type": "debug",
+        "z": "e48ca2e6e4e7cd76",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 590,
+        "y": 260,
+        "wires": []
     }
 ]
