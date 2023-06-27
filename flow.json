@@ -206,7 +206,6 @@
         "once": false,
         "onceDelay": 0.1,
         "topic": "",
-        "payload": "",
         "payloadType": "date",
         "x": 240,
         "y": 120,
@@ -235,10 +234,12 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 170,
-        "y": 80,
+        "x": 550,
+        "y": 140,
         "wires": [
-            []
+            [
+                "a74a8a86625e6c9e"
+            ]
         ]
     },
     {
@@ -249,10 +250,10 @@
         "rules": [
             {
                 "t": "set",
-                "p": "192.168.33.1",
-                "pt": "global",
+                "p": "payload.",
+                "pt": "msg",
                 "to": "shellyhous",
-                "tot": "env"
+                "tot": "global"
             }
         ],
         "action": "",
@@ -260,10 +261,81 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 390,
+        "x": 600,
         "y": 80,
         "wires": [
+            [
+                "a74a8a86625e6c9e"
+            ]
+        ]
+    },
+    {
+        "id": "f9991d32191edf66",
+        "type": "file in",
+        "z": "0914f028aec835b0",
+        "name": "user.json",
+        "filename": "user.json",
+        "format": "utf8",
+        "chunk": false,
+        "sendError": false,
+        "encoding": "none",
+        "allProps": false,
+        "x": 120,
+        "y": 140,
+        "wires": [
+            [
+                "6452301dda195571"
+            ]
+        ]
+    },
+    {
+        "id": "86acb494ded08903",
+        "type": "file in",
+        "z": "0914f028aec835b0",
+        "name": "user.json",
+        "filename": "user.json",
+        "format": "utf8",
+        "chunk": false,
+        "sendError": false,
+        "encoding": "none",
+        "allProps": false,
+        "x": 1080,
+        "y": 140,
+        "wires": [
             []
+        ]
+    },
+    {
+        "id": "6452301dda195571",
+        "type": "json",
+        "z": "0914f028aec835b0",
+        "name": "",
+        "property": "payload",
+        "action": "",
+        "pretty": false,
+        "x": 320,
+        "y": 140,
+        "wires": [
+            [
+                "b7414f3bb45f6746",
+                "9d85171f36cacfe7"
+            ]
+        ]
+    },
+    {
+        "id": "a74a8a86625e6c9e",
+        "type": "json",
+        "z": "0914f028aec835b0",
+        "name": "",
+        "property": "payload",
+        "action": "",
+        "pretty": false,
+        "x": 900,
+        "y": 140,
+        "wires": [
+            [
+                "86acb494ded08903"
+            ]
         ]
     }
 ]
