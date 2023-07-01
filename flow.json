@@ -317,40 +317,9 @@
         "y": 240,
         "wires": [
             [
-                "b6f1676d.5ba898",
-                "b65fe1e4434f4168"
+                "2894b81117694cff"
             ]
         ]
-    },
-    {
-        "id": "b6f1676d.5ba898",
-        "type": "function",
-        "z": "ab257fb0cc5ba8f5",
-        "name": "",
-        "func": "let params = msg.req.query;\nmsg.payload = params;\nreturn msg;",
-        "outputs": 1,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 620,
-        "y": 240,
-        "wires": [
-            [
-                "bd9fdd5e.6c14e"
-            ]
-        ]
-    },
-    {
-        "id": "bd9fdd5e.6c14e",
-        "type": "http response",
-        "z": "ab257fb0cc5ba8f5",
-        "name": "",
-        "statusCode": "",
-        "headers": {},
-        "x": 830,
-        "y": 240,
-        "wires": []
     },
     {
         "id": "b65fe1e4434f4168",
@@ -364,8 +333,58 @@
         "complete": "false",
         "statusVal": "",
         "statusType": "auto",
-        "x": 780,
-        "y": 340,
+        "x": 970,
+        "y": 320,
         "wires": []
+    },
+    {
+        "id": "2894b81117694cff",
+        "type": "function",
+        "z": "ab257fb0cc5ba8f5",
+        "name": "",
+        "func": "msg.payload = msg.req.body;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 560,
+        "y": 240,
+        "wires": [
+            [
+                "675ba50f9893e483",
+                "55aecf0986e2c612"
+            ]
+        ]
+    },
+    {
+        "id": "675ba50f9893e483",
+        "type": "http response",
+        "z": "ab257fb0cc5ba8f5",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 810,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "55aecf0986e2c612",
+        "type": "function",
+        "z": "ab257fb0cc5ba8f5",
+        "name": "",
+        "func": "msg.payload = JSON.stringify(msg.payload);\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 770,
+        "y": 320,
+        "wires": [
+            [
+                "b65fe1e4434f4168"
+            ]
+        ]
     }
 ]
