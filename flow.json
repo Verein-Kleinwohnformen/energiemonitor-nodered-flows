@@ -309,11 +309,11 @@
         "type": "http in",
         "z": "ab257fb0cc5ba8f5",
         "name": "",
-        "url": "/weatherstation/updateweatherstation.php",
-        "method": "get",
+        "url": "/weather/",
+        "method": "post",
         "upload": false,
         "swaggerDoc": "",
-        "x": 280,
+        "x": 360,
         "y": 240,
         "wires": [
             [
