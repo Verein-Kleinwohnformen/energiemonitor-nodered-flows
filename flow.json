@@ -411,7 +411,7 @@
         "joiner": "\\n",
         "joinerType": "str",
         "accumulate": false,
-        "timeout": "",
+        "timeout": "59",
         "count": "",
         "reduceRight": false,
         "reduceExp": "",
