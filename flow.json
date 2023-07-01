@@ -151,8 +151,8 @@
         "onceDelay": 0.1,
         "topic": "",
         "payloadType": "date",
-        "x": 160,
-        "y": 120,
+        "x": 180,
+        "y": 80,
         "wires": [
             [
                 "04487b71e5d88bd8"
@@ -414,5 +414,22 @@
         "x": 950,
         "y": 320,
         "wires": []
+    },
+    {
+        "id": "776f144a066afd5e",
+        "type": "function",
+        "z": "0914f028aec835b0",
+        "name": "",
+        "func": "\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "// Der Code hier wird ausgeführt,\n// wenn der Node gestartet wird\nglobal.uid = 123456789;",
+        "finalize": "",
+        "libs": [],
+        "x": 560,
+        "y": 180,
+        "wires": [
+            []
+        ]
     }
 ]
