@@ -160,33 +160,6 @@
         ]
     },
     {
-        "id": "9d85171f36cacfe7",
-        "type": "change",
-        "z": "0914f028aec835b0",
-        "name": "UID",
-        "rules": [
-            {
-                "t": "set",
-                "p": "uid",
-                "pt": "global",
-                "to": "13456789",
-                "tot": "num"
-            }
-        ],
-        "action": "",
-        "property": "",
-        "from": "",
-        "to": "",
-        "reg": false,
-        "x": 550,
-        "y": 140,
-        "wires": [
-            [
-                "a74a8a86625e6c9e"
-            ]
-        ]
-    },
-    {
         "id": "f9991d32191edf66",
         "type": "file in",
         "z": "0914f028aec835b0",
@@ -216,7 +189,7 @@
         "sendError": false,
         "encoding": "none",
         "allProps": false,
-        "x": 1080,
+        "x": 960,
         "y": 140,
         "wires": [
             []
@@ -233,9 +206,7 @@
         "x": 320,
         "y": 140,
         "wires": [
-            [
-                "9d85171f36cacfe7"
-            ]
+            []
         ]
     },
     {
@@ -246,7 +217,7 @@
         "property": "payload",
         "action": "",
         "pretty": false,
-        "x": 900,
+        "x": 780,
         "y": 140,
         "wires": [
             [
@@ -416,18 +387,29 @@
         "wires": []
     },
     {
-        "id": "776f144a066afd5e",
-        "type": "function",
+        "id": "d63799a9d180ca20",
+        "type": "inject",
         "z": "0914f028aec835b0",
         "name": "",
-        "func": "\nreturn msg;",
-        "outputs": 1,
-        "noerr": 0,
-        "initialize": "// Der Code hier wird ausgeführt,\n// wenn der Node gestartet wird\nglobal.uid = 123456789;",
-        "finalize": "",
-        "libs": [],
-        "x": 560,
-        "y": 180,
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "v": "uid",
+                "vt": "global"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "123456789",
+        "payloadType": "str",
+        "x": 140,
+        "y": 60,
         "wires": [
             []
         ]
