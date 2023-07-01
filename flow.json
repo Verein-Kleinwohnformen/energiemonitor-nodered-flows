@@ -310,10 +310,10 @@
         "z": "ab257fb0cc5ba8f5",
         "name": "",
         "url": "/weather/",
-        "method": "get",
+        "method": "post",
         "upload": false,
         "swaggerDoc": "",
-        "x": 350,
+        "x": 360,
         "y": 240,
         "wires": [
             [
