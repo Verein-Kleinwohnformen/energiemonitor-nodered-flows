@@ -418,7 +418,7 @@
         "reduceInit": "",
         "reduceInitType": "",
         "reduceFixup": "",
-        "x": 350,
+        "x": 390,
         "y": 200,
         "wires": [
             [
