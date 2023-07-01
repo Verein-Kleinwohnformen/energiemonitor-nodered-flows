@@ -311,7 +311,7 @@
         "name": "",
         "url": "/weatherstation/updateweatherstation",
         "method": "post",
-        "upload": false,
+        "upload": true,
         "swaggerDoc": "",
         "x": 410,
         "y": 180,
