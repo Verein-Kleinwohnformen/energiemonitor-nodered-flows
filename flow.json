@@ -56,40 +56,6 @@
         ]
     },
     {
-        "id": "d6c46e526c044915",
-        "type": "debug",
-        "z": "ab257fb0cc5ba8f5",
-        "name": "test",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "payload",
-        "targetType": "msg",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 590,
-        "y": 220,
-        "wires": []
-    },
-    {
-        "id": "d25006e45f987b52",
-        "type": "http in",
-        "z": "ab257fb0cc5ba8f5",
-        "name": "",
-        "url": "/weatherstation/updateweatherstation",
-        "method": "get",
-        "upload": true,
-        "swaggerDoc": "",
-        "x": 300,
-        "y": 220,
-        "wires": [
-            [
-                "d6c46e526c044915"
-            ]
-        ]
-    },
-    {
         "id": "42f5d918c1ce014d",
         "type": "shelly-gen2",
         "z": "c6e1822c71f940ee",
@@ -337,5 +303,50 @@
                 "86acb494ded08903"
             ]
         ]
+    },
+    {
+        "id": "f1433e1f.1bfc",
+        "type": "http in",
+        "z": "ab257fb0cc5ba8f5",
+        "name": "",
+        "url": "/weatherstation/updateweatherstation",
+        "method": "post",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 410,
+        "y": 180,
+        "wires": [
+            [
+                "9bbf4f6d.38a5f"
+            ]
+        ]
+    },
+    {
+        "id": "9bbf4f6d.38a5f",
+        "type": "debug",
+        "z": "ab257fb0cc5ba8f5",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 750,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "b231139.0d1837",
+        "type": "http response",
+        "z": "ab257fb0cc5ba8f5",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 960,
+        "y": 180,
+        "wires": []
     }
 ]
