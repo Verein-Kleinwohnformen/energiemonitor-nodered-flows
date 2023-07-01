@@ -422,7 +422,7 @@
         "y": 200,
         "wires": [
             [
-                "d81ed84f4bdc6063"
+                "c60cb44f93c05cb0"
             ]
         ]
     },
@@ -441,5 +441,24 @@
         "x": 950,
         "y": 320,
         "wires": []
+    },
+    {
+        "id": "c60cb44f93c05cb0",
+        "type": "function",
+        "z": "e48ca2e6e4e7cd76",
+        "name": "JSON",
+        "func": "let currentTime = new Date();\n\nmsg.payload.timestamp = currentTime.toISOString();\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 530,
+        "y": 200,
+        "wires": [
+            [
+                "d81ed84f4bdc6063"
+            ]
+        ]
     }
 ]
