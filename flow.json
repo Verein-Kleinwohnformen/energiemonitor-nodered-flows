@@ -206,7 +206,9 @@
         "x": 320,
         "y": 140,
         "wires": [
-            []
+            [
+                "121d162ba030cbba"
+            ]
         ]
     },
     {
@@ -387,7 +389,7 @@
         "wires": []
     },
     {
-        "id": "d63799a9d180ca20",
+        "id": "df43c316560ded48",
         "type": "inject",
         "z": "0914f028aec835b0",
         "name": "",
@@ -397,8 +399,7 @@
             },
             {
                 "p": "topic",
-                "v": "uid",
-                "vt": "global"
+                "vt": "str"
             }
         ],
         "repeat": "",
@@ -406,12 +407,31 @@
         "once": false,
         "onceDelay": 0.1,
         "topic": "",
-        "payload": "123456789",
-        "payloadType": "str",
-        "x": 140,
-        "y": 60,
+        "payload": "",
+        "payloadType": "date",
+        "x": 260,
+        "y": 80,
         "wires": [
             []
+        ]
+    },
+    {
+        "id": "121d162ba030cbba",
+        "type": "function",
+        "z": "0914f028aec835b0",
+        "name": "",
+        "func": "var uid = global.get('uid')||123456789;\nmsg.payload = uid;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 550,
+        "y": 140,
+        "wires": [
+            [
+                "a74a8a86625e6c9e"
+            ]
         ]
     }
 ]
