@@ -46,11 +46,11 @@
         "getstatusoncommand": true,
         "devicetype": "Measure",
         "outputs": 2,
-        "x": 650,
+        "x": 430,
         "y": 240,
         "wires": [
             [
-                "74e01a6004d724e8"
+                "b11fc78387b1abf9"
             ],
             []
         ]
@@ -70,11 +70,11 @@
         "getstatusoncommand": true,
         "devicetype": "Measure",
         "outputs": 1,
-        "x": 640,
+        "x": 420,
         "y": 320,
         "wires": [
             [
-                "74e01a6004d724e8"
+                "6326e0fe68adb662"
             ]
         ]
     },
@@ -96,13 +96,14 @@
         "z": "e48ca2e6e4e7cd76",
         "name": "",
         "links": [
-            "74e01a6004d724e8"
+            "74e01a6004d724e8",
+            "e800ada14d5839d9"
         ],
-        "x": 255,
+        "x": 195,
         "y": 200,
         "wires": [
             [
-                "7c825ba3b2109ba0"
+                "04487b71e5d88bd8"
             ]
         ]
     },
@@ -112,29 +113,9 @@
         "z": "e48ca2e6e4e7cd76",
         "client": "725f4c36dd3c91a4",
         "output": "output1",
-        "x": 630,
+        "x": 770,
         "y": 200,
         "wires": []
-    },
-    {
-        "id": "7c825ba3b2109ba0",
-        "type": "function",
-        "z": "e48ca2e6e4e7cd76",
-        "name": "JSON",
-        "func": "let measurement = \"sensors\"\n\nfunction addsensordata(device, value){\n    let record = {\n        \"measurement\": measurement,\n        \"tags\":{\n            \"device\": device\n        },\n        \"fields\": {\n            \"power\": value.power,\n            \"total\": value.total\n        }\n    };\n    return record;\n}\n\nlet data = [];\n\ndata.push(addsensordata(\"shelly_phase0\", msg.payload.emeters[0]));\n\nmsg.payload = data\n\nreturn msg;",
-        "outputs": 1,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 390,
-        "y": 200,
-        "wires": [
-            [
-                "d81ed84f4bdc6063",
-                "62418716caaba7d7"
-            ]
-        ]
     },
     {
         "id": "d81ed84f4bdc6063",
@@ -149,7 +130,7 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 590,
+        "x": 730,
         "y": 260,
         "wires": []
     },
@@ -161,10 +142,6 @@
         "props": [
             {
                 "p": "payload"
-            },
-            {
-                "p": "topic",
-                "vt": "str"
             }
         ],
         "repeat": "",
@@ -173,11 +150,11 @@
         "onceDelay": 0.1,
         "topic": "",
         "payloadType": "date",
-        "x": 240,
+        "x": 160,
         "y": 120,
         "wires": [
             [
-                "7c825ba3b2109ba0"
+                "04487b71e5d88bd8"
             ]
         ]
     },
@@ -333,8 +310,8 @@
         "complete": "false",
         "statusVal": "",
         "statusType": "auto",
-        "x": 830,
-        "y": 300,
+        "x": 770,
+        "y": 500,
         "wires": []
     },
     {
@@ -364,7 +341,82 @@
         "wires": [
             [
                 "675ba50f9893e483",
-                "b65fe1e4434f4168"
+                "b65fe1e4434f4168",
+                "e800ada14d5839d9"
+            ]
+        ]
+    },
+    {
+        "id": "e800ada14d5839d9",
+        "type": "link out",
+        "z": "ab257fb0cc5ba8f5",
+        "name": "IoTHub",
+        "links": [
+            "5ee90d3319bef9d3"
+        ],
+        "x": 775,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "b11fc78387b1abf9",
+        "type": "function",
+        "z": "c6e1822c71f940ee",
+        "name": "JSON",
+        "func": "let measurement = \"sensors\"\n\nfunction addsensordata(device, value){\n    let record = {\n        \"measurement\": measurement,\n        \"tags\":{\n            \"device\": device\n        },\n        \"fields\": {\n            \"power\": value.power,\n            \"total\": value.total\n        }\n    };\n    return record;\n}\n\nlet data = [];\n\ndata.push(addsensordata(\"shelly_phase0\", msg.payload.emeters[0]));\n\nmsg.payload = data\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 670,
+        "y": 240,
+        "wires": [
+            [
+                "74e01a6004d724e8"
+            ]
+        ]
+    },
+    {
+        "id": "6326e0fe68adb662",
+        "type": "function",
+        "z": "c6e1822c71f940ee",
+        "name": "JSON",
+        "func": "let measurement = \"sensors\";\n\nfunction addsensordata(device, input) {\n  let record = {\n    \"measurement\": measurement,\n    \"tags\": {\n      \"device\": device\n    },\n    \"fields\": {\n      \"a_current\": input.a_current,\n      \"a_voltage\": input.a_voltage,\n      \"a_act_power\": input.a_act_power,\n      \"a_aprt_power\": input.a_aprt_power,\n      \"a_pf\": input.a_pf,\n      \"b_current\": input.b_current,\n      \"b_voltage\": input.b_voltage,\n      \"b_act_power\": input.b_act_power,\n      \"b_aprt_power\": input.b_aprt_power,\n      \"b_pf\": input.b_pf,\n      \"c_current\": input.c_current,\n      \"c_voltage\": input.c_voltage,\n      \"c_act_power\": input.c_act_power,\n      \"c_aprt_power\": input.c_aprt_power,\n      \"c_pf\": input.c_pf,\n      \"n_current\": input.n_current\n    }\n  };\n  return record;\n}\n\nlet data = [];\n\ndata.push(addsensordata(\"shellyEMPro\", {\n  \"a_current\": msg.payload.em0.a_current,\n  \"a_voltage\": msg.payload.em0.a_voltage,\n  \"a_act_power\": msg.payload.em0.a_act_power,\n  \"a_aprt_power\": msg.payload.em0.a_aprt_power,\n  \"a_pf\": msg.payload.em0.a_pf,\n  \"b_current\": msg.payload.em0.b_current,\n  \"b_voltage\": msg.payload.em0.b_voltage,\n  \"b_act_power\": msg.payload.em0.b_act_power,\n  \"b_aprt_power\": msg.payload.em0.b_aprt_power,\n  \"b_pf\": msg.payload.em0.b_pf,\n  \"c_current\": msg.payload.em0.c_current,\n  \"c_voltage\": msg.payload.em0.c_voltage,\n  \"c_act_power\": msg.payload.em0.c_act_power,\n  \"c_aprt_power\": msg.payload.em0.c_aprt_power,\n  \"c_pf\": msg.payload.em0.c_pf,\n  \"n_current\": msg.payload.em0.n_current\n}));\n\nmsg.payload = data;\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 670,
+        "y": 320,
+        "wires": [
+            [
+                "74e01a6004d724e8"
+            ]
+        ]
+    },
+    {
+        "id": "04487b71e5d88bd8",
+        "type": "join",
+        "z": "e48ca2e6e4e7cd76",
+        "name": "",
+        "mode": "auto",
+        "build": "object",
+        "property": "payload",
+        "propertyType": "msg",
+        "key": "topic",
+        "joiner": "\\n",
+        "joinerType": "str",
+        "accumulate": "false",
+        "timeout": "",
+        "count": "",
+        "reduceRight": false,
+        "x": 350,
+        "y": 200,
+        "wires": [
+            [
+                "d81ed84f4bdc6063"
             ]
         ]
     }
