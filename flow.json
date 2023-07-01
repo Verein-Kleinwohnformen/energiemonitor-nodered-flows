@@ -317,7 +317,7 @@
         "y": 240,
         "wires": [
             [
-                "2894b81117694cff"
+                "a6f9c2d5c3e8bd89"
             ]
         ]
     },
@@ -333,29 +333,9 @@
         "complete": "false",
         "statusVal": "",
         "statusType": "auto",
-        "x": 970,
-        "y": 320,
+        "x": 830,
+        "y": 300,
         "wires": []
-    },
-    {
-        "id": "2894b81117694cff",
-        "type": "function",
-        "z": "ab257fb0cc5ba8f5",
-        "name": "",
-        "func": "msg.payload = msg.req.body;\nreturn msg;",
-        "outputs": 1,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 560,
-        "y": 240,
-        "wires": [
-            [
-                "675ba50f9893e483",
-                "55aecf0986e2c612"
-            ]
-        ]
     },
     {
         "id": "675ba50f9893e483",
@@ -369,20 +349,21 @@
         "wires": []
     },
     {
-        "id": "55aecf0986e2c612",
+        "id": "a6f9c2d5c3e8bd89",
         "type": "function",
         "z": "ab257fb0cc5ba8f5",
-        "name": "",
-        "func": "msg.payload = JSON.stringify(msg.payload);\nreturn msg;",
+        "name": "JSON",
+        "func": "let measurement = \"sensors\"\n\nfunction addsensordata(device, value){\n    let record = {\n        \"measurement\": measurement,\n        \"tags\":{\n            \"device\": device\n        },\n        \"fields\": {\n            \"stationtype\": value.stationtype,\n            \"dateutc\": value.dateutc,\n            \"tempinf\": value.tempinf,\n            \"humidityin\": value.humidityin,\n            \"baromrelin\": value.baromrelin,\n            \"baromabsin\": value.baromabsin,\n            \"tempf\": value.tempf,\n            \"humidity\": value.humidity,\n            \"winddir\": value.winddir,\n            \"winddir_avg10m\": value.winddir_avg10m,\n            \"windspeedmph\": value.windspeedmph,\n            \"maxdailygust\": value.maxdailygust,\n            \"rainratein\": value.rainratein,\n            \"eventrainin\": value.eventrainin,\n            \"hourlyrainin\": value.hourlyrainin,\n            \"dailyrainin\": value.dailyrainin,\n            \"weeklyrainin\": value.weeklyrainin,\n            \"monthlyrainin\": value.monthlyrainin,\n            \"yearlyrainin\": value.yearlyrainin,\n            \"solarradiation\": value.solarradiation,\n            \"uv\": value.uv,\n            \"model\": value.model,\n        }\n    };\n    return record;\n}\n\nlet data = [];\n\ndata.push(addsensordata(\"weatherstation\", msg.payload));\n\nmsg.payload = data\n\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 770,
-        "y": 320,
+        "x": 570,
+        "y": 240,
         "wires": [
             [
+                "675ba50f9893e483",
                 "b65fe1e4434f4168"
             ]
         ]
