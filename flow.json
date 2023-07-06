@@ -41,7 +41,7 @@
         "id": "8e2e1ca31341359b",
         "type": "shelly-gen1",
         "z": "c6e1822c71f940ee",
-        "hostname": "192.168.33.1",
+        "hostname": "global.shellyHouse",
         "description": "",
         "mode": "polling",
         "server": "",
@@ -52,7 +52,7 @@
         "getstatusoncommand": true,
         "devicetype": "Measure",
         "outputs": 2,
-        "x": 430,
+        "x": 450,
         "y": 240,
         "wires": [
             [
@@ -250,7 +250,7 @@
         "wires": [
             [
                 "f27c8db25019c383",
-                "fd146f6d8abb5218"
+                "e0f9f20b1d6fa7b1"
             ]
         ]
     },
@@ -318,18 +318,33 @@
         "wires": []
     },
     {
-        "id": "fd146f6d8abb5218",
-        "type": "function",
+        "id": "e0f9f20b1d6fa7b1",
+        "type": "change",
         "z": "0914f028aec835b0",
-        "name": "",
-        "func": "global.get('uid')\nreturn msg;",
-        "outputs": 1,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 530,
-        "y": 220,
+        "name": "Shelly Device",
+        "rules": [
+            {
+                "t": "set",
+                "p": "shellyHouse",
+                "pt": "global",
+                "to": "192.168.33.1",
+                "tot": "str"
+            },
+            {
+                "t": "set",
+                "p": "shellySolar",
+                "pt": "global",
+                "to": "192.168.33.1",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 540,
+        "y": 200,
         "wires": [
             [
                 "ca98a3517a7b5b02"
