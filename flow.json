@@ -110,6 +110,7 @@
         "name": "",
         "links": [
             "74e01a6004d724e8",
+            "a9d9feb2a9d32795",
             "e800ada14d5839d9"
         ],
         "x": 195,
@@ -395,26 +396,7 @@
         "y": 360,
         "wires": [
             [
-                "db9572f7.1e5b4"
-            ]
-        ]
-    },
-    {
-        "id": "db9572f7.1e5b4",
-        "type": "function",
-        "z": "d27ba1192b875173",
-        "name": "Daten in JSON umwandeln",
-        "func": "let data = {\n    fuel: msg.payload.fuel,\n    amount: msg.payload.amount,\n    starttime: msg.payload.start,\n    endtime: msg.payload.end\n};\nmsg.payload = JSON.stringify(data);\nreturn msg;",
-        "outputs": 1,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 680,
-        "y": 360,
-        "wires": [
-            [
-                "f78a97a2.765318"
+                "fb7b0f29daebc218"
             ]
         ]
     },
@@ -428,7 +410,7 @@
         "createDir": false,
         "overwriteFile": "true",
         "encoding": "none",
-        "x": 910,
+        "x": 810,
         "y": 360,
         "wires": [
             [
@@ -443,7 +425,7 @@
         "name": "",
         "statusCode": "",
         "headers": {},
-        "x": 1110,
+        "x": 990,
         "y": 360,
         "wires": []
     },
@@ -452,16 +434,31 @@
         "type": "function",
         "z": "d27ba1192b875173",
         "name": "JSON",
-        "func": "let measurement = \"manualInput\";\nlet uid = global.get('uid');\nlet currentTime = new Date();\n\nfunction addsensordata(device, value){\n    let record = {\n        \"measurement\": measurement,\n        \"timestamp\": currentTime.toISOString(),\n        \"tags\":{\n            \"UID\": uid,\n            \"device\": device,\n            \"model\": value.model,\n        },\n        \"fields\": {\n            \"fuel\": parseFloat(value.fuel),\n            \"quantity\": parseFloat(value.quantity),\n            \"timerange\": parseFloat(value.timerange),\n        }\n    };\n    return record;\n}\n\nlet data = [];\n\ndata.push(addsensordata(\"manualInput\", msg.payload));\n\nmsg.payload = data;\n\nreturn msg;\n",
+        "func": "let measurement = \"manualInput\";\nlet uid = global.get('uid');\nlet currentTime = new Date();\n\nfunction addsensordata(device, value){\n    let record = {\n        \"measurement\": measurement,\n        \"timestamp\": currentTime.toISOString(),\n        \"tags\":{\n            \"UID\": uid,\n            \"device\": device,\n            \"model\": value.model,\n        },\n        \"fields\": {\n            \"fuel\": parseFloat(value.fuel),\n            \"quantity\": parseFloat(value.quantity),\n            \"start\": parseFloat(value.start),\n            \"end\": parseFloat(value.end)\n        }\n    };\n    return record;\n}\n\nlet data = [];\n\ndata.push(addsensordata(\"manualInput\", msg.payload));\n\nmsg.payload = data;\n\nreturn msg;\n",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
         "libs": [],
         "x": 610,
-        "y": 420,
+        "y": 360,
         "wires": [
-            []
+            [
+                "f78a97a2.765318",
+                "a9d9feb2a9d32795"
+            ]
         ]
+    },
+    {
+        "id": "a9d9feb2a9d32795",
+        "type": "link out",
+        "z": "d27ba1192b875173",
+        "name": "",
+        "links": [
+            "5ee90d3319bef9d3"
+        ],
+        "x": 755,
+        "y": 420,
+        "wires": []
     }
 ]
