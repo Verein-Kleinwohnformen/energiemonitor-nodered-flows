@@ -404,7 +404,7 @@
         "type": "function",
         "z": "d27ba1192b875173",
         "name": "Daten in JSON umwandeln",
-        "func": "let data = {\n    brennstoff: msg.payload.fuel,\n    menge: msg.payload.quantity,\n    zeitraum: msg.payload.timerange\n};\nmsg.payload = JSON.stringify(data);\nreturn msg;",
+        "func": "let data = {\n    fuel: msg.payload.fuel,\n    amount: msg.payload.amount,\n    starttime: msg.payload.start,\n    endtime: msg.payload.end\n};\nmsg.payload = JSON.stringify(data);\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
