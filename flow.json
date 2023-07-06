@@ -206,9 +206,7 @@
         "x": 320,
         "y": 140,
         "wires": [
-            [
-                "121d162ba030cbba"
-            ]
+            []
         ]
     },
     {
@@ -422,7 +420,7 @@
         "type": "function",
         "z": "0914f028aec835b0",
         "name": "",
-        "func": "var uid = global.set(\"UID\", \"123456789\");\nmsg.payload = uid;\nreturn msg;",
+        "func": "global.set(\"UID\", \"123456789\");\nmsg.payload = UID;\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
