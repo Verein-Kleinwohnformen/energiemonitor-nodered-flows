@@ -420,7 +420,7 @@
         "type": "function",
         "z": "0914f028aec835b0",
         "name": "",
-        "func": "global.set(\"UID\", \"123456789\");\nmsg.payload = UID;\nreturn msg;",
+        "func": "global.set(\"UID\", \"123456789\");\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
