@@ -411,26 +411,7 @@
         "y": 80,
         "wires": [
             [
-                "121d162ba030cbba"
-            ]
-        ]
-    },
-    {
-        "id": "121d162ba030cbba",
-        "type": "function",
-        "z": "0914f028aec835b0",
-        "name": "",
-        "func": "global.set(\"UID\", \"123456789\");\nreturn msg;",
-        "outputs": 1,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 550,
-        "y": 140,
-        "wires": [
-            [
-                "ca98a3517a7b5b02"
+                "f27c8db25019c383"
             ]
         ]
     },
@@ -446,8 +427,35 @@
         "complete": "false",
         "statusVal": "",
         "statusType": "auto",
-        "x": 800,
-        "y": 200,
+        "x": 690,
+        "y": 80,
         "wires": []
+    },
+    {
+        "id": "f27c8db25019c383",
+        "type": "change",
+        "z": "0914f028aec835b0",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "uid",
+                "pt": "global",
+                "to": "12345679",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 460,
+        "y": 80,
+        "wires": [
+            [
+                "ca98a3517a7b5b02"
+            ]
+        ]
     }
 ]
