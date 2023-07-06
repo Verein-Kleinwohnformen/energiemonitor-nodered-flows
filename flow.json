@@ -361,7 +361,7 @@
         "fieldType": "msg",
         "format": "handlebars",
         "syntax": "mustache",
-        "template": "<form action=\"/submit\" method=\"post\">\n    <label for=\"brennstoff\">Brennstoff:</label><br>\n    <input type=\"text\" id=\"brennstoff\" name=\"brennstoff\"><br>\n    <label for=\"menge\">Menge:</label><br>\n    <input type=\"number\" id=\"menge\" name=\"menge\"><br>\n    <label for=\"zeitraum\">Zeitraum:</label><br>\n    <input type=\"text\" id=\"zeitraum\" name=\"zeitraum\"><br>\n    <input type=\"submit\" value=\"Submit\">\n</form>",
+        "template": "<form action=\"/submit\" method=\"post\">\n    <label for=\"fuel\">Brennstoff:</label><br>\n    <select id=\"fuel\" name=\"brennstoff\">\n        <option value=\"gas\">Gas</option>\n        <option value=\"öl\">Öl</option>\n        <option value=\"holz\">Holz</option>\n    </select><br>\n    <label for=\"quantity\">Menge:</label><br>\n    <input type=\"number\" id=\"quantity\" name=\"menge\"><br>\n    <label for=\"timerange\">Zeitraum:</label><br>\n    <input type=\"text\" id=\"timerange\" name=\"zeitraum\"><br>\n    <input type=\"submit\" value=\"Submit\">\n</form>",
         "output": "str",
         "x": 560,
         "y": 260,
@@ -404,7 +404,7 @@
         "type": "function",
         "z": "d27ba1192b875173",
         "name": "Daten in JSON umwandeln",
-        "func": "let data = {\n    brennstoff: msg.payload.brennstoff,\n    menge: msg.payload.menge,\n    zeitraum: msg.payload.zeitraum\n};\nmsg.payload = JSON.stringify(data);\nreturn msg;",
+        "func": "let data = {\n    brennstoff: msg.payload.fuel,\n    menge: msg.payload.quantity,\n    zeitraum: msg.payload.timerange\n};\nmsg.payload = JSON.stringify(data);\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
@@ -446,5 +446,22 @@
         "x": 1110,
         "y": 360,
         "wires": []
+    },
+    {
+        "id": "fb7b0f29daebc218",
+        "type": "function",
+        "z": "d27ba1192b875173",
+        "name": "JSON",
+        "func": "let measurement = \"manualInput\";\nlet uid = global.get('uid');\nlet currentTime = new Date();\n\nfunction addsensordata(device, value){\n    let record = {\n        \"measurement\": measurement,\n        \"timestamp\": currentTime.toISOString(),\n        \"tags\":{\n            \"UID\": uid,\n            \"device\": device,\n            \"model\": value.model,\n        },\n        \"fields\": {\n            \"fuel\": parseFloat(value.fuel),\n            \"quantity\": parseFloat(value.quantity),\n            \"timerange\": parseFloat(value.timerange),\n        }\n    };\n    return record;\n}\n\nlet data = [];\n\ndata.push(addsensordata(\"manualInput\", msg.payload));\n\nmsg.payload = data;\n\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 610,
+        "y": 420,
+        "wires": [
+            []
+        ]
     }
 ]
