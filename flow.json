@@ -434,7 +434,7 @@
         "type": "function",
         "z": "d27ba1192b875173",
         "name": "JSON",
-        "func": "let measurement = \"manualInput\";\nlet uid = global.get('uid');\nlet currentTime = new Date();\n\nfunction addsensordata(device, value){\n    let record = {\n        \"measurement\": measurement,\n        \"timestamp\": currentTime.toISOString(),\n        \"tags\":{\n            \"UID\": uid,\n            \"device\": device,\n            \"model\": value.model,\n        },\n        \"fields\": {\n            \"fuel\": value.fuel,\n            \"quantity\": parseFloat(value.amount),\n            \"start\": value.start.toISOString,\n            \"end\": value.end.toISOString\n        }\n    };\n    return record;\n}\n\nlet data = [];\n\ndata.push(addsensordata(\"manualInput\", msg.payload));\n\nmsg.payload = data;\n\nreturn msg;\n",
+        "func": "let measurement = \"manualInput\";\nlet uid = global.get('uid');\nlet currentTime = new Date();\n\nfunction addsensordata(device, value){\n    let record = {\n        \"measurement\": measurement,\n        \"timestamp\": currentTime.toISOString(),\n        \"tags\":{\n            \"UID\": uid,\n            \"device\": device,\n            \"model\": value.model,\n        },\n        \"fields\": {\n            \"fuel\": value.fuel,\n            \"amount\": parseFloat(value.amount),\n            \"start\": value.start.toISOString(),\n            \"end\": value.end.toISOString()\n        }\n    };\n    return record;\n}\n\nlet data = [];\n\ndata.push(addsensordata(\"manualInput\", msg.payload));\n\nmsg.payload = data;\n\nreturn msg;\n",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
