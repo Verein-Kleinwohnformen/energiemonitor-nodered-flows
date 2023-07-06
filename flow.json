@@ -28,6 +28,13 @@
         "info": ""
     },
     {
+        "id": "d27ba1192b875173",
+        "type": "tab",
+        "label": "Manual Input",
+        "disabled": false,
+        "info": ""
+    },
+    {
         "id": "725f4c36dd3c91a4",
         "type": "edgeclient"
     },
@@ -327,5 +334,117 @@
                 "ca98a3517a7b5b02"
             ]
         ]
+    },
+    {
+        "id": "82a54d.27b8a5b",
+        "type": "http in",
+        "z": "d27ba1192b875173",
+        "name": "",
+        "url": "/form",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 400,
+        "y": 260,
+        "wires": [
+            [
+                "f982a50a.16c1d8"
+            ]
+        ]
+    },
+    {
+        "id": "f982a50a.16c1d8",
+        "type": "template",
+        "z": "d27ba1192b875173",
+        "name": "",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "<form action=\"/submit\" method=\"post\">\n    <label for=\"brennstoff\">Brennstoff:</label><br>\n    <input type=\"text\" id=\"brennstoff\" name=\"brennstoff\"><br>\n    <label for=\"menge\">Menge:</label><br>\n    <input type=\"number\" id=\"menge\" name=\"menge\"><br>\n    <label for=\"zeitraum\">Zeitraum:</label><br>\n    <input type=\"text\" id=\"zeitraum\" name=\"zeitraum\"><br>\n    <input type=\"submit\" value=\"Submit\">\n</form>",
+        "output": "str",
+        "x": 560,
+        "y": 260,
+        "wires": [
+            [
+                "8eae1b3f.5eb8e8"
+            ]
+        ]
+    },
+    {
+        "id": "8eae1b3f.5eb8e8",
+        "type": "http response",
+        "z": "d27ba1192b875173",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 720,
+        "y": 260,
+        "wires": []
+    },
+    {
+        "id": "7279b8df.1a5c18",
+        "type": "http in",
+        "z": "d27ba1192b875173",
+        "name": "",
+        "url": "/submit",
+        "method": "post",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 410,
+        "y": 360,
+        "wires": [
+            [
+                "db9572f7.1e5b4"
+            ]
+        ]
+    },
+    {
+        "id": "db9572f7.1e5b4",
+        "type": "function",
+        "z": "d27ba1192b875173",
+        "name": "Daten in JSON umwandeln",
+        "func": "let data = {\n    brennstoff: msg.payload.brennstoff,\n    menge: msg.payload.menge,\n    zeitraum: msg.payload.zeitraum\n};\nmsg.payload = JSON.stringify(data);\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 680,
+        "y": 360,
+        "wires": [
+            [
+                "f78a97a2.765318"
+            ]
+        ]
+    },
+    {
+        "id": "f78a97a2.765318",
+        "type": "file",
+        "z": "d27ba1192b875173",
+        "name": "",
+        "filename": "./data.json",
+        "appendNewline": true,
+        "createDir": false,
+        "overwriteFile": "true",
+        "encoding": "none",
+        "x": 910,
+        "y": 360,
+        "wires": [
+            [
+                "9d9c1193.1a3df"
+            ]
+        ]
+    },
+    {
+        "id": "9d9c1193.1a3df",
+        "type": "http response",
+        "z": "d27ba1192b875173",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 1110,
+        "y": 360,
+        "wires": []
     }
 ]
