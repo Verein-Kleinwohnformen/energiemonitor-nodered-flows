@@ -279,8 +279,8 @@
                 "t": "set",
                 "p": "uid",
                 "pt": "global",
-                "to": "12345679",
-                "tot": "num"
+                "to": "payload",
+                "tot": "msg"
             }
         ],
         "action": "",
