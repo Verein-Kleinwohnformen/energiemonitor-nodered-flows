@@ -315,5 +315,24 @@
         "x": 820,
         "y": 180,
         "wires": []
+    },
+    {
+        "id": "fd146f6d8abb5218",
+        "type": "function",
+        "z": "0914f028aec835b0",
+        "name": "",
+        "func": "global.get('uid')\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 530,
+        "y": 220,
+        "wires": [
+            [
+                "ca98a3517a7b5b02"
+            ]
+        ]
     }
 ]
