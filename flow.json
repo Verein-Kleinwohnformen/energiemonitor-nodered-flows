@@ -32,6 +32,12 @@
         "type": "edgeclient"
     },
     {
+        "id": "d8cac578825e1261",
+        "type": "persist-store",
+        "filename": "DataCache.json",
+        "interval": "30"
+    },
+    {
         "id": "8e2e1ca31341359b",
         "type": "shelly-gen1",
         "z": "c6e1822c71f940ee",
@@ -286,7 +292,8 @@
             [
                 "675ba50f9893e483",
                 "b65fe1e4434f4168",
-                "e800ada14d5839d9"
+                "e800ada14d5839d9",
+                "e84fb49548113a8b"
             ]
         ]
     },
@@ -318,7 +325,7 @@
         "wires": [
             [
                 "74e01a6004d724e8",
-                "bab630044108f238"
+                "70a8e181b3bb7d98"
             ]
         ]
     },
@@ -338,7 +345,7 @@
         "wires": [
             [
                 "74e01a6004d724e8",
-                "bab630044108f238"
+                "70a8e181b3bb7d98"
             ]
         ]
     },
@@ -369,22 +376,6 @@
                 "d81ed84f4bdc6063"
             ]
         ]
-    },
-    {
-        "id": "bab630044108f238",
-        "type": "debug",
-        "z": "c6e1822c71f940ee",
-        "name": "",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "false",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 950,
-        "y": 320,
-        "wires": []
     },
     {
         "id": "df43c316560ded48",
@@ -457,5 +448,25 @@
                 "ca98a3517a7b5b02"
             ]
         ]
+    },
+    {
+        "id": "70a8e181b3bb7d98",
+        "type": "persist in",
+        "z": "c6e1822c71f940ee",
+        "name": "msgStore",
+        "storageNode": "d8cac578825e1261",
+        "x": 940,
+        "y": 320,
+        "wires": []
+    },
+    {
+        "id": "e84fb49548113a8b",
+        "type": "persist in",
+        "z": "ab257fb0cc5ba8f5",
+        "name": "msgStore",
+        "storageNode": "d8cac578825e1261",
+        "x": 820,
+        "y": 180,
+        "wires": []
     }
 ]
