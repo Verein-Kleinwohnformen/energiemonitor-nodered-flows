@@ -41,7 +41,7 @@
         "id": "8e2e1ca31341359b",
         "type": "shelly-gen1",
         "z": "c6e1822c71f940ee",
-        "hostname": "global.shellyHouse",
+        "hostname": "192.168.33.1",
         "description": "",
         "mode": "polling",
         "server": "",
@@ -52,7 +52,7 @@
         "getstatusoncommand": true,
         "devicetype": "Measure",
         "outputs": 2,
-        "x": 450,
+        "x": 430,
         "y": 240,
         "wires": [
             [
