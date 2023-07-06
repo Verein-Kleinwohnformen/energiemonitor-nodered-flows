@@ -367,7 +367,7 @@
                 "p": "uid",
                 "pt": "global",
                 "to": "12345679",
-                "tot": "str"
+                "tot": "num"
             }
         ],
         "action": "",
