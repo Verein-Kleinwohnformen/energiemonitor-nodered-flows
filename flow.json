@@ -361,7 +361,7 @@
         "fieldType": "msg",
         "format": "handlebars",
         "syntax": "mustache",
-        "template": "<form action=\"/submit\" method=\"post\">\n    <label for=\"fuel\">Brennstoff:</label><br>\n    <select id=\"fuel\" name=\"brennstoff\">\n        <option value=\"gas\">Gas</option>\n        <option value=\"öl\">Öl</option>\n        <option value=\"holz\">Holz</option>\n    </select><br>\n    <label for=\"quantity\">Menge:</label><br>\n    <input type=\"number\" id=\"quantity\" name=\"menge\"><br>\n    <label for=\"timerange\">Zeitraum:</label><br>\n    <input type=\"text\" id=\"timerange\" name=\"zeitraum\"><br>\n    <input type=\"submit\" value=\"Submit\">\n</form>",
+        "template": "<form action=\"/submit\" method=\"post\">\n    <label for=\"fuel\">Brennstoff:</label><br>\n    <select id=\"fuel\" name=\"brennstoff\">\n        <option value=\"gas\">Gas</option>\n        <option value=\"öl\">Öl</option>\n        <option value=\"holz\">Holz</option>\n    </select><br>\n    <label for=\"quantity\">Menge:</label><br>\n    <input type=\"number\" id=\"quantity\" name=\"menge\"><br>\n    <label for=\"start\">Startdatum:</label><br>\n    <input type=\"date\" id=\"start\" name=\"start\"><br>\n    <label for=\"end\">Enddatum:</label><br>\n    <input type=\"date\" id=\"end\" name=\"end\"><br>\n    <input type=\"submit\" value=\"Submit\">\n</form>",
         "output": "str",
         "x": 560,
         "y": 260,
