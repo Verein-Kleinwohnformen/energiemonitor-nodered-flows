@@ -65,7 +65,7 @@
         "id": "42f5d918c1ce014d",
         "type": "shelly-gen2",
         "z": "c6e1822c71f940ee",
-        "hostname": "",
+        "hostname": "{{{payload}}}",
         "description": "",
         "mode": "polling",
         "server": "",
@@ -76,7 +76,7 @@
         "getstatusoncommand": true,
         "devicetype": "Measure",
         "outputs": 1,
-        "x": 420,
+        "x": 430,
         "y": 320,
         "wires": [
             [
@@ -350,5 +350,48 @@
                 "ca98a3517a7b5b02"
             ]
         ]
+    },
+    {
+        "id": "400697e5b9cc64bb",
+        "type": "inject",
+        "z": "c6e1822c71f940ee",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "shellyHouse",
+        "payloadType": "global",
+        "x": 150,
+        "y": 280,
+        "wires": [
+            [
+                "8e2e1ca31341359b",
+                "42f5d918c1ce014d",
+                "6ac85dfe06a9eadd"
+            ]
+        ]
+    },
+    {
+        "id": "6ac85dfe06a9eadd",
+        "type": "debug",
+        "z": "c6e1822c71f940ee",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 440,
+        "y": 420,
+        "wires": []
     }
 ]
