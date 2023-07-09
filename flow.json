@@ -517,7 +517,7 @@
         "type": "function",
         "z": "e48ca2e6e4e7cd76",
         "name": "Calculate sent data",
-        "func": "// Get the number of sent data packets\nvar sentData = flow.get(\"sentData\") || 0;\n\n// Calculate the number of received data packets (replace with your InfluxDB query logic)\nvar receivedData = flow.get(\"recivedData\") || 0; // Replace with your InfluxDB query result\n\n// Compare the number of sent and received data packets\nif (sentData === receivedData) {\n    node.status({fill:\"green\",shape:\"dot\",text:\"All data received\"});\n} else {\n    node.status({fill:\"red\",shape:\"dot\",text:\"Data missing\"});\n}\n\n// Reset the sent data counter\nflow.set(\"sentData\", 0);\n\nreturn null;",
+        "func": "// Get the number of sent data packets\nvar sentData = flow.get(\"sentData\");\n\n// Calculate the number of received data packets (replace with your InfluxDB query logic)\nvar receivedData = flow.get(\"recivedData\"); // Replace with your InfluxDB query result\n\n// Compare the number of sent and received data packets\nif (sentData === receivedData) {\n    node.status({fill:\"green\",shape:\"dot\",text:\"All data received\"});\n} else {\n    node.status({fill:\"red\",shape:\"dot\",text:\"Data missing\"});\n}\n\n// Reset the sent data counter\nflow.set(\"sentData\", 0);\n\nreturn sentData;",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
