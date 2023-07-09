@@ -674,11 +674,11 @@
         "tosidebar": true,
         "console": false,
         "tostatus": false,
-        "complete": "payload.[0].timestamp",
+        "complete": "payload",
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 880,
+        "x": 890,
         "y": 620,
         "wires": []
     }
