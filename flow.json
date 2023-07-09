@@ -179,9 +179,9 @@
         "type": "http response",
         "z": "ab257fb0cc5ba8f5",
         "name": "",
-        "statusCode": "",
+        "statusCode": "200",
         "headers": {},
-        "x": 710,
+        "x": 720,
         "y": 240,
         "wires": []
     },
