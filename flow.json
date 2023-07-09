@@ -537,8 +537,7 @@
         "wires": [
             [
                 "62418716caaba7d7",
-                "9aadf8de2fd9e7fa",
-                "ccac118d.06ea48"
+                "9aadf8de2fd9e7fa"
             ]
         ]
     },
@@ -650,41 +649,6 @@
         "x": 1150,
         "y": 380,
         "wires": []
-    },
-    {
-        "id": "4b7d2e09.1da998",
-        "type": "function",
-        "z": "e48ca2e6e4e7cd76",
-        "name": "Daten speichern",
-        "func": "var fs = global.get('fs');\nvar json = msg.payload;\nvar data = JSON.parse(json);\n\nvar filename = path.join(__dirname, 'datacache.json');\nvar timestamp = Date.now();\n\n// Neuen Datenpunkt hinzufügen\nvar newDatum = {\n    timestamp: timestamp,\n    value: msg.payload\n};\n\ndata.push(newDatum);\n\n// Datenpunkte älter als 7 Tage entfernen\nvar expirationTime = timestamp - (7 * 24 * 60 * 60 * 1000);\ndata = data.filter(function(datum) {\n    return datum.timestamp >= expirationTime;\n});\n\nvar jsonData = JSON.stringify(data);\n\nfs.writeFile(filename, jsonData, function(err) {\n    if (err) {\n        node.error(err);\n    } else {\n        node.log('Daten in Datei gespeichert.');\n    }\n});\n\n// Daten im Flusskontext speichern\nflow.set('data', data);\n\nreturn null;",
-        "outputs": 1,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 880,
-        "y": 120,
-        "wires": [
-            []
-        ]
-    },
-    {
-        "id": "ccac118d.06ea48",
-        "type": "file",
-        "z": "e48ca2e6e4e7cd76",
-        "name": "",
-        "filename": "datacache.json",
-        "appendNewline": false,
-        "createDir": false,
-        "overwriteFile": "true",
-        "encoding": "none",
-        "x": 660,
-        "y": 120,
-        "wires": [
-            [
-                "4b7d2e09.1da998"
-            ]
-        ]
     },
     {
         "id": "9aadf8de2fd9e7fa",
