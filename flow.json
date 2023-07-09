@@ -507,7 +507,8 @@
         "y": 380,
         "wires": [
             [
-                "8fbf0c9e.9ea23"
+                "8fbf0c9e.9ea23",
+                "ae7a6a17ba5666fe"
             ]
         ]
     },
@@ -522,8 +523,8 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 910,
-        "y": 380,
+        "x": 730,
+        "y": 540,
         "wires": [
             [
                 "b243d2dbdea14f74"
@@ -543,8 +544,8 @@
         "targetType": "full",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1110,
-        "y": 380,
+        "x": 930,
+        "y": 540,
         "wires": []
     },
     {
@@ -593,7 +594,7 @@
         "wires": [
             [
                 "af32fc85.4cc7b",
-                "926fb95465fa04ba"
+                "6af2607ed7631321"
             ]
         ]
     },
@@ -666,6 +667,65 @@
         "statusType": "auto",
         "x": 710,
         "y": 460,
+        "wires": []
+    },
+    {
+        "id": "ae7a6a17ba5666fe",
+        "type": "delay",
+        "z": "e48ca2e6e4e7cd76",
+        "name": "",
+        "pauseType": "delay",
+        "timeout": "5",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "allowrate": false,
+        "x": 500,
+        "y": 540,
+        "wires": [
+            [
+                "926fb95465fa04ba"
+            ]
+        ]
+    },
+    {
+        "id": "6af2607ed7631321",
+        "type": "function",
+        "z": "e48ca2e6e4e7cd76",
+        "name": "Calculate recived Data",
+        "func": "// Array im msg.payload\nvar array = msg.payload;\n\n// Anzahl der Elemente im Array zählen\nvar recivedData = array.length;\n\n// Das Ergebnis in msg.payload speichern\nmsg.payload = count;\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 920,
+        "y": 380,
+        "wires": [
+            [
+                "bbe4105dbe0a2abf"
+            ]
+        ]
+    },
+    {
+        "id": "bbe4105dbe0a2abf",
+        "type": "debug",
+        "z": "e48ca2e6e4e7cd76",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1070,
+        "y": 380,
         "wires": []
     }
 ]
