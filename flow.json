@@ -655,7 +655,7 @@
         "id": "b8d70e76.d499c8",
         "type": "inject",
         "z": "e48ca2e6e4e7cd76",
-        "name": "Trigger alle 1 Minute",
+        "name": "Trigger 1 Minute",
         "props": [
             {
                 "p": "payload"
@@ -671,8 +671,8 @@
         "onceDelay": "",
         "topic": "",
         "payloadType": "date",
-        "x": 460,
-        "y": 700,
+        "x": 270,
+        "y": 540,
         "wires": [
             [
                 "4b7d2e09.1da998"
@@ -690,8 +690,8 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 680,
-        "y": 700,
+        "x": 500,
+        "y": 540,
         "wires": [
             []
         ]
