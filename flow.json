@@ -602,7 +602,7 @@
         "type": "function",
         "z": "e48ca2e6e4e7cd76",
         "name": "Influx Query",
-        "func": "var measurement = \"sensors\";\nvar tagKey = \"uid\";\nvar tagValue = global.get('uid');\n\n// Flux-Query-Befehl erstellen\nvar fluxQuery = `from(bucket: \"bananapi\")\n  |> range(start: -1h)\n  |> filter(fn: (r) => r._measurement == \"${measurement}\" and r.${tagKey} == \"${tagValue}\")\n  |> count()`;\n\n// Flux-Query-Befehl an den influxdb-Node übergeben\nmsg.query = fluxQuery;\nreturn msg;\n",
+        "func": "var measurement = \"sensors\";\nvar tagValue = global.get('uid');\n\n// Flux-Query-Befehl erstellen\nvar fluxQuery = `from(bucket: \"bananapi\")\n  |> range(start: -1h)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"${measurement}\")\n  |> filter(fn: (r) => r[\"tags_UID\"] == \"${tagValue}\")\n  |> filter(fn: (r) => r[\"host\"] == \"telegraf.monitor.e-mgmt.cloud\")\n  |> count()`;\n\n// Flux-Query-Befehl an den influxdb-Node übergeben\nmsg.query = fluxQuery;\nreturn msg;\n",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
