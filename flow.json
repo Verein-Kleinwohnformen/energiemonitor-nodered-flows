@@ -607,7 +607,7 @@
         "tosidebar": true,
         "console": false,
         "tostatus": false,
-        "complete": "sendData",
+        "complete": "sentData",
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
