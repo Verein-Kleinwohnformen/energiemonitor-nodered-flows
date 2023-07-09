@@ -558,7 +558,6 @@
         "y": 380,
         "wires": [
             [
-                "af32fc85.4cc7b",
                 "6af2607ed7631321"
             ]
         ]
@@ -578,44 +577,9 @@
         "y": 380,
         "wires": [
             [
-                "72a3ee3deb599eeb",
-                "f505e4a64b4e9006"
+                "72a3ee3deb599eeb"
             ]
         ]
-    },
-    {
-        "id": "af32fc85.4cc7b",
-        "type": "debug",
-        "z": "e48ca2e6e4e7cd76",
-        "name": "",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "payload",
-        "targetType": "msg",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 910,
-        "y": 460,
-        "wires": []
-    },
-    {
-        "id": "f505e4a64b4e9006",
-        "type": "debug",
-        "z": "e48ca2e6e4e7cd76",
-        "name": "",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "query",
-        "targetType": "msg",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 710,
-        "y": 460,
-        "wires": []
     },
     {
         "id": "6af2607ed7631321",
@@ -631,26 +595,8 @@
         "x": 920,
         "y": 380,
         "wires": [
-            [
-                "bbe4105dbe0a2abf"
-            ]
+            []
         ]
-    },
-    {
-        "id": "bbe4105dbe0a2abf",
-        "type": "debug",
-        "z": "e48ca2e6e4e7cd76",
-        "name": "",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "false",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 1150,
-        "y": 380,
-        "wires": []
     },
     {
         "id": "9aadf8de2fd9e7fa",
@@ -707,12 +653,13 @@
         "id": "042758936ba9cf14",
         "type": "debug",
         "z": "e48ca2e6e4e7cd76",
-        "name": "",
+        "name": "Data Read",
         "active": true,
         "tosidebar": true,
         "console": false,
         "tostatus": false,
-        "complete": "false",
+        "complete": "payload",
+        "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
         "x": 670,
