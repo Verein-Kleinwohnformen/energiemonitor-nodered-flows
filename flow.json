@@ -634,14 +634,14 @@
         "id": "ec19a469f9658b18",
         "type": "file in",
         "z": "e48ca2e6e4e7cd76",
-        "name": "ReadData",
+        "name": "Read Data",
         "filename": "./datachache",
         "format": "lines",
         "chunk": false,
         "sendError": false,
         "encoding": "utf8",
         "allProps": false,
-        "x": 480,
+        "x": 490,
         "y": 540,
         "wires": [
             [
@@ -653,11 +653,11 @@
         "id": "a235737a98e2d58c",
         "type": "json",
         "z": "e48ca2e6e4e7cd76",
-        "name": "",
+        "name": "JSON Konverter",
         "property": "payload",
         "action": "",
         "pretty": false,
-        "x": 650,
+        "x": 680,
         "y": 540,
         "wires": [
             [
