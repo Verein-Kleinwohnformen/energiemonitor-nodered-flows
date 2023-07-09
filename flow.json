@@ -507,7 +507,8 @@
         "y": 380,
         "wires": [
             [
-                "8fbf0c9e.9ea23"
+                "8fbf0c9e.9ea23",
+                "ec19a469f9658b18"
             ]
         ]
     },
@@ -537,7 +538,8 @@
         "wires": [
             [
                 "62418716caaba7d7",
-                "9aadf8de2fd9e7fa"
+                "9aadf8de2fd9e7fa",
+                "746b38fcf65019b1"
             ]
         ]
     },
@@ -664,6 +666,57 @@
         "statusType": "auto",
         "x": 650,
         "y": 280,
+        "wires": []
+    },
+    {
+        "id": "746b38fcf65019b1",
+        "type": "file",
+        "z": "e48ca2e6e4e7cd76",
+        "name": "Save Data",
+        "filename": "./datachache",
+        "appendNewline": true,
+        "createDir": false,
+        "overwriteFile": "false",
+        "encoding": "utf8",
+        "x": 650,
+        "y": 120,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "ec19a469f9658b18",
+        "type": "file in",
+        "z": "e48ca2e6e4e7cd76",
+        "name": "ReadData",
+        "filename": "./datachache",
+        "format": "lines",
+        "chunk": false,
+        "sendError": false,
+        "encoding": "utf8",
+        "allProps": false,
+        "x": 480,
+        "y": 540,
+        "wires": [
+            [
+                "042758936ba9cf14"
+            ]
+        ]
+    },
+    {
+        "id": "042758936ba9cf14",
+        "type": "debug",
+        "z": "e48ca2e6e4e7cd76",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 670,
+        "y": 540,
         "wires": []
     }
 ]
