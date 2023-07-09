@@ -645,7 +645,8 @@
         "y": 540,
         "wires": [
             [
-                "042758936ba9cf14"
+                "042758936ba9cf14",
+                "a235737a98e2d58c"
             ]
         ]
     },
@@ -663,7 +664,40 @@
         "statusVal": "",
         "statusType": "auto",
         "x": 670,
+        "y": 620,
+        "wires": []
+    },
+    {
+        "id": "a235737a98e2d58c",
+        "type": "json",
+        "z": "e48ca2e6e4e7cd76",
+        "name": "",
+        "property": "payload",
+        "action": "",
+        "pretty": false,
+        "x": 650,
         "y": 540,
+        "wires": [
+            [
+                "26857e4caa073247"
+            ]
+        ]
+    },
+    {
+        "id": "26857e4caa073247",
+        "type": "debug",
+        "z": "e48ca2e6e4e7cd76",
+        "name": "JSON Object",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 880,
+        "y": 620,
         "wires": []
     }
 ]
