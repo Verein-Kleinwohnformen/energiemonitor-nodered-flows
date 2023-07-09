@@ -401,9 +401,9 @@
         "name": "",
         "filename": "./data.json",
         "appendNewline": true,
-        "createDir": false,
-        "overwriteFile": "true",
-        "encoding": "none",
+        "createDir": true,
+        "overwriteFile": "false",
+        "encoding": "utf8",
         "x": 810,
         "y": 360,
         "wires": [
