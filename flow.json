@@ -507,46 +507,9 @@
         "y": 380,
         "wires": [
             [
-                "8fbf0c9e.9ea23",
-                "ae7a6a17ba5666fe"
+                "8fbf0c9e.9ea23"
             ]
         ]
-    },
-    {
-        "id": "926fb95465fa04ba",
-        "type": "function",
-        "z": "e48ca2e6e4e7cd76",
-        "name": "Calculate sent data",
-        "func": "// Get the number of sent data packets\nvar sentData = flow.get(\"sentData\");\n\n// Calculate the number of received data packets (replace with your InfluxDB query logic)\nvar receivedData = flow.get(\"recivedData\"); // Replace with your InfluxDB query result\n\n// Compare the number of sent and received data packets\nif (sentData === receivedData) {\n    node.status({fill:\"green\",shape:\"dot\",text:\"All data received\"});\n} else {\n    node.status({fill:\"red\",shape:\"dot\",text:\"Data missing\"});\n}\n\n// Reset the sent data counter\nflow.set(\"sentData\", 0);\n\nreturn null;",
-        "outputs": 1,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 730,
-        "y": 540,
-        "wires": [
-            [
-                "b243d2dbdea14f74"
-            ]
-        ]
-    },
-    {
-        "id": "b243d2dbdea14f74",
-        "type": "debug",
-        "z": "e48ca2e6e4e7cd76",
-        "name": "",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "true",
-        "targetType": "full",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 930,
-        "y": 540,
-        "wires": []
     },
     {
         "id": "0b7469f960a07206",
@@ -668,30 +631,6 @@
         "x": 710,
         "y": 460,
         "wires": []
-    },
-    {
-        "id": "ae7a6a17ba5666fe",
-        "type": "delay",
-        "z": "e48ca2e6e4e7cd76",
-        "name": "",
-        "pauseType": "delay",
-        "timeout": "5",
-        "timeoutUnits": "seconds",
-        "rate": "1",
-        "nbRateUnits": "1",
-        "rateUnits": "second",
-        "randomFirst": "1",
-        "randomLast": "5",
-        "randomUnits": "seconds",
-        "drop": false,
-        "allowrate": false,
-        "x": 500,
-        "y": 540,
-        "wires": [
-            [
-                "926fb95465fa04ba"
-            ]
-        ]
     },
     {
         "id": "6af2607ed7631321",
