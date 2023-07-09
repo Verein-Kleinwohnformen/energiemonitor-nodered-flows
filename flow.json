@@ -526,7 +526,7 @@
         "type": "function",
         "z": "e48ca2e6e4e7cd76",
         "name": "Increment sent data counter",
-        "func": "// Get the current sent data count\nvar sentData = flow.get(\"sentData\") || 0;\n\n// Increment the sent data count\nsentData++;\n\n// Save the updated sent data count\nflow.set(\"sentData\", sentData);\nmsg.sentData = sentData;\n\nreturn msg;",
+        "func": "// Get the current sent data count\nvar sentData = flow.get(\"sentData\") || 0;\n\n// Increment the sent data count\nsentData++;\n\n// Save the updated sent data count\nflow.set(\"sentData\", sentData);\n\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
@@ -537,7 +537,7 @@
         "wires": [
             [
                 "62418716caaba7d7",
-                "2ee8534930021572"
+                "9aadf8de2fd9e7fa"
             ]
         ]
     },
@@ -599,23 +599,6 @@
         "wires": []
     },
     {
-        "id": "2ee8534930021572",
-        "type": "debug",
-        "z": "e48ca2e6e4e7cd76",
-        "name": "",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "sentData",
-        "targetType": "msg",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 680,
-        "y": 280,
-        "wires": []
-    },
-    {
         "id": "f505e4a64b4e9006",
         "type": "debug",
         "z": "e48ca2e6e4e7cd76",
@@ -637,7 +620,7 @@
         "type": "function",
         "z": "e48ca2e6e4e7cd76",
         "name": "Calculate recived Data",
-        "func": "// Get the number of sent data packets\nvar sentData = flow.get(\"sentData\");\n\n// Array im msg.payload\nvar array = msg.payload;\nvar dataTrue = 0;\nvar dataComplete = false;\n\n// Über das Array iterieren _value-Wert prüfen\nfor (var i = 0; i < array.length; i++) {\n  var value = array[i]._value;\n  if (sentData === value || sentData === (value+1)) {\n    dataTrue++;\n  } else{\n    node.status({fill:\"red\",shape:\"dot\",text:\"Data missing\"});\n    return false;\n  }\n}\n\nif(dataTrue === array.length){\n    dataComplete = true;\n}else{\n    dataComplete = false;\n}\n\nif (dataComplete) {\n    node.status({fill:\"green\",shape:\"dot\",text:\"All data received\"});\n    temp = flow.get(\"sentData\");\n    temp = temp - sentData;\n    flow.set(\"sentData\", temp);\n    return true;\n} else {\n    node.status({fill:\"red\",shape:\"dot\",text:\"Data missing\"});\n    return false\n}\n\n",
+        "func": "// Get the number of sent data packets\nvar sentData = flow.get(\"sentData\");\n\n// Array im msg.payload\nvar array = msg.payload;\nvar dataTrue = 0;\nvar dataComplete = false;\n\n// Über das Array iterieren _value-Wert prüfen\nfor (var i = 0; i < array.length; i++) {\n  var value = array[i]._value;\n  if (sentData === value || sentData === (value+1)) {\n    dataTrue++;\n  } else{\n      \n  }\n}\n\nif(dataTrue === array.length){\n    dataComplete = true;\n}else{\n    dataComplete = false;\n}\n\nif (dataComplete) {\n    node.status({fill:\"green\",shape:\"dot\",text:\"All data received\"});\n    temp = flow.get(\"sentData\");\n    temp = temp - sentData;\n    flow.set(\"sentData\", temp);\n    return true;\n} else {\n    node.status({fill:\"red\",shape:\"dot\",text:\"Data missing\"});\n    return false\n}\n\n",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
@@ -665,6 +648,102 @@
         "statusType": "auto",
         "x": 1150,
         "y": 380,
+        "wires": []
+    },
+    {
+        "id": "b8d70e76.d499c8",
+        "type": "inject",
+        "z": "e48ca2e6e4e7cd76",
+        "name": "Trigger alle 1 Minute",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "60",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "",
+        "topic": "",
+        "payloadType": "date",
+        "x": 460,
+        "y": 700,
+        "wires": [
+            [
+                "4b7d2e09.1da998"
+            ]
+        ]
+    },
+    {
+        "id": "4b7d2e09.1da998",
+        "type": "function",
+        "z": "e48ca2e6e4e7cd76",
+        "name": "Daten speichern",
+        "func": "var fs = global.get('fs');\nvar path = require('path');\n\nvar filename = path.join(__dirname, 'datacache.json');\n\nvar data = flow.get('data') || [];\n\n// Neuen Datenpunkt hinzufügen\nvar newDatum = {\n    timestamp: msg.payload.timestamp,\n    value: msg.payload\n};\n\ndata.push(newDatum);\n\n// Datenpunkte älter als 7 Tage entfernen\nvar expirationTime = timestamp - (7 * 24 * 60 * 60 * 1000);\ndata = data.filter(function(datum) {\n    return datum.timestamp >= expirationTime;\n});\n\nvar jsonData = JSON.stringify(data);\n\nfs.writeFile(filename, jsonData, function(err) {\n    if (err) {\n        node.error(err);\n    } else {\n        node.log('Daten in Datei gespeichert.');\n    }\n});\n\n// Daten im Flusskontext speichern\nflow.set('data', data);\n\nreturn null;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 680,
+        "y": 700,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "ccac118d.06ea48",
+        "type": "file",
+        "z": "e48ca2e6e4e7cd76",
+        "name": "",
+        "filename": "",
+        "appendNewline": false,
+        "createDir": false,
+        "overwriteFile": "true",
+        "encoding": "none",
+        "x": 680,
+        "y": 640,
+        "wires": [
+            [
+                "40d94d88.b11de"
+            ]
+        ]
+    },
+    {
+        "id": "40d94d88.b11de",
+        "type": "function",
+        "z": "e48ca2e6e4e7cd76",
+        "name": "Daten extrahieren",
+        "func": "var jsonData = msg.payload;\n\nvar data = JSON.parse(jsonData);\n\nflow.set('data', data);\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 900,
+        "y": 640,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "9aadf8de2fd9e7fa",
+        "type": "debug",
+        "z": "e48ca2e6e4e7cd76",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 660,
+        "y": 280,
         "wires": []
     }
 ]
