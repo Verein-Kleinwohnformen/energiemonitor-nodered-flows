@@ -35,8 +35,40 @@
         "info": ""
     },
     {
+        "id": "b9bd4a8285c483f7",
+        "type": "tab",
+        "label": "DataSync",
+        "disabled": false,
+        "info": ""
+    },
+    {
         "id": "725f4c36dd3c91a4",
         "type": "edgeclient"
+    },
+    {
+        "id": "09b12c680d45a782",
+        "type": "influxdb",
+        "hostname": "127.0.0.1",
+        "port": "8086",
+        "protocol": "http",
+        "database": "database",
+        "name": "influx",
+        "usetls": false,
+        "tls": "",
+        "influxdbVersion": "2.0",
+        "url": "https://influxdb.monitor.e-mgmt.cloud/",
+        "rejectUnauthorized": true
+    },
+    {
+        "id": "dc0031a8.b17c3",
+        "type": "influxdb",
+        "hostname": "localhost",
+        "port": "8086",
+        "protocol": "http",
+        "database": "YOUR_DATABASE",
+        "name": "InfluxDB",
+        "usetls": false,
+        "influxdbVersion": "1.x"
     },
     {
         "id": "8e2e1ca31341359b",
@@ -111,7 +143,7 @@
         "y": 200,
         "wires": [
             [
-                "62418716caaba7d7"
+                "f871afd17d33fea9"
             ]
         ]
     },
@@ -121,7 +153,7 @@
         "z": "e48ca2e6e4e7cd76",
         "client": "725f4c36dd3c91a4",
         "output": "output1",
-        "x": 610,
+        "x": 850,
         "y": 200,
         "wires": []
     },
@@ -158,7 +190,7 @@
         "type": "function",
         "z": "ab257fb0cc5ba8f5",
         "name": "JSON",
-        "func": "let measurement = \"sensors\";\nlet uid = global.get('uid');\nlet currentTime = new Date();\n\nfunction addsensordata(device, value){\n    let record = {\n        \"measurement\": measurement,\n        \"timestamp\": currentTime.toISOString(),\n        \"tags\":{\n            \"UID\": uid,\n            \"device\": device,\n            \"model\": value.model,\n        },\n        \"fields\": {\n            \"stationtype\": parseFloat(value.stationtype),\n            \"dateutc\": parseFloat(value.dateutc),\n            \"tempinf\": parseFloat(value.tempinf),\n            \"humidityin\": parseFloat(value.humidityin),\n            \"baromrelin\": parseFloat(value.baromrelin),\n            \"baromabsin\": parseFloat(value.baromabsin),\n            \"tempf\": parseFloat(value.tempf),\n            \"humidity\": parseFloat(value.humidity),\n            \"winddir\": parseFloat(value.winddir),\n            \"winddir_avg10m\": parseFloat(value.winddir_avg10m),\n            \"windspeedmph\": parseFloat(value.windspeedmph),\n            \"maxdailygust\": parseFloat(value.maxdailygust),\n            \"rainratein\": parseFloat(value.rainratein),\n            \"eventrainin\": parseFloat(value.eventrainin),\n            \"hourlyrainin\": parseFloat(value.hourlyrainin),\n            \"dailyrainin\": parseFloat(value.dailyrainin),\n            \"weeklyrainin\": parseFloat(value.weeklyrainin),\n            \"monthlyrainin\": parseFloat(value.monthlyrainin),\n            \"yearlyrainin\": parseFloat(value.yearlyrainin),\n            \"solarradiation\": parseFloat(value.solarradiation),\n            \"uv\": parseFloat(value.uv),\n        }\n    };\n    return record;\n}\n\nlet data = [];\n\ndata.push(addsensordata(\"weatherstation\", msg.payload));\n\nmsg.payload = data;\n\nreturn msg;\n",
+        "func": "let measurement = \"sensors\";\nlet uid = global.get('uid');\nlet currentTime = new Date();\n\nfunction addsensordata(device, value){\n    let record = {\n        \"measurement\": measurement,\n        \"tags\":{\n            \"UID\": uid,\n            \"device\": device,\n            \"model\": value.model,\n        },\n        \"fields\": {\n            \"timestamp\": currentTime.toISOString(),\n            \"stationtype\": parseFloat(value.stationtype),\n            \"dateutc\": parseFloat(value.dateutc),\n            \"tempinf\": parseFloat(value.tempinf),\n            \"humidityin\": parseFloat(value.humidityin),\n            \"baromrelin\": parseFloat(value.baromrelin),\n            \"baromabsin\": parseFloat(value.baromabsin),\n            \"tempf\": parseFloat(value.tempf),\n            \"humidity\": parseFloat(value.humidity),\n            \"winddir\": parseFloat(value.winddir),\n            \"winddir_avg10m\": parseFloat(value.winddir_avg10m),\n            \"windspeedmph\": parseFloat(value.windspeedmph),\n            \"maxdailygust\": parseFloat(value.maxdailygust),\n            \"rainratein\": parseFloat(value.rainratein),\n            \"eventrainin\": parseFloat(value.eventrainin),\n            \"hourlyrainin\": parseFloat(value.hourlyrainin),\n            \"dailyrainin\": parseFloat(value.dailyrainin),\n            \"weeklyrainin\": parseFloat(value.weeklyrainin),\n            \"monthlyrainin\": parseFloat(value.monthlyrainin),\n            \"yearlyrainin\": parseFloat(value.yearlyrainin),\n            \"solarradiation\": parseFloat(value.solarradiation),\n            \"uv\": parseFloat(value.uv),\n        }\n    };\n    return record;\n}\n\nlet data = [];\n\ndata.push(addsensordata(\"weatherstation\", msg.payload));\n\nmsg.payload = data;\n\nreturn msg;\n",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
@@ -190,7 +222,7 @@
         "type": "function",
         "z": "c6e1822c71f940ee",
         "name": "JSON",
-        "func": "let measurement = \"sensors\";\nlet uid = global.get('uid');\nlet currentTime = new Date();\n\nfunction addsensordata(device, value){\n    let record = {\n        \"measurement\": measurement,\n        \"timestamp\": currentTime.toISOString(),\n        \"tags\":{\n            \"UID\": uid,\n            \"device\": device\n        },\n        \"fields\": {\n            \"power\": value.power,\n            \"total\": value.total\n        }\n    };\n    return record;\n}\n\nlet data = [];\n\ndata.push(addsensordata(\"shelly_phase0\", msg.payload.emeters[0]));\n\nmsg.payload = data\n\nreturn msg;",
+        "func": "let measurement = \"sensors\";\nlet uid = global.get('uid');\nlet currentTime = new Date();\n\nfunction addsensordata(device, value){\n    let record = {\n        \"measurement\": measurement,\n        \"tags\":{\n            \"UID\": uid,\n            \"device\": device\n        },\n        \"fields\": {\n            \"timestamp\": currentTime.toISOString(),\n            \"power\": value.power,\n            \"total\": value.total\n        }\n    };\n    return record;\n}\n\nlet data = [];\n\ndata.push(addsensordata(\"shelly_phase0\", msg.payload.emeters[0]));\n\nmsg.payload = data\n\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
@@ -209,7 +241,7 @@
         "type": "function",
         "z": "c6e1822c71f940ee",
         "name": "JSON",
-        "func": "let measurement = \"sensors\";\nlet uid = global.get('uid');\nlet currentTime = new Date();\n\nfunction addsensordata(device, input) {\n  let record = {\n    \"measurement\": measurement,\n    \"timestamp\": currentTime.toISOString(),\n    \"tags\": {\n        \"UID\": uid,\n        \"device\": device\n    },\n    \"fields\": {\n      \"a_current\": input.a_current,\n      \"a_voltage\": input.a_voltage,\n      \"a_act_power\": input.a_act_power,\n      \"a_aprt_power\": input.a_aprt_power,\n      \"a_pf\": input.a_pf,\n      \"b_current\": input.b_current,\n      \"b_voltage\": input.b_voltage,\n      \"b_act_power\": input.b_act_power,\n      \"b_aprt_power\": input.b_aprt_power,\n      \"b_pf\": input.b_pf,\n      \"c_current\": input.c_current,\n      \"c_voltage\": input.c_voltage,\n      \"c_act_power\": input.c_act_power,\n      \"c_aprt_power\": input.c_aprt_power,\n      \"c_pf\": input.c_pf,\n      \"n_current\": input.n_current\n    }\n  };\n  return record;\n}\n\nlet data = [];\n\ndata.push(addsensordata(\"shellyEMPro\", {\n  \"a_current\": msg.payload.em0.a_current,\n  \"a_voltage\": msg.payload.em0.a_voltage,\n  \"a_act_power\": msg.payload.em0.a_act_power,\n  \"a_aprt_power\": msg.payload.em0.a_aprt_power,\n  \"a_pf\": msg.payload.em0.a_pf,\n  \"b_current\": msg.payload.em0.b_current,\n  \"b_voltage\": msg.payload.em0.b_voltage,\n  \"b_act_power\": msg.payload.em0.b_act_power,\n  \"b_aprt_power\": msg.payload.em0.b_aprt_power,\n  \"b_pf\": msg.payload.em0.b_pf,\n  \"c_current\": msg.payload.em0.c_current,\n  \"c_voltage\": msg.payload.em0.c_voltage,\n  \"c_act_power\": msg.payload.em0.c_act_power,\n  \"c_aprt_power\": msg.payload.em0.c_aprt_power,\n  \"c_pf\": msg.payload.em0.c_pf,\n  \"n_current\": msg.payload.em0.n_current\n}));\n\nmsg.payload = data;\n\nreturn msg;",
+        "func": "let measurement = \"sensors\";\nlet uid = global.get('uid');\nlet currentTime = new Date();\n\nfunction addsensordata(device, input) {\n  let record = {\n    \"measurement\": measurement,\n    \"tags\": {\n        \"UID\": uid,\n        \"device\": device\n    },\n    \"fields\": {\n      \"timestamp\": currentTime.toISOString(),\n      \"a_current\": input.a_current,\n      \"a_voltage\": input.a_voltage,\n      \"a_act_power\": input.a_act_power,\n      \"a_aprt_power\": input.a_aprt_power,\n      \"a_pf\": input.a_pf,\n      \"b_current\": input.b_current,\n      \"b_voltage\": input.b_voltage,\n      \"b_act_power\": input.b_act_power,\n      \"b_aprt_power\": input.b_aprt_power,\n      \"b_pf\": input.b_pf,\n      \"c_current\": input.c_current,\n      \"c_voltage\": input.c_voltage,\n      \"c_act_power\": input.c_act_power,\n      \"c_aprt_power\": input.c_aprt_power,\n      \"c_pf\": input.c_pf,\n      \"n_current\": input.n_current\n    }\n  };\n  return record;\n}\n\nlet data = [];\n\ndata.push(addsensordata(\"shellyEMPro\", {\n  \"a_current\": msg.payload.em0.a_current,\n  \"a_voltage\": msg.payload.em0.a_voltage,\n  \"a_act_power\": msg.payload.em0.a_act_power,\n  \"a_aprt_power\": msg.payload.em0.a_aprt_power,\n  \"a_pf\": msg.payload.em0.a_pf,\n  \"b_current\": msg.payload.em0.b_current,\n  \"b_voltage\": msg.payload.em0.b_voltage,\n  \"b_act_power\": msg.payload.em0.b_act_power,\n  \"b_aprt_power\": msg.payload.em0.b_aprt_power,\n  \"b_pf\": msg.payload.em0.b_pf,\n  \"c_current\": msg.payload.em0.c_current,\n  \"c_voltage\": msg.payload.em0.c_voltage,\n  \"c_act_power\": msg.payload.em0.c_act_power,\n  \"c_aprt_power\": msg.payload.em0.c_aprt_power,\n  \"c_pf\": msg.payload.em0.c_pf,\n  \"n_current\": msg.payload.em0.n_current\n}));\n\nmsg.payload = data;\n\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
@@ -453,6 +485,151 @@
         ],
         "x": 755,
         "y": 420,
+        "wires": []
+    },
+    {
+        "id": "e03b12948eb03881",
+        "type": "inject",
+        "z": "e48ca2e6e4e7cd76",
+        "name": "Trigger every hour",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "3600",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payloadType": "date",
+        "x": 270,
+        "y": 380,
+        "wires": [
+            [
+                "8fbf0c9e.9ea23"
+            ]
+        ]
+    },
+    {
+        "id": "926fb95465fa04ba",
+        "type": "function",
+        "z": "e48ca2e6e4e7cd76",
+        "name": "Calculate sent data",
+        "func": "// Get the number of sent data packets\nvar sentData = flow.get(\"sentData\") || 0;\n\n// Calculate the number of received data packets (replace with your InfluxDB query logic)\nvar receivedData = flow.get(\"recivedData\") || 0; // Replace with your InfluxDB query result\n\n// Compare the number of sent and received data packets\nif (sentData === receivedData) {\n    node.status({fill:\"green\",shape:\"dot\",text:\"All data received\"});\n} else {\n    node.status({fill:\"red\",shape:\"dot\",text:\"Data missing\"});\n}\n\n// Reset the sent data counter\nflow.set(\"sentData\", 0);\n\nreturn null;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 910,
+        "y": 380,
+        "wires": [
+            [
+                "b243d2dbdea14f74"
+            ]
+        ]
+    },
+    {
+        "id": "b243d2dbdea14f74",
+        "type": "debug",
+        "z": "e48ca2e6e4e7cd76",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1110,
+        "y": 380,
+        "wires": []
+    },
+    {
+        "id": "0b7469f960a07206",
+        "type": "comment",
+        "z": "e48ca2e6e4e7cd76",
+        "name": "Check InfluxDB data",
+        "info": "",
+        "x": 280,
+        "y": 320,
+        "wires": []
+    },
+    {
+        "id": "f871afd17d33fea9",
+        "type": "function",
+        "z": "e48ca2e6e4e7cd76",
+        "name": "Increment sent data counter",
+        "func": "// Get the current sent data count\nvar sentData = flow.get(\"sentData\") || 0;\n\n// Increment the sent data count\nsentData++;\n\n// Save the updated sent data count\nflow.set(\"sentData\", sentData);\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 460,
+        "y": 200,
+        "wires": [
+            [
+                "62418716caaba7d7"
+            ]
+        ]
+    },
+    {
+        "id": "72a3ee3deb599eeb",
+        "type": "influxdb in",
+        "z": "e48ca2e6e4e7cd76",
+        "influxdb": "09b12c680d45a782",
+        "name": "",
+        "query": "",
+        "rawOutput": false,
+        "precision": "",
+        "retentionPolicy": "",
+        "org": "kleinwohnformen",
+        "x": 690,
+        "y": 380,
+        "wires": [
+            [
+                "af32fc85.4cc7b",
+                "926fb95465fa04ba"
+            ]
+        ]
+    },
+    {
+        "id": "8fbf0c9e.9ea23",
+        "type": "function",
+        "z": "e48ca2e6e4e7cd76",
+        "name": "Count data",
+        "func": "var uid = public.get('uid'); // Replace with your UID\n\n// InfluxDB query\nvar query = `SELECT COUNT(*) FROM Sensors WHERE uid = '${uid}'`;\n\n// Prepare the message to be sent to the InfluxDB node\nmsg.topic = query;\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 490,
+        "y": 380,
+        "wires": [
+            [
+                "72a3ee3deb599eeb"
+            ]
+        ]
+    },
+    {
+        "id": "af32fc85.4cc7b",
+        "type": "debug",
+        "z": "e48ca2e6e4e7cd76",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 890,
+        "y": 460,
         "wires": []
     }
 ]
