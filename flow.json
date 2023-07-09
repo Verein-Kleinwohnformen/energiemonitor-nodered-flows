@@ -652,46 +652,18 @@
         "wires": []
     },
     {
-        "id": "b8d70e76.d499c8",
-        "type": "inject",
-        "z": "e48ca2e6e4e7cd76",
-        "name": "Trigger 1 Minute",
-        "props": [
-            {
-                "p": "payload"
-            },
-            {
-                "p": "topic",
-                "vt": "str"
-            }
-        ],
-        "repeat": "60",
-        "crontab": "",
-        "once": true,
-        "onceDelay": "",
-        "topic": "",
-        "payloadType": "date",
-        "x": 270,
-        "y": 540,
-        "wires": [
-            [
-                "4b7d2e09.1da998"
-            ]
-        ]
-    },
-    {
         "id": "4b7d2e09.1da998",
         "type": "function",
         "z": "e48ca2e6e4e7cd76",
         "name": "Daten speichern",
-        "func": "var fs = global.get('fs');\nvar path = require('path');\n\nvar filename = path.join(__dirname, 'datacache.json');\n\nvar data = flow.get('data') || [];\n\n// Neuen Datenpunkt hinzufügen\nvar newDatum = {\n    timestamp: msg.payload.timestamp,\n    value: msg.payload\n};\n\ndata.push(newDatum);\n\n// Datenpunkte älter als 7 Tage entfernen\nvar expirationTime = timestamp - (7 * 24 * 60 * 60 * 1000);\ndata = data.filter(function(datum) {\n    return datum.timestamp >= expirationTime;\n});\n\nvar jsonData = JSON.stringify(data);\n\nfs.writeFile(filename, jsonData, function(err) {\n    if (err) {\n        node.error(err);\n    } else {\n        node.log('Daten in Datei gespeichert.');\n    }\n});\n\n// Daten im Flusskontext speichern\nflow.set('data', data);\n\nreturn null;",
+        "func": "var fs = global.get('fs');\nvar path = require('path');\nvar json = msg.payload;\nvar data = JSON.parse(json);\n\nvar filename = path.join(__dirname, 'datacache.json');\n\n// Neuen Datenpunkt hinzufügen\nvar newDatum = {\n    timestamp: msg.payload.timestamp,\n    value: msg.payload\n};\n\ndata.push(newDatum);\n\n// Datenpunkte älter als 7 Tage entfernen\nvar expirationTime = timestamp - (7 * 24 * 60 * 60 * 1000);\ndata = data.filter(function(datum) {\n    return datum.timestamp >= expirationTime;\n});\n\nvar jsonData = JSON.stringify(data);\n\nfs.writeFile(filename, jsonData, function(err) {\n    if (err) {\n        node.error(err);\n    } else {\n        node.log('Daten in Datei gespeichert.');\n    }\n});\n\n// Daten im Flusskontext speichern\nflow.set('data', data);\n\nreturn null;",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 500,
-        "y": 540,
+        "x": 880,
+        "y": 120,
         "wires": [
             []
         ]
@@ -710,25 +682,8 @@
         "y": 120,
         "wires": [
             [
-                "40d94d88.b11de"
+                "4b7d2e09.1da998"
             ]
-        ]
-    },
-    {
-        "id": "40d94d88.b11de",
-        "type": "function",
-        "z": "e48ca2e6e4e7cd76",
-        "name": "Daten extrahieren",
-        "func": "var jsonData = msg.payload;\n\nvar data = JSON.parse(jsonData);\n\nflow.set('data', data);\n\nreturn msg;",
-        "outputs": 1,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 850,
-        "y": 120,
-        "wires": [
-            []
         ]
     },
     {
