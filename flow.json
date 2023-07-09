@@ -153,7 +153,7 @@
         "z": "e48ca2e6e4e7cd76",
         "client": "725f4c36dd3c91a4",
         "output": "output1",
-        "x": 850,
+        "x": 750,
         "y": 200,
         "wires": []
     },
@@ -568,7 +568,7 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 460,
+        "x": 440,
         "y": 200,
         "wires": [
             [
@@ -630,7 +630,7 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 890,
+        "x": 910,
         "y": 460,
         "wires": []
     },
@@ -647,7 +647,7 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 720,
+        "x": 710,
         "y": 280,
         "wires": []
     },
@@ -664,7 +664,7 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 700,
+        "x": 710,
         "y": 460,
         "wires": []
     }
