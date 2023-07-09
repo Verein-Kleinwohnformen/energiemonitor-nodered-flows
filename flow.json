@@ -645,27 +645,9 @@
         "y": 540,
         "wires": [
             [
-                "042758936ba9cf14",
                 "a235737a98e2d58c"
             ]
         ]
-    },
-    {
-        "id": "042758936ba9cf14",
-        "type": "debug",
-        "z": "e48ca2e6e4e7cd76",
-        "name": "Data Read",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "payload",
-        "targetType": "msg",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 670,
-        "y": 620,
-        "wires": []
     },
     {
         "id": "a235737a98e2d58c",
@@ -692,7 +674,7 @@
         "tosidebar": true,
         "console": false,
         "tostatus": false,
-        "complete": "payload",
+        "complete": "payload.timestamp",
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
