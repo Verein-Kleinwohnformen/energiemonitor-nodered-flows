@@ -698,7 +698,7 @@
         "type": "function",
         "z": "e48ca2e6e4e7cd76",
         "name": "Calculate recived Data",
-        "func": "// Array im msg.payload\nvar array = msg.payload;\n\n// Anzahl der Elemente im Array zählen\nvar recivedData = array.length;\n\n// Das Ergebnis in msg.payload speichern\nmsg.payload = count;\n\nreturn msg;",
+        "func": "// Array im msg.payload\nvar array = msg.payload;\n\n// Anzahl der Elemente im Array zählen\nvar receivedData = array.length;\n\n// Das Ergebnis in msg.payload speichern\nmsg.payload = recivedData;\n\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
