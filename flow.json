@@ -602,7 +602,7 @@
         "type": "function",
         "z": "e48ca2e6e4e7cd76",
         "name": "Count data",
-        "func": "var uid = global.get('uid'); // Replace with your UID\n\n// InfluxDB query\nvar query = `SELECT COUNT(*) FROM sensors WHERE uid = '${uid}'`;\n\n// Prepare the message to be sent to the InfluxDB node\nmsg.query = query;\nmsg.payload = null;\n\nreturn msg;",
+        "func": "var uid = global.get('uid'); // Replace with your UID\n\n// InfluxDB query\nvar query = `SELECT COUNT(*) FROM sensors WHERE uid = '${uid}'`;\n\n// Prepare the message to be sent to the InfluxDB node\nmsg.query = query;\n\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
