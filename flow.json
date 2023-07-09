@@ -674,7 +674,7 @@
         "tosidebar": true,
         "console": false,
         "tostatus": false,
-        "complete": "payload.timestamp",
+        "complete": "payload.[0].timestamp",
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
