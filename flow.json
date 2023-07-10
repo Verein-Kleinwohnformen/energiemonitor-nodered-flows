@@ -756,7 +756,7 @@
         "pauseType": "rate",
         "timeout": "5",
         "timeoutUnits": "seconds",
-        "rate": "100",
+        "rate": "50",
         "nbRateUnits": "1",
         "rateUnits": "second",
         "randomFirst": "1",
