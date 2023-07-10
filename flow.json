@@ -143,7 +143,7 @@
         "z": "e48ca2e6e4e7cd76",
         "client": "725f4c36dd3c91a4",
         "output": "output1",
-        "x": 830,
+        "x": 850,
         "y": 160,
         "wires": []
     },
@@ -592,7 +592,7 @@
         "type": "file",
         "z": "e48ca2e6e4e7cd76",
         "name": "Save Data",
-        "filename": "./datachache",
+        "filename": "/data/datacache",
         "appendNewline": true,
         "createDir": false,
         "overwriteFile": "false",
@@ -676,11 +676,11 @@
         "type": "fs-ops-move",
         "z": "e48ca2e6e4e7cd76",
         "name": "Move file",
-        "sourcePath": "./",
+        "sourcePath": ".",
         "sourcePathType": "str",
         "sourceFilename": "filename",
         "sourceFilenameType": "msg",
-        "destPath": "./",
+        "destPath": "/data",
         "destPathType": "str",
         "destFilename": "newFilename",
         "destFilenameType": "msg",
@@ -752,11 +752,11 @@
         "id": "0eba14a315e9207c",
         "type": "delay",
         "z": "e48ca2e6e4e7cd76",
-        "name": "20 msg/s",
+        "name": "100 msg/s",
         "pauseType": "rate",
         "timeout": "5",
         "timeoutUnits": "seconds",
-        "rate": "20",
+        "rate": "100",
         "nbRateUnits": "1",
         "rateUnits": "second",
         "randomFirst": "1",
@@ -764,7 +764,7 @@
         "randomUnits": "seconds",
         "drop": false,
         "allowrate": false,
-        "x": 600,
+        "x": 610,
         "y": 160,
         "wires": [
             [
@@ -904,7 +904,8 @@
         "y": 100,
         "wires": [
             [
-                "f91340f69d7eec3e"
+                "f91340f69d7eec3e",
+                "17e829d689ec4693"
             ]
         ]
     },
