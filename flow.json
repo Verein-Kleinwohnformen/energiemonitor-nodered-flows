@@ -986,7 +986,9 @@
         "name": "",
         "props": [
             {
-                "p": "payload"
+                "p": "status.text",
+                "v": "Connected",
+                "vt": "str"
             },
             {
                 "p": "topic",
@@ -998,9 +1000,7 @@
         "once": false,
         "onceDelay": 0.1,
         "topic": "",
-        "payload": "Connected",
-        "payloadType": "str",
-        "x": 240,
+        "x": 230,
         "y": 260,
         "wires": [
             [
