@@ -133,8 +133,7 @@
         "wires": [
             [
                 "f871afd17d33fea9",
-                "746b38fcf65019b1",
-                "460a630bad670e19"
+                "746b38fcf65019b1"
             ]
         ]
     },
@@ -517,7 +516,7 @@
         "type": "function",
         "z": "e48ca2e6e4e7cd76",
         "name": "DataCache",
-        "func": "// Holen Sie die bisher gespeicherten Daten (oder initialisieren Sie auf ein leeres Array, wenn noch nichts gespeichert ist)\nlet data = flow.get(\"DataCache\") || [];\nlet cache = flow.get(\"ConCache\") || [];\nlet stat = flow.get(\"ConStatus\");\n\n// Filtern Sie Daten, um nur Elemente zu behalten, die jünger als 1 Stunde sind\ndata = data.filter(item => {\n    // Extrahieren Sie das innere Objekt\n    let innerObject = item[0];\n    // Das Datum ist im ISO-Format gespeichert, z.B. \"2023-07-09T15:34:26.868Z\"\n    let itemDate = new Date(innerObject.timestamp);\n    // Zeitdifferenz in Millisekunden\n    let diffMs = Date.now() - itemDate.getTime();\n    // Umwandlung in Stunden\n    let diffHours = diffMs / (1000 * 60 * 60);\n    // Behalten Sie das Element nur, wenn es weniger als 1 Stunde alt ist\n    return diffHours < 1;\n});\n\n// Filtern Sie Daten, um nur Elemente zu behalten, die jünger als 1 Stunde sind\ncache = cache.filter(item => {\n    // Extrahieren Sie das innere Objekt\n    let innerObject = item[0];\n    // Das Datum ist im ISO-Format gespeichert, z.B. \"2023-07-09T15:34:26.868Z\"\n    let itemDate = new Date(innerObject.timestamp);\n    // Zeitdifferenz in Millisekunden\n    let diffMs = Date.now() - itemDate.getTime();\n    // Umwandlung in Stunden\n    let diffHours = diffMs / (1000 * 60 * 60);\n    // Behalten Sie das Element nur, wenn es weniger als 1 Stunde alt ist\n    return diffHours < 1;\n});\n\n// Fügen Sie das neue Payload zur Liste hinzu\ndata.push(msg.payload);\n\nif(stat === \"Connected\" && cache.length > 0){\n    // Daten senden, die im Cache gespeichert sind\n    for (let item of cache) {\n        node.send({ payload: item });\n    }\n    // Cache leeren\n    cache = [];\n} else if (stat !== \"Connected\") {\n    // Daten zum Cache hinzufügen, wenn die Verbindung getrennt ist\n    cache.push(msg.payload);\n}\n\n// Save the updated sent data count\nflow.set(\"DataCache\", data);\nflow.set(\"ConCache\", cache);\n\nreturn msg;\n",
+        "func": "// Holen Sie die bisher gespeicherten Daten (oder initialisieren Sie auf ein leeres Array, wenn noch nichts gespeichert ist)\nlet data = flow.get(\"DataCache\") || [];\nlet cache = flow.get(\"ConCache\") || [];\nlet stat = flow.get(\"ConStatus\");\n\n// Filtern Sie Daten, um nur Elemente zu behalten, die jünger als 1 Stunde sind\ndata = data.filter(item => {\n    // Extrahieren Sie das innere Objekt\n    let innerObject = item[0];\n    // Das Datum ist im ISO-Format gespeichert, z.B. \"2023-07-09T15:34:26.868Z\"\n    let itemDate = new Date(innerObject.timestamp);\n    // Zeitdifferenz in Millisekunden\n    let diffMs = Date.now() - itemDate.getTime();\n    // Umwandlung in Stunden\n    let diffHours = diffMs / (1000 * 60 * 60);\n    // Behalten Sie das Element nur, wenn es weniger als 1 Stunde alt ist\n    return diffHours < 1;\n});\n\n// Filtern Sie Daten, um nur Elemente zu behalten, die jünger als 1 Stunde sind\ncache = cache.filter(item => {\n    // Extrahieren Sie das innere Objekt\n    let innerObject = item[0];\n    // Das Datum ist im ISO-Format gespeichert, z.B. \"2023-07-09T15:34:26.868Z\"\n    let itemDate = new Date(innerObject.timestamp);\n    // Zeitdifferenz in Millisekunden\n    let diffMs = Date.now() - itemDate.getTime();\n    // Umwandlung in Stunden\n    let diffHours = diffMs / (1000 * 60 * 60);\n    // Behalten Sie das Element nur, wenn es weniger als 1 Stunde alt ist\n    return diffHours < 72;\n});\n\n// Fügen Sie das neue Payload zur Liste hinzu\ndata.push(msg.payload);\n\nif(stat === \"Connected\" && cache.length > 0){\n    // Daten senden, die im Cache gespeichert sind\n    for (let item of cache) {\n        node.send({ payload: item });\n    }\n    // Cache leeren\n    cache = [];\n} else if (stat !== \"Connected\") {\n    // Daten zum Cache hinzufügen, wenn die Verbindung getrennt ist\n    cache.push(msg.payload);\n}\n\n// Save the updated sent data count\nflow.set(\"DataCache\", data);\nflow.set(\"ConCache\", cache);\n\nreturn msg;\n",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
@@ -618,9 +617,9 @@
         "id": "6799f87d7f864ee9",
         "type": "comment",
         "z": "e48ca2e6e4e7cd76",
-        "name": "Shrink to 7 days an Save to Disk",
+        "name": "New File all 7 days",
         "info": "",
-        "x": 310,
+        "x": 270,
         "y": 440,
         "wires": []
     },
@@ -628,7 +627,7 @@
         "id": "435edf303db9b89a",
         "type": "inject",
         "z": "e48ca2e6e4e7cd76",
-        "name": "Every Day 00:00",
+        "name": "Every Monday 00:00",
         "props": [
             {
                 "p": "payload"
@@ -639,12 +638,12 @@
             }
         ],
         "repeat": "",
-        "crontab": "00 00 * * *",
+        "crontab": "00 00 * * 1",
         "once": false,
         "onceDelay": 0.1,
         "topic": "",
         "payloadType": "date",
-        "x": 270,
+        "x": 280,
         "y": 500,
         "wires": [
             [
@@ -784,8 +783,8 @@
         "sendError": false,
         "encoding": "utf8",
         "allProps": false,
-        "x": 270,
-        "y": 100,
+        "x": 310,
+        "y": 280,
         "wires": [
             [
                 "4731c4932f1e6c58"
@@ -800,8 +799,8 @@
         "property": "payload",
         "action": "",
         "pretty": false,
-        "x": 480,
-        "y": 100,
+        "x": 520,
+        "y": 280,
         "wires": [
             [
                 "7df67c2a74b9f620"
@@ -812,10 +811,10 @@
         "id": "08ecf8be392eb015",
         "type": "comment",
         "z": "b9bd4a8285c483f7",
-        "name": "DataSync Trigger",
+        "name": "DataSync current File",
         "info": "",
-        "x": 180,
-        "y": 40,
+        "x": 140,
+        "y": 220,
         "wires": []
     },
     {
@@ -842,8 +841,8 @@
         "links": [
             "00ba79a7d0a042e2"
         ],
-        "x": 815,
-        "y": 100,
+        "x": 855,
+        "y": 280,
         "wires": []
     },
     {
@@ -901,11 +900,10 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 680,
-        "y": 100,
+        "x": 720,
+        "y": 280,
         "wires": [
             [
-                "f91340f69d7eec3e",
                 "17e829d689ec4693"
             ]
         ]
@@ -932,7 +930,7 @@
         "payload": "",
         "payloadType": "date",
         "x": 120,
-        "y": 180,
+        "y": 280,
         "wires": [
             [
                 "a870998ffb131315"
@@ -940,34 +938,12 @@
         ]
     },
     {
-        "id": "f91340f69d7eec3e",
-        "type": "debug",
+        "id": "07df022ea9972fc4",
+        "type": "comment",
         "z": "b9bd4a8285c483f7",
-        "name": "",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "false",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 870,
-        "y": 160,
-        "wires": []
-    },
-    {
-        "id": "460a630bad670e19",
-        "type": "debug",
-        "z": "e48ca2e6e4e7cd76",
-        "name": "",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "false",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 500,
+        "name": "DataSync from cache",
+        "info": "",
+        "x": 140,
         "y": 40,
         "wires": []
     }
