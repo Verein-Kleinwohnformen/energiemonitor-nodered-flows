@@ -656,7 +656,7 @@
         "type": "function",
         "z": "e48ca2e6e4e7cd76",
         "name": "Generate yesterday's date and set filenames",
-        "func": "let now = new Date();\n\nnow.setDate(now.getDate() - 1);\nlet yesterday = now.toISOString().split('T')[0];\n\nmsg.filename = \"datacache\";\nmsg.newFilename = `datacache_${yesterday}`;\n\nreturn msg;",
+        "func": "let now = new Date();\n\nnow.setDate(now.getDate() - 1);\nlet yesterday = now.toISOString().split('T')[0];\n\nmsg.filename = \"datachache\";\nmsg.newFilename = `datacache_${yesterday}`;\n\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
