@@ -110,7 +110,7 @@
         "id": "74e01a6004d724e8",
         "type": "link out",
         "z": "c6e1822c71f940ee",
-        "name": "IoTHub",
+        "name": "Shelly",
         "links": [
             "5ee90d3319bef9d3"
         ],
@@ -143,7 +143,7 @@
         "z": "e48ca2e6e4e7cd76",
         "client": "725f4c36dd3c91a4",
         "output": "output1",
-        "x": 770,
+        "x": 830,
         "y": 160,
         "wires": []
     },
@@ -199,7 +199,7 @@
         "id": "e800ada14d5839d9",
         "type": "link out",
         "z": "ab257fb0cc5ba8f5",
-        "name": "IoTHub",
+        "name": "WeatherScreen",
         "links": [
             "5ee90d3319bef9d3"
         ],
@@ -469,7 +469,7 @@
         "id": "a9d9feb2a9d32795",
         "type": "link out",
         "z": "d27ba1192b875173",
-        "name": "",
+        "name": "ManualInput",
         "links": [
             "5ee90d3319bef9d3"
         ],
@@ -582,7 +582,9 @@
         "x": 920,
         "y": 360,
         "wires": [
-            []
+            [
+                "2b3d10fe299acc4d"
+            ]
         ]
     },
     {
@@ -762,7 +764,7 @@
         "randomUnits": "seconds",
         "drop": false,
         "allowrate": false,
-        "x": 540,
+        "x": 600,
         "y": 160,
         "wires": [
             [
@@ -781,8 +783,8 @@
         "sendError": false,
         "encoding": "utf8",
         "allProps": false,
-        "x": 410,
-        "y": 160,
+        "x": 270,
+        "y": 100,
         "wires": [
             [
                 "4731c4932f1e6c58"
@@ -797,10 +799,12 @@
         "property": "payload",
         "action": "",
         "pretty": false,
-        "x": 620,
-        "y": 160,
+        "x": 480,
+        "y": 100,
         "wires": [
-            []
+            [
+                "f91340f69d7eec3e"
+            ]
         ]
     },
     {
@@ -821,11 +825,11 @@
         "links": [
             "17e829d689ec4693"
         ],
-        "x": 195,
+        "x": 455,
         "y": 100,
         "wires": [
             [
-                "f871afd17d33fea9"
+                "0eba14a315e9207c"
             ]
         ]
     },
@@ -837,7 +841,113 @@
         "links": [
             "00ba79a7d0a042e2"
         ],
-        "x": 895,
+        "x": 815,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "2b3d10fe299acc4d",
+        "type": "link out",
+        "z": "e48ca2e6e4e7cd76",
+        "name": "DataSyncCheck",
+        "links": [
+            "2992401daa37639a"
+        ],
+        "x": 1095,
+        "y": 360,
+        "wires": []
+    },
+    {
+        "id": "2992401daa37639a",
+        "type": "link in",
+        "z": "b9bd4a8285c483f7",
+        "name": "DataSyncCheck",
+        "links": [
+            "2b3d10fe299acc4d"
+        ],
+        "x": 115,
+        "y": 100,
+        "wires": [
+            [
+                "7865f137e25277be"
+            ]
+        ]
+    },
+    {
+        "id": "7865f137e25277be",
+        "type": "debug",
+        "z": "b9bd4a8285c483f7",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 270,
+        "y": 160,
+        "wires": []
+    },
+    {
+        "id": "7df67c2a74b9f620",
+        "type": "function",
+        "z": "b9bd4a8285c483f7",
+        "name": "",
+        "func": "\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 680,
+        "y": 100,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "f201731aa887c763",
+        "type": "inject",
+        "z": "b9bd4a8285c483f7",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 120,
+        "y": 180,
+        "wires": [
+            [
+                "a870998ffb131315"
+            ]
+        ]
+    },
+    {
+        "id": "f91340f69d7eec3e",
+        "type": "debug",
+        "z": "b9bd4a8285c483f7",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 680,
         "y": 160,
         "wires": []
     }
