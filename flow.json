@@ -664,23 +664,6 @@
         ]
     },
     {
-        "id": "26857e4caa073247",
-        "type": "debug",
-        "z": "e48ca2e6e4e7cd76",
-        "name": "JSON Object",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "payload[0].timestamp",
-        "targetType": "msg",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 930,
-        "y": 680,
-        "wires": []
-    },
-    {
         "id": "bc99933fab0e5db6",
         "type": "comment",
         "z": "e48ca2e6e4e7cd76",
@@ -704,43 +687,18 @@
         "id": "50947e4beb5664df",
         "type": "function",
         "z": "e48ca2e6e4e7cd76",
-        "name": "",
-        "func": "// Erstelle ein Datum, das 7 Tage in der Vergangenheit liegt\nlet cutOffDate = new Date();\ncutOffDate.setDate(cutOffDate.getDate() - 7);\n\n// Iteriere durch msg.payload\nmsg.payload = msg.payload.filter((item) => {\n    // Stelle sicher, dass das Datum im richtigen Format ist\n    let itemDate = new Date(item.date);\n\n    // Wenn das Datum des Eintrags neuer als das cutOffDate ist, behalte es\n    return itemDate >= cutOffDate;\n});\n\n// Rückgabe der bearbeiteten Nachricht\nreturn msg;",
+        "name": "DataCache füllen",
+        "func": "// Holen Sie die bisher gespeicherten Daten (oder initialisieren Sie auf ein leeres Array, wenn noch nichts gespeichert ist)\nlet data = flow.get(\"datacache\") || [];\n\n// Fügen Sie das neue Payload zur Liste hinzu\ndata.push(msg.payload);\n\n// Speichern Sie die aktualisierte Liste zurück in der Flow-Variable\nflow.set(\"datacache\", data);\n\nreturn null;",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 440,
-        "y": 840,
-        "wires": [
-            []
-        ]
-    },
-    {
-        "id": "328949b7caec8dda",
-        "type": "change",
-        "z": "e48ca2e6e4e7cd76",
-        "name": "",
-        "rules": [
-            {
-                "t": "set",
-                "p": "datacache",
-                "pt": "flow",
-                "to": "payload",
-                "tot": "msg"
-            }
-        ],
-        "action": "",
-        "property": "",
-        "from": "",
-        "to": "",
-        "reg": false,
-        "x": 700,
+        "x": 910,
         "y": 680,
         "wires": [
             [
-                "26857e4caa073247"
+                "8737d69584196052"
             ]
         ]
     },
@@ -778,7 +736,7 @@
         "sendError": false,
         "encoding": "utf8",
         "allProps": false,
-        "x": 250,
+        "x": 470,
         "y": 680,
         "wires": [
             [
@@ -794,11 +752,11 @@
         "property": "payload",
         "action": "",
         "pretty": false,
-        "x": 460,
+        "x": 680,
         "y": 680,
         "wires": [
             [
-                "328949b7caec8dda"
+                "50947e4beb5664df"
             ]
         ]
     },
@@ -806,7 +764,7 @@
         "id": "435edf303db9b89a",
         "type": "inject",
         "z": "e48ca2e6e4e7cd76",
-        "name": "",
+        "name": "Once per day",
         "props": [
             {
                 "p": "payload"
@@ -816,19 +774,35 @@
                 "vt": "str"
             }
         ],
-        "repeat": "",
+        "repeat": "86400",
         "crontab": "",
         "once": false,
         "onceDelay": 0.1,
         "topic": "",
-        "payload": "",
         "payloadType": "date",
-        "x": 140,
-        "y": 780,
+        "x": 260,
+        "y": 680,
         "wires": [
             [
                 "6df8f26e0fc1f57e"
             ]
+        ]
+    },
+    {
+        "id": "8737d69584196052",
+        "type": "function",
+        "z": "e48ca2e6e4e7cd76",
+        "name": "DataShrink",
+        "func": "var currentTime = new Date();\n\n\n\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 250,
+        "y": 760,
+        "wires": [
+            []
         ]
     }
 ]
