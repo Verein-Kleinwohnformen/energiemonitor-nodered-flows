@@ -734,8 +734,8 @@
                 "t": "set",
                 "p": "ConStatus",
                 "pt": "flow",
-                "to": "msg.status.text",
-                "tot": "str"
+                "to": "status.text",
+                "tot": "msg"
             }
         ],
         "action": "",
