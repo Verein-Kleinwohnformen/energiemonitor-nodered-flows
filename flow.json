@@ -719,7 +719,8 @@
         "y": 220,
         "wires": [
             [
-                "416bf5c87ac4eee2"
+                "416bf5c87ac4eee2",
+                "8288c2e9fd620fe2"
             ]
         ]
     },
@@ -752,7 +753,7 @@
         "id": "0eba14a315e9207c",
         "type": "delay",
         "z": "e48ca2e6e4e7cd76",
-        "name": "100 msg/s",
+        "name": "50 msg/s",
         "pauseType": "rate",
         "timeout": "5",
         "timeoutUnits": "seconds",
@@ -764,7 +765,7 @@
         "randomUnits": "seconds",
         "drop": false,
         "allowrate": false,
-        "x": 610,
+        "x": 600,
         "y": 160,
         "wires": [
             [
@@ -959,6 +960,23 @@
         ],
         "x": 135,
         "y": 100,
+        "wires": []
+    },
+    {
+        "id": "8288c2e9fd620fe2",
+        "type": "debug",
+        "z": "e48ca2e6e4e7cd76",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "status.text",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 520,
+        "y": 280,
         "wires": []
     }
 ]
