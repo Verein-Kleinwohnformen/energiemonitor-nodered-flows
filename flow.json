@@ -688,7 +688,7 @@
         "type": "function",
         "z": "e48ca2e6e4e7cd76",
         "name": "DataCache füllen",
-        "func": "// Holen Sie die bisher gespeicherten Daten (oder initialisieren Sie auf ein leeres Array, wenn noch nichts gespeichert ist)\nlet data = flow.get(\"datashrink\") || [];\n\n// Fügen Sie das neue Payload zur Liste hinzu\ndata.push(msg.payload);\n\n// Speichern Sie die aktualisierte Liste zurück in der Flow-Variable\nflow.set(\"datashrink\", data);\n\nreturn msg;",
+        "func": "// Holen Sie die bisher gespeicherten Daten (oder initialisieren Sie auf ein leeres Array, wenn noch nichts gespeichert ist)\nlet data = flow.get(\"datashrink\") || [];\n\n// Fügen Sie das neue Payload zur Liste hinzu\ndata.push(msg.payload);\n\n// Speichern Sie die aktualisierte Liste zurück in der Flow-Variable\nflow.set(\"datashrink\", data);\nmsg.payload = data;\n\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
@@ -698,7 +698,8 @@
         "y": 680,
         "wires": [
             [
-                "8737d69584196052"
+                "8737d69584196052",
+                "626e656898f90128"
             ]
         ]
     },
@@ -855,6 +856,23 @@
         "statusVal": "",
         "statusType": "auto",
         "x": 900,
+        "y": 760,
+        "wires": []
+    },
+    {
+        "id": "626e656898f90128",
+        "type": "debug",
+        "z": "e48ca2e6e4e7cd76",
+        "name": "Data Cache",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1140,
         "y": 760,
         "wires": []
     }
