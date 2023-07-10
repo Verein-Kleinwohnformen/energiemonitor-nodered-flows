@@ -791,38 +791,5 @@
         "x": 1150,
         "y": 440,
         "wires": []
-    },
-    {
-        "id": "93505fa6d611666a",
-        "type": "status",
-        "z": "e48ca2e6e4e7cd76",
-        "name": "",
-        "scope": [
-            "62418716caaba7d7"
-        ],
-        "x": 990,
-        "y": 200,
-        "wires": [
-            [
-                "95e280ab0bed2e58"
-            ]
-        ]
-    },
-    {
-        "id": "95e280ab0bed2e58",
-        "type": "function",
-        "z": "e48ca2e6e4e7cd76",
-        "name": "",
-        "func": "let stat = msg.status;\nif (stat.text != \"Connected\"){\n    node.warn(\"Not Connected\");\n} else {\n    node.warn(\"Connected\");\n}\n\nreturn msg;",
-        "outputs": 1,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 1180,
-        "y": 200,
-        "wires": [
-            []
-        ]
     }
 ]
