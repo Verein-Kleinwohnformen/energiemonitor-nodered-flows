@@ -813,7 +813,7 @@
         "type": "function",
         "z": "e48ca2e6e4e7cd76",
         "name": "",
-        "func": "let stat = msg.status;\nif (stat.text === \"Connected\"){\n    node.warn(\"Connected\")\n}\n\nreturn msg;",
+        "func": "let stat = msg.status;\nif (stat.text != \"Connected\"){\n    node.warn(\"Not Connected\");\n} else {\n    node.warn(\"Connected\");\n}\n\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
