@@ -60,31 +60,6 @@
         "rejectUnauthorized": true
     },
     {
-        "id": "dc0031a8.b17c3",
-        "type": "influxdb",
-        "hostname": "localhost",
-        "port": "8086",
-        "protocol": "http",
-        "database": "YOUR_DATABASE",
-        "name": "InfluxDB",
-        "usetls": false,
-        "influxdbVersion": "1.x"
-    },
-    {
-        "id": "mqtt-broker",
-        "type": "mqtt-broker",
-        "name": "MQTT Broker",
-        "broker": "test.mosquitto.org",
-        "port": "1883",
-        "clientid": ""
-    },
-    {
-        "id": "connection",
-        "type": "AzureIoTHubConnection",
-        "name": "Azure IoT Hub Connection",
-        "connectionString": "YOUR_CONNECTION_STRING"
-    },
-    {
         "id": "8e2e1ca31341359b",
         "type": "shelly-gen1",
         "z": "c6e1822c71f940ee",
