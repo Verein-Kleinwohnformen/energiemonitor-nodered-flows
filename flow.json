@@ -688,7 +688,7 @@
         "type": "function",
         "z": "e48ca2e6e4e7cd76",
         "name": "DataCache füllen",
-        "func": "// Holen Sie die bisher gespeicherten Daten (oder initialisieren Sie auf ein leeres Array, wenn noch nichts gespeichert ist)\nlet data = flow.get(\"datacache\") || [];\n\n// Fügen Sie das neue Payload zur Liste hinzu\ndata.push(msg.payload);\n\n// Speichern Sie die aktualisierte Liste zurück in der Flow-Variable\nflow.set(\"datacache\", data);\n\nreturn null;",
+        "func": "// Holen Sie die bisher gespeicherten Daten (oder initialisieren Sie auf ein leeres Array, wenn noch nichts gespeichert ist)\nlet data = flow.get(\"datashrink\") || [];\n\n// Fügen Sie das neue Payload zur Liste hinzu\ndata.push(msg.payload);\n\n// Speichern Sie die aktualisierte Liste zurück in der Flow-Variable\nflow.set(\"datashrink\", data);\n\nreturn null;",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
@@ -793,7 +793,7 @@
         "type": "function",
         "z": "e48ca2e6e4e7cd76",
         "name": "DataShrink",
-        "func": "var currentTime = new Date();\n\n\n\n",
+        "func": "// Holen Sie die bisher gespeicherten Daten (oder initialisieren Sie auf ein leeres Array, wenn noch nichts gespeichert ist)\nlet data = flow.get(\"datashrink\") || [];\n\n// Filtern Sie Daten, um nur Elemente zu behalten, die jünger als 7 Tage sind\ndata = data.filter(item => {\n    // Angenommen, das Datum ist im ISO-Format gespeichert, z.B. \"2023-07-09T12:34:56.789Z\"\n    let itemDate = new Date(item.timestamp);\n    // Zeitdifferenz in Millisekunden\n    let diffMs = Date.now() - itemDate.getTime();\n    // Umwandlung in Tage\n    let diffDays = diffMs / (1000 * 60 * 60 * 24);\n    // Behalten Sie das Element nur, wenn es weniger als 7 Tage alt ist\n    return diffDays < 7;\n});\n\nmsg.payload = data;\n\n// Senden Sie die Nachricht weiter, wenn Sie möchten\nreturn msg;\n\n\n",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
@@ -802,7 +802,42 @@
         "x": 250,
         "y": 760,
         "wires": [
+            [
+                "e49bf95586c5f5cd",
+                "68b13e4aabd2d5bb"
+            ]
+        ]
+    },
+    {
+        "id": "e49bf95586c5f5cd",
+        "type": "file",
+        "z": "e48ca2e6e4e7cd76",
+        "name": "Save Data",
+        "filename": "./datachache",
+        "appendNewline": true,
+        "createDir": false,
+        "overwriteFile": "true",
+        "encoding": "utf8",
+        "x": 450,
+        "y": 760,
+        "wires": [
             []
         ]
+    },
+    {
+        "id": "68b13e4aabd2d5bb",
+        "type": "debug",
+        "z": "e48ca2e6e4e7cd76",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 450,
+        "y": 840,
+        "wires": []
     }
 ]
