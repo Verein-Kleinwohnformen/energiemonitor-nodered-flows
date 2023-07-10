@@ -804,25 +804,25 @@
         "y": 200,
         "wires": [
             [
-                "fbe1dcf6f0c63e50"
+                "95e280ab0bed2e58"
             ]
         ]
     },
     {
-        "id": "fbe1dcf6f0c63e50",
-        "type": "debug",
+        "id": "95e280ab0bed2e58",
+        "type": "function",
         "z": "e48ca2e6e4e7cd76",
         "name": "",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "true",
-        "targetType": "full",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 1170,
+        "func": "let stat = msg.status;\nif (stat.text === \"Connected\"){\n    node.warn(\"Connected\")\n}\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1180,
         "y": 200,
-        "wires": []
+        "wires": [
+            []
+        ]
     }
 ]
