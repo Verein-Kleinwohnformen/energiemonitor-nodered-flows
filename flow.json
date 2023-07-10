@@ -803,7 +803,7 @@
         "y": 100,
         "wires": [
             [
-                "f91340f69d7eec3e"
+                "7df67c2a74b9f620"
             ]
         ]
     },
@@ -894,7 +894,7 @@
         "type": "function",
         "z": "b9bd4a8285c483f7",
         "name": "",
-        "func": "\nreturn msg;",
+        "func": "data = msg.payload\n\ndata[0].tags.UID = 1688906841337\n\nmsg.payload = data\n\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
@@ -903,7 +903,9 @@
         "x": 680,
         "y": 100,
         "wires": [
-            []
+            [
+                "f91340f69d7eec3e"
+            ]
         ]
     },
     {
@@ -947,7 +949,7 @@
         "complete": "false",
         "statusVal": "",
         "statusType": "auto",
-        "x": 680,
+        "x": 870,
         "y": 160,
         "wires": []
     }
