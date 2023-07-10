@@ -719,8 +719,7 @@
         "y": 220,
         "wires": [
             [
-                "416bf5c87ac4eee2",
-                "8288c2e9fd620fe2"
+                "416bf5c87ac4eee2"
             ]
         ]
     },
@@ -961,51 +960,5 @@
         "x": 135,
         "y": 100,
         "wires": []
-    },
-    {
-        "id": "8288c2e9fd620fe2",
-        "type": "debug",
-        "z": "e48ca2e6e4e7cd76",
-        "name": "",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "status.text",
-        "targetType": "msg",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 520,
-        "y": 280,
-        "wires": []
-    },
-    {
-        "id": "2ace554e6996c8d6",
-        "type": "inject",
-        "z": "e48ca2e6e4e7cd76",
-        "name": "",
-        "props": [
-            {
-                "p": "status.text",
-                "v": "ConStatus",
-                "vt": "flow"
-            },
-            {
-                "p": "topic",
-                "vt": "str"
-            }
-        ],
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "",
-        "x": 230,
-        "y": 260,
-        "wires": [
-            [
-                "8288c2e9fd620fe2"
-            ]
-        ]
     }
 ]
