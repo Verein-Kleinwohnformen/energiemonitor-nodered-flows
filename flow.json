@@ -132,7 +132,8 @@
         "y": 160,
         "wires": [
             [
-                "f871afd17d33fea9"
+                "f871afd17d33fea9",
+                "746b38fcf65019b1"
             ]
         ]
     },
@@ -493,7 +494,7 @@
         "topic": "",
         "payloadType": "date",
         "x": 270,
-        "y": 380,
+        "y": 360,
         "wires": [
             [
                 "8fbf0c9e.9ea23"
@@ -507,7 +508,7 @@
         "name": "Check InfluxDB data",
         "info": "",
         "x": 270,
-        "y": 320,
+        "y": 300,
         "wires": []
     },
     {
@@ -541,11 +542,10 @@
         "retentionPolicy": "",
         "org": "Kleinwohnformen",
         "x": 690,
-        "y": 380,
+        "y": 360,
         "wires": [
             [
-                "6af2607ed7631321",
-                "2c3f2fe331d4d46e"
+                "6af2607ed7631321"
             ]
         ]
     },
@@ -561,7 +561,7 @@
         "finalize": "",
         "libs": [],
         "x": 490,
-        "y": 380,
+        "y": 360,
         "wires": [
             [
                 "72a3ee3deb599eeb"
@@ -573,35 +573,17 @@
         "type": "function",
         "z": "e48ca2e6e4e7cd76",
         "name": "Calculate recived Data",
-        "func": "// Get the dataCache\nlet dataCache = flow.get(\"DataCache\");\nnode.warn(dataCache);\n// Group Data\nlet groupedData = dataCache.reduce((result, entry) => {\n    if (entry[0].tags) {\n        let device = entry[0].tags.device;\n        if (!result[device]) {\n            result[device] = 0;\n        }\n        result[device]++;\n    }\n    return result;\n}, {});\nnode.warn(groupedData);\n// Array im msg.payload\nlet array = msg.payload;\nlet dataTrue = 0;\nlet dataComplete = false;\n\n// Über das Array iterieren _value-Wert prüfen\nfor (let i = 0; i < array.length; i++) {\n  let value = array[i]._value;\n  let device = array[i].tags_device;\n  let sentData = groupedData[device];\n  if (sentData === value || sentData === (value+1)) {\n    dataTrue++;\n  } else{\n      \n  }\n}\n\nif(dataTrue === array.length){\n    dataComplete = true;\n}else{\n    dataComplete = false;\n}\n\nif (dataComplete) {\n    node.status({fill:\"green\",shape:\"dot\",text:\"All data received\"});\n    return true;\n} else {\n    node.status({fill:\"red\",shape:\"dot\",text:\"Data missing\"});\n    return false;\n}\n\nmsg.payload = dataCache;\n\nreturn msg;",
+        "func": "// Get the dataCache\nlet dataCache = flow.get(\"DataCache\")\nlet stat = flow.get(\"ConStatus\")\nlet cache = flow.get(\"ConCache\")\n\n// Group Data\nlet groupedData = dataCache.reduce((result, entry) => {\n    if (entry[0].tags) {\n        let device = entry[0].tags.device\n        if (!result[device]) {\n            result[device] = 0;\n        }\n        result[device]++;\n    }\n    return result;\n}, {});\n\n// Array im msg.payload\nlet array = msg.payload\nlet dataTrue = 0\nlet dataComplete = false\n\n// Über das Array iterieren _value-Wert prüfen\nfor (let i = 0; i < array.length; i++) {\n  let value = array[i]._value\n  let device = array[i].tags_device\n  let sentData = groupedData[device]\n  if (sentData === value || sentData === (value+1)) {\n    dataTrue++\n  } else{\n      \n  }\n}\n\nif(dataTrue === array.length){\n    dataComplete = true\n}else{\n    dataComplete = false\n}\n\nif (dataComplete) {\n    node.status({fill:\"green\",shape:\"dot\",text:\"All data received\"});\n} else {\n    node.status({fill:\"red\",shape:\"dot\",text:\"Data missing\"});\n    if (stat === \"Connected\" && cache.lenght === 0){\n        msg.payload = \"Data missing\"\n        return msg\n    }\n}",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
         "libs": [],
         "x": 920,
-        "y": 380,
+        "y": 360,
         "wires": [
-            [
-                "04c6d2dc0f5767a5"
-            ]
+            []
         ]
-    },
-    {
-        "id": "9aadf8de2fd9e7fa",
-        "type": "debug",
-        "z": "e48ca2e6e4e7cd76",
-        "name": "",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "false",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 730,
-        "y": 40,
-        "wires": []
     },
     {
         "id": "746b38fcf65019b1",
@@ -613,41 +595,8 @@
         "createDir": false,
         "overwriteFile": "false",
         "encoding": "utf8",
-        "x": 730,
+        "x": 350,
         "y": 100,
-        "wires": [
-            []
-        ]
-    },
-    {
-        "id": "ec19a469f9658b18",
-        "type": "file in",
-        "z": "e48ca2e6e4e7cd76",
-        "name": "Read Data",
-        "filename": "./datachache",
-        "format": "lines",
-        "chunk": false,
-        "sendError": false,
-        "encoding": "utf8",
-        "allProps": false,
-        "x": 490,
-        "y": 520,
-        "wires": [
-            [
-                "a235737a98e2d58c"
-            ]
-        ]
-    },
-    {
-        "id": "a235737a98e2d58c",
-        "type": "json",
-        "z": "e48ca2e6e4e7cd76",
-        "name": "JSON Konverter",
-        "property": "payload",
-        "action": "",
-        "pretty": false,
-        "x": 700,
-        "y": 520,
         "wires": [
             []
         ]
@@ -659,7 +608,7 @@
         "name": "Upload IoT Hub",
         "info": "",
         "x": 260,
-        "y": 100,
+        "y": 40,
         "wires": []
     },
     {
@@ -669,7 +618,7 @@
         "name": "Shrink to 7 days an Save to Disk",
         "info": "",
         "x": 310,
-        "y": 620,
+        "y": 440,
         "wires": []
     },
     {
@@ -693,7 +642,7 @@
         "topic": "",
         "payloadType": "date",
         "x": 270,
-        "y": 680,
+        "y": 500,
         "wires": [
             [
                 "node_function"
@@ -712,7 +661,7 @@
         "finalize": "",
         "libs": [],
         "x": 590,
-        "y": 680,
+        "y": 500,
         "wires": [
             [
                 "node_fsops_move",
@@ -735,7 +684,7 @@
         "destFilenameType": "msg",
         "link": false,
         "x": 880,
-        "y": 680,
+        "y": 500,
         "wires": [
             []
         ]
@@ -753,41 +702,7 @@
         "statusVal": "",
         "statusType": "auto",
         "x": 890,
-        "y": 740,
-        "wires": []
-    },
-    {
-        "id": "2c3f2fe331d4d46e",
-        "type": "debug",
-        "z": "e48ca2e6e4e7cd76",
-        "name": "influx",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "payload",
-        "targetType": "msg",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 870,
-        "y": 440,
-        "wires": []
-    },
-    {
-        "id": "04c6d2dc0f5767a5",
-        "type": "debug",
-        "z": "e48ca2e6e4e7cd76",
-        "name": "calculate",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "payload",
-        "targetType": "msg",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 1150,
-        "y": 440,
+        "y": 560,
         "wires": []
     },
     {
@@ -851,10 +766,79 @@
         "y": 160,
         "wires": [
             [
-                "62418716caaba7d7",
-                "746b38fcf65019b1",
-                "9aadf8de2fd9e7fa"
+                "62418716caaba7d7"
             ]
         ]
+    },
+    {
+        "id": "a870998ffb131315",
+        "type": "file in",
+        "z": "b9bd4a8285c483f7",
+        "name": "Read Data",
+        "filename": "./datachache",
+        "format": "lines",
+        "chunk": false,
+        "sendError": false,
+        "encoding": "utf8",
+        "allProps": false,
+        "x": 410,
+        "y": 160,
+        "wires": [
+            [
+                "4731c4932f1e6c58"
+            ]
+        ]
+    },
+    {
+        "id": "4731c4932f1e6c58",
+        "type": "json",
+        "z": "b9bd4a8285c483f7",
+        "name": "JSON Konverter",
+        "property": "payload",
+        "action": "",
+        "pretty": false,
+        "x": 620,
+        "y": 160,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "08ecf8be392eb015",
+        "type": "comment",
+        "z": "b9bd4a8285c483f7",
+        "name": "DataSync Trigger",
+        "info": "",
+        "x": 180,
+        "y": 40,
+        "wires": []
+    },
+    {
+        "id": "00ba79a7d0a042e2",
+        "type": "link in",
+        "z": "e48ca2e6e4e7cd76",
+        "name": "DataSync",
+        "links": [
+            "17e829d689ec4693"
+        ],
+        "x": 195,
+        "y": 100,
+        "wires": [
+            [
+                "f871afd17d33fea9"
+            ]
+        ]
+    },
+    {
+        "id": "17e829d689ec4693",
+        "type": "link out",
+        "z": "b9bd4a8285c483f7",
+        "name": "DataSync",
+        "links": [
+            "00ba79a7d0a042e2"
+        ],
+        "x": 895,
+        "y": 160,
+        "wires": []
     }
 ]
