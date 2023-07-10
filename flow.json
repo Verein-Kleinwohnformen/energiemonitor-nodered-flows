@@ -978,5 +978,34 @@
         "x": 520,
         "y": 280,
         "wires": []
+    },
+    {
+        "id": "2ace554e6996c8d6",
+        "type": "inject",
+        "z": "e48ca2e6e4e7cd76",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "Connected",
+        "payloadType": "str",
+        "x": 240,
+        "y": 260,
+        "wires": [
+            [
+                "416bf5c87ac4eee2"
+            ]
+        ]
     }
 ]
