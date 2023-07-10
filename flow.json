@@ -987,8 +987,8 @@
         "props": [
             {
                 "p": "status.text",
-                "v": "Connected",
-                "vt": "str"
+                "v": "ConStatus",
+                "vt": "flow"
             },
             {
                 "p": "topic",
@@ -1004,7 +1004,7 @@
         "y": 260,
         "wires": [
             [
-                "416bf5c87ac4eee2"
+                "8288c2e9fd620fe2"
             ]
         ]
     }
