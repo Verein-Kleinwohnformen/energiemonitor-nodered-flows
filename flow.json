@@ -71,7 +71,7 @@
         "dir": "payload",
         "dirType": "msg",
         "x": 490,
-        "y": 660,
+        "y": 640,
         "wires": [
             [
                 "3"
@@ -90,7 +90,7 @@
         "finalize": "",
         "libs": [],
         "x": 690,
-        "y": 660,
+        "y": 640,
         "wires": [
             [
                 "6"
@@ -107,7 +107,7 @@
         "filename": "oldFiles",
         "filenameType": "msg",
         "x": 900,
-        "y": 660,
+        "y": 640,
         "wires": [
             []
         ]
@@ -923,7 +923,7 @@
         "name": "Delete Files older 4 Weeks",
         "info": "",
         "x": 290,
-        "y": 600,
+        "y": 580,
         "wires": []
     },
     {
@@ -947,7 +947,7 @@
         "topic": "",
         "payloadType": "date",
         "x": 270,
-        "y": 660,
+        "y": 640,
         "wires": [
             [
                 "2"
