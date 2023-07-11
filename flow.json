@@ -1255,5 +1255,35 @@
                 "fb7b0f29daebc218"
             ]
         ]
+    },
+    {
+        "id": "040e21c8b934282d",
+        "type": "ui_dropdown",
+        "z": "d27ba1192b875173",
+        "name": "Brennstoff",
+        "label": "Brennstoff",
+        "tooltip": "",
+        "place": "Select option",
+        "group": "c82b10bf46250cde",
+        "order": 1,
+        "width": "3",
+        "height": "3",
+        "passthru": true,
+        "multiple": false,
+        "options": [
+            {
+                "label": "Holz",
+                "value": "fuel",
+                "type": "str"
+            }
+        ],
+        "payload": "",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 210,
+        "y": 420,
+        "wires": [
+            []
+        ]
     }
 ]
