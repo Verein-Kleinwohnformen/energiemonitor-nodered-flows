@@ -60,6 +60,121 @@
         "rejectUnauthorized": true
     },
     {
+        "id": "ec15d88289fafa5d",
+        "type": "ui_tab",
+        "name": "Home",
+        "icon": "dashboard",
+        "disabled": false,
+        "hidden": false
+    },
+    {
+        "id": "dc4881c1572d34f8",
+        "type": "ui_base",
+        "theme": {
+            "name": "theme-light",
+            "lightTheme": {
+                "default": "#0094CE",
+                "baseColor": "#0094CE",
+                "baseFont": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif",
+                "edited": true,
+                "reset": false
+            },
+            "darkTheme": {
+                "default": "#097479",
+                "baseColor": "#097479",
+                "baseFont": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif",
+                "edited": false
+            },
+            "customTheme": {
+                "name": "Untitled Theme 1",
+                "default": "#4B7930",
+                "baseColor": "#4B7930",
+                "baseFont": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif"
+            },
+            "themeState": {
+                "base-color": {
+                    "default": "#0094CE",
+                    "value": "#0094CE",
+                    "edited": false
+                },
+                "page-titlebar-backgroundColor": {
+                    "value": "#0094CE",
+                    "edited": false
+                },
+                "page-backgroundColor": {
+                    "value": "#fafafa",
+                    "edited": false
+                },
+                "page-sidebar-backgroundColor": {
+                    "value": "#ffffff",
+                    "edited": false
+                },
+                "group-textColor": {
+                    "value": "#1bbfff",
+                    "edited": false
+                },
+                "group-borderColor": {
+                    "value": "#ffffff",
+                    "edited": false
+                },
+                "group-backgroundColor": {
+                    "value": "#ffffff",
+                    "edited": false
+                },
+                "widget-textColor": {
+                    "value": "#111111",
+                    "edited": false
+                },
+                "widget-backgroundColor": {
+                    "value": "#0094ce",
+                    "edited": false
+                },
+                "widget-borderColor": {
+                    "value": "#ffffff",
+                    "edited": false
+                },
+                "base-font": {
+                    "value": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif"
+                }
+            },
+            "angularTheme": {
+                "primary": "indigo",
+                "accents": "blue",
+                "warn": "red",
+                "background": "grey",
+                "palette": "light"
+            }
+        },
+        "site": {
+            "name": "Node-RED Dashboard",
+            "hideToolbar": "false",
+            "allowSwipe": "false",
+            "lockMenu": "false",
+            "allowTempTheme": "none",
+            "dateFormat": "DD.MM.YYYY",
+            "sizes": {
+                "sx": 48,
+                "sy": 48,
+                "gx": 6,
+                "gy": 6,
+                "cx": 6,
+                "cy": 6,
+                "px": 0,
+                "py": 0
+            }
+        }
+    },
+    {
+        "id": "c82b10bf46250cde",
+        "type": "ui_group",
+        "name": "Standard",
+        "tab": "ec15d88289fafa5d",
+        "order": 1,
+        "disp": true,
+        "width": "6",
+        "collapse": false
+    },
+    {
         "id": "2",
         "type": "fs-ops-dir",
         "z": "e48ca2e6e4e7cd76",
@@ -70,7 +185,7 @@
         "filterType": "str",
         "dir": "payload",
         "dirType": "msg",
-        "x": 250,
+        "x": 490,
         "y": 660,
         "wires": [
             [
@@ -89,7 +204,7 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 460,
+        "x": 680,
         "y": 660,
         "wires": [
             [
@@ -106,7 +221,7 @@
         "pathType": "msg",
         "filename": "oldFiles",
         "filenameType": "msg",
-        "x": 680,
+        "x": 900,
         "y": 660,
         "wires": [
             [
@@ -198,7 +313,7 @@
         "z": "e48ca2e6e4e7cd76",
         "client": "725f4c36dd3c91a4",
         "output": "output1",
-        "x": 850,
+        "x": 930,
         "y": 160,
         "wires": []
     },
@@ -304,7 +419,7 @@
         "id": "df43c316560ded48",
         "type": "inject",
         "z": "0914f028aec835b0",
-        "name": "",
+        "name": "Init",
         "props": [
             {
                 "p": "payload"
@@ -319,10 +434,9 @@
         "once": false,
         "onceDelay": 0.1,
         "topic": "",
-        "payload": "",
         "payloadType": "date",
-        "x": 340,
-        "y": 140,
+        "x": 170,
+        "y": 100,
         "wires": [
             [
                 "f27c8db25019c383",
@@ -342,8 +456,8 @@
         "complete": "false",
         "statusVal": "",
         "statusType": "auto",
-        "x": 750,
-        "y": 140,
+        "x": 570,
+        "y": 100,
         "wires": []
     },
     {
@@ -365,8 +479,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 540,
-        "y": 140,
+        "x": 360,
+        "y": 100,
         "wires": [
             [
                 "ca98a3517a7b5b02"
@@ -399,8 +513,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 540,
-        "y": 200,
+        "x": 360,
+        "y": 160,
         "wires": [
             [
                 "ca98a3517a7b5b02"
@@ -731,7 +845,7 @@
         "type": "fs-ops-move",
         "z": "e48ca2e6e4e7cd76",
         "name": "Move file",
-        "sourcePath": ".",
+        "sourcePath": "/data",
         "sourcePathType": "str",
         "sourceFilename": "filename",
         "sourceFilenameType": "msg",
@@ -743,9 +857,7 @@
         "x": 880,
         "y": 500,
         "wires": [
-            [
-                "2"
-            ]
+            []
         ]
     },
     {
@@ -821,7 +933,7 @@
         "randomUnits": "seconds",
         "drop": false,
         "allowrate": false,
-        "x": 600,
+        "x": 700,
         "y": 160,
         "wires": [
             [
@@ -840,8 +952,8 @@
         "sendError": false,
         "encoding": "utf8",
         "allProps": false,
-        "x": 310,
-        "y": 280,
+        "x": 190,
+        "y": 240,
         "wires": [
             [
                 "4731c4932f1e6c58"
@@ -856,11 +968,11 @@
         "property": "payload",
         "action": "",
         "pretty": false,
-        "x": 520,
-        "y": 280,
+        "x": 400,
+        "y": 240,
         "wires": [
             [
-                "7df67c2a74b9f620"
+                "17e829d689ec4693"
             ]
         ]
     },
@@ -871,7 +983,7 @@
         "name": "DataSync current File",
         "info": "",
         "x": 140,
-        "y": 220,
+        "y": 180,
         "wires": []
     },
     {
@@ -883,7 +995,7 @@
             "17e829d689ec4693",
             "0741c0674db790cd"
         ],
-        "x": 455,
+        "x": 535,
         "y": 100,
         "wires": [
             [
@@ -899,8 +1011,8 @@
         "links": [
             "00ba79a7d0a042e2"
         ],
-        "x": 855,
-        "y": 280,
+        "x": 555,
+        "y": 240,
         "wires": []
     },
     {
@@ -927,72 +1039,7 @@
         "y": 100,
         "wires": [
             [
-                "7865f137e25277be",
                 "0741c0674db790cd"
-            ]
-        ]
-    },
-    {
-        "id": "7865f137e25277be",
-        "type": "debug",
-        "z": "b9bd4a8285c483f7",
-        "name": "",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "false",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 190,
-        "y": 160,
-        "wires": []
-    },
-    {
-        "id": "7df67c2a74b9f620",
-        "type": "function",
-        "z": "b9bd4a8285c483f7",
-        "name": "",
-        "func": "data = msg.payload\n\ndata[0].tags.UID = 1688906841337\n\nmsg.payload = data\n\nreturn msg;",
-        "outputs": 1,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 720,
-        "y": 280,
-        "wires": [
-            [
-                "17e829d689ec4693"
-            ]
-        ]
-    },
-    {
-        "id": "f201731aa887c763",
-        "type": "inject",
-        "z": "b9bd4a8285c483f7",
-        "name": "",
-        "props": [
-            {
-                "p": "payload"
-            },
-            {
-                "p": "topic",
-                "vt": "str"
-            }
-        ],
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "",
-        "payload": "",
-        "payloadType": "date",
-        "x": 120,
-        "y": 280,
-        "wires": [
-            [
-                "a870998ffb131315"
             ]
         ]
     },
@@ -1041,7 +1088,7 @@
         "targetType": "full",
         "statusVal": "",
         "statusType": "auto",
-        "x": 870,
+        "x": 1090,
         "y": 660,
         "wires": []
     },
@@ -1049,7 +1096,71 @@
         "id": "12e830df31ebedc3",
         "type": "inject",
         "z": "e48ca2e6e4e7cd76",
-        "name": "",
+        "name": "Every Monday 00:30",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "30 00 * * 1",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payloadType": "date",
+        "x": 280,
+        "y": 660,
+        "wires": [
+            [
+                "2"
+            ]
+        ]
+    },
+    {
+        "id": "e96ce99e239867c8",
+        "type": "link in",
+        "z": "b9bd4a8285c483f7",
+        "name": "DataSync current File",
+        "links": [
+            "eb045639902390f6"
+        ],
+        "x": 55,
+        "y": 240,
+        "wires": [
+            [
+                "a870998ffb131315"
+            ]
+        ]
+    },
+    {
+        "id": "a59cd2459a73dbc4",
+        "type": "comment",
+        "z": "0914f028aec835b0",
+        "name": "Init Settings",
+        "info": "",
+        "x": 170,
+        "y": 40,
+        "wires": []
+    },
+    {
+        "id": "73e7376fcc80a58b",
+        "type": "comment",
+        "z": "0914f028aec835b0",
+        "name": "Manuel Datasync (press to sync current week file)",
+        "info": "",
+        "x": 280,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "76494064529d5fad",
+        "type": "inject",
+        "z": "0914f028aec835b0",
+        "name": "Start",
         "props": [
             {
                 "p": "payload"
@@ -1064,14 +1175,83 @@
         "once": false,
         "onceDelay": 0.1,
         "topic": "",
-        "payload": "",
         "payloadType": "date",
-        "x": 90,
-        "y": 720,
+        "x": 160,
+        "y": 300,
         "wires": [
             [
-                "2"
+                "eb045639902390f6"
             ]
+        ]
+    },
+    {
+        "id": "eb045639902390f6",
+        "type": "link out",
+        "z": "0914f028aec835b0",
+        "name": "ConfigManual",
+        "links": [
+            "e96ce99e239867c8"
+        ],
+        "x": 295,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "1416747d0a4b6e4a",
+        "type": "ui_form",
+        "z": "0914f028aec835b0",
+        "name": "ManualInput",
+        "label": "Eingabeformular für Brennstoff",
+        "group": "c82b10bf46250cde",
+        "order": 0,
+        "width": 0,
+        "height": 0,
+        "options": [
+            {
+                "label": "Brennstoff:",
+                "value": "Holz",
+                "type": "text",
+                "required": true,
+                "rows": null
+            },
+            {
+                "label": "Menge",
+                "value": "Anzahl",
+                "type": "number",
+                "required": true,
+                "rows": null
+            },
+            {
+                "label": "Startdatum",
+                "value": "Start",
+                "type": "date",
+                "required": true,
+                "rows": null
+            },
+            {
+                "label": "Enddatum",
+                "value": "Ende",
+                "type": "date",
+                "required": true,
+                "rows": null
+            }
+        ],
+        "formValue": {
+            "Holz": "",
+            "Anzahl": "",
+            "Start": "",
+            "Ende": ""
+        },
+        "payload": "",
+        "submit": "submit",
+        "cancel": "cancel",
+        "topic": "topic",
+        "topicType": "msg",
+        "splitLayout": "",
+        "x": 350,
+        "y": 420,
+        "wires": [
+            []
         ]
     }
 ]
