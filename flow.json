@@ -60,6 +60,60 @@
         "rejectUnauthorized": true
     },
     {
+        "id": "2",
+        "type": "fs-ops-dir",
+        "z": "e48ca2e6e4e7cd76",
+        "name": "Query /data",
+        "path": "/data",
+        "pathType": "str",
+        "filter": "*.*",
+        "filterType": "str",
+        "dir": "payload",
+        "dirType": "msg",
+        "x": 250,
+        "y": 660,
+        "wires": [
+            [
+                "3",
+                "ce9298fc791367c9"
+            ]
+        ]
+    },
+    {
+        "id": "3",
+        "type": "function",
+        "z": "e48ca2e6e4e7cd76",
+        "name": "Process Files",
+        "func": "//Generate FilePaths\nlet files = msg.files\nlet filePaths = files.map(file => '/data/' + file)\nmsg.filePaths = filePaths\n\n//Generate Date of File\nlet dates = files.map(filename => {\n    let datePart = filename.split(\"_\")[1]\n    return new Date(datePart)\n});\nmsg.birthtime = dates\n\n//Generate old Files\nlet now = Date.now()\nlet oneMonthAgo = now - 2419200000  // 4 weeks in ms\nlet oldFiles = []\nfor (let i = 0; i < msg.filePaths.length; i++) {\n    if (new Date(msg.birthtime[i]) < oneMonthAgo) {\n        oldFiles.push(msg.filePaths[i])\n    }\n}\nmsg.oldFiles = oldFiles\n\nreturn msg",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 460,
+        "y": 660,
+        "wires": [
+            [
+                "a2e24607756c38cf"
+            ]
+        ]
+    },
+    {
+        "id": "6",
+        "type": "fs-ops-delete",
+        "z": "e48ca2e6e4e7cd76",
+        "name": "Delete old Files",
+        "path": "filePaths",
+        "pathType": "msg",
+        "filename": "oldFiles",
+        "filenameType": "msg",
+        "x": 680,
+        "y": 660,
+        "wires": [
+            []
+        ]
+    },
+    {
         "id": "8e2e1ca31341359b",
         "type": "shelly-gen1",
         "z": "c6e1822c71f940ee",
@@ -489,8 +543,8 @@
         ],
         "repeat": "3600",
         "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
+        "once": true,
+        "onceDelay": "4200",
         "topic": "",
         "payloadType": "date",
         "x": 270,
@@ -688,7 +742,9 @@
         "x": 880,
         "y": 500,
         "wires": [
-            []
+            [
+                "2"
+            ]
         ]
     },
     {
@@ -960,5 +1016,78 @@
         "x": 135,
         "y": 100,
         "wires": []
+    },
+    {
+        "id": "cddd057bc33d8318",
+        "type": "comment",
+        "z": "e48ca2e6e4e7cd76",
+        "name": "Delete Files older 4 Weeks",
+        "info": "",
+        "x": 290,
+        "y": 600,
+        "wires": []
+    },
+    {
+        "id": "ce9298fc791367c9",
+        "type": "debug",
+        "z": "e48ca2e6e4e7cd76",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 430,
+        "y": 720,
+        "wires": []
+    },
+    {
+        "id": "a2e24607756c38cf",
+        "type": "debug",
+        "z": "e48ca2e6e4e7cd76",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 650,
+        "y": 720,
+        "wires": []
+    },
+    {
+        "id": "12e830df31ebedc3",
+        "type": "inject",
+        "z": "e48ca2e6e4e7cd76",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 90,
+        "y": 720,
+        "wires": [
+            [
+                "2"
+            ]
+        ]
     }
 ]
