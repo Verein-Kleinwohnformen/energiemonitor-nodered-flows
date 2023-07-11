@@ -802,8 +802,7 @@
         "y": 160,
         "wires": [
             [
-                "62418716caaba7d7",
-                "1e6d02ec762f7d15"
+                "62418716caaba7d7"
             ]
         ]
     },
@@ -1199,24 +1198,6 @@
         "wires": []
     },
     {
-        "id": "fa38def812923afd",
-        "type": "influxdb out",
-        "z": "e48ca2e6e4e7cd76",
-        "influxdb": "09b12c680d45a782",
-        "name": "",
-        "measurement": "sensors",
-        "precision": "",
-        "retentionPolicy": "",
-        "database": "database",
-        "precisionV18FluxV20": "ms",
-        "retentionPolicyV18Flux": "",
-        "org": "test",
-        "bucket": "bananapi",
-        "x": 1130,
-        "y": 220,
-        "wires": []
-    },
-    {
         "id": "9cdc7cd273297b18",
         "type": "inject",
         "z": "e48ca2e6e4e7cd76",
@@ -1298,24 +1279,5 @@
         "x": 850,
         "y": 720,
         "wires": []
-    },
-    {
-        "id": "1e6d02ec762f7d15",
-        "type": "function",
-        "z": "e48ca2e6e4e7cd76",
-        "name": "",
-        "func": "let message = msg.payload[0];\n\n// Konvertieren Sie den Zeitstempel in Nanosekunden seit dem Unix-Epoch\nlet timestamp = new Date(message.timestamp).getTime() * 1000000;\n\nlet tags = Object.entries(message.tags).map(([key, value]) => `${key}=${value}`).join(',');\n\nlet fields = Object.entries(message.fields).map(([key, value]) => `${key}=${value}`).join(',');\n\nlet lineProtocol = `${message.measurement},${tags} ${fields} ${timestamp}`;\n\nmsg.payload = lineProtocol;\n\nreturn msg;\n",
-        "outputs": 1,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 900,
-        "y": 220,
-        "wires": [
-            [
-                "fa38def812923afd"
-            ]
-        ]
     }
 ]
