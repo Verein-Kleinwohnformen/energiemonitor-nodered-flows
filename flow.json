@@ -211,8 +211,8 @@
         "method": "post",
         "upload": false,
         "swaggerDoc": "",
-        "x": 360,
-        "y": 240,
+        "x": 120,
+        "y": 100,
         "wires": [
             [
                 "a6f9c2d5c3e8bd89"
@@ -226,8 +226,8 @@
         "name": "",
         "statusCode": "200",
         "headers": {},
-        "x": 720,
-        "y": 240,
+        "x": 480,
+        "y": 100,
         "wires": []
     },
     {
@@ -241,12 +241,13 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 550,
-        "y": 240,
+        "x": 310,
+        "y": 100,
         "wires": [
             [
                 "675ba50f9893e483",
-                "e800ada14d5839d9"
+                "e800ada14d5839d9",
+                "c711c427d02ed4dc"
             ]
         ]
     },
@@ -258,8 +259,8 @@
         "links": [
             "5ee90d3319bef9d3"
         ],
-        "x": 675,
-        "y": 300,
+        "x": 435,
+        "y": 160,
         "wires": []
     },
     {
@@ -267,7 +268,7 @@
         "type": "function",
         "z": "c6e1822c71f940ee",
         "name": "JSON",
-        "func": "let measurement = \"sensors\";\nlet uid = global.get('uid');\nlet currentTime = new Date();\n\nfunction addsensordata(device, value){\n    let record = {\n        \"measurement\": measurement,\n        \"timestamp\": currentTime.toISOString(),\n        \"tags\":{\n            \"UID\": uid,\n            \"device\": device\n        },\n        \"fields\": {\n            \"a_power\": value.emeters[0].power, //Watts\n            \"a_pf\": value.emeters[0].pf, //Power Factor\n            \"a_total\": value.emeters[0].total, //total consumed Watt houres\n            \"a_total_returned\": value.emeters[0].total_returned, //total returned Watt houres\n            \"b_power\": value.emeters[1].power, //Watts\n            \"b_pf\": value.emeters[1].pf, //Power Factor\n            \"b_total\": value.emeters[1].total, //total consumed Watt houres\n            \"b_total_returned\": value.emeters[1].total_returned, //total returned Watt houres\n            \"c_power\": value.emeters[2].power, //Watts\n            \"c_pf\": value.emeters[2].pf, //Power Factor\n            \"c_total\": value.emeters[2].total, //total consumed Watt houres\n            \"c_total_returned\": value.emeters[2].total_returned //total returned Watt houres\n        }\n    };\n    return record;\n}\n\nlet data = [];\n\ndata.push(addsensordata(\"Housemeter\", msg.payload));\n\nmsg.payload = data\n\nreturn msg;",
+        "func": "let measurement = \"sensors\";\nlet uid = global.get('uid');\nlet currentTime = new Date();\n\nfunction addsensordata(device, value){\n    let record = {\n        \"measurement\": measurement,\n        \"timestamp\": currentTime.toISOString(),\n        \"tags\":{\n            \"UID\": uid,\n            \"device\": device,\n            \"model\": \"EM3\"\n        },\n        \"fields\": {\n            \"a_power\": value.emeters[0].power, //Watts\n            \"a_pf\": value.emeters[0].pf, //Power Factor\n            \"a_total\": value.emeters[0].total, //total consumed Watt houres\n            \"a_total_returned\": value.emeters[0].total_returned, //total returned Watt houres\n            \"b_power\": value.emeters[1].power, //Watts\n            \"b_pf\": value.emeters[1].pf, //Power Factor\n            \"b_total\": value.emeters[1].total, //total consumed Watt houres\n            \"b_total_returned\": value.emeters[1].total_returned, //total returned Watt houres\n            \"c_power\": value.emeters[2].power, //Watts\n            \"c_pf\": value.emeters[2].pf, //Power Factor\n            \"c_total\": value.emeters[2].total, //total consumed Watt houres\n            \"c_total_returned\": value.emeters[2].total_returned //total returned Watt houres\n        }\n    };\n    return record;\n}\n\nlet data = [];\n\ndata.push(addsensordata(\"Housemeter\", msg.payload));\n\nmsg.payload = data\n\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
@@ -1132,7 +1133,7 @@
         "type": "function",
         "z": "c6e1822c71f940ee",
         "name": "JSON",
-        "func": "let measurement = \"sensors\";\nlet uid = global.get('uid');\nlet currentTime = new Date();\n\nfunction addsensordata(device, value){\n    let record = {\n        \"measurement\": measurement,\n        \"timestamp\": currentTime.toISOString(),\n        \"tags\":{\n            \"UID\": uid,\n            \"device\": device\n        },\n        \"fields\": {\n            \"a_power\": value.emeters[0].power, //Watts\n            \"a_pf\": value.emeters[0].pf, //Power Factor\n            \"a_total\": value.emeters[0].total, //total consumed Watt houres\n            \"a_total_returned\": value.emeters[0].total_returned, //total returned Watt houres\n            \"b_power\": value.emeters[1].power, //Watts\n            \"b_pf\": value.emeters[1].pf, //Power Factor\n            \"b_total\": value.emeters[1].total, //total consumed Watt houres\n            \"b_total_returned\": value.emeters[1].total_returned, //total returned Watt houres\n            \"c_power\": value.emeters[2].power, //Watts\n            \"c_pf\": value.emeters[2].pf, //Power Factor\n            \"c_total\": value.emeters[2].total, //total consumed Watt houres\n            \"c_total_returned\": value.emeters[2].total_returned //total returned Watt houres\n        }\n    };\n    return record;\n}\n\nlet data = [];\n\ndata.push(addsensordata(\"Solarmeter\", msg.payload));\n\nmsg.payload = data\n\nreturn msg;",
+        "func": "let measurement = \"sensors\";\nlet uid = global.get('uid');\nlet currentTime = new Date();\n\nfunction addsensordata(device, value){\n    let record = {\n        \"measurement\": measurement,\n        \"timestamp\": currentTime.toISOString(),\n        \"tags\":{\n            \"UID\": uid,\n            \"device\": device,\n            \"model\": \"EM3\"\n        },\n        \"fields\": {\n            \"a_power\": value.emeters[0].power, //Watts\n            \"a_pf\": value.emeters[0].pf, //Power Factor\n            \"a_total\": value.emeters[0].total, //total consumed Watt houres\n            \"a_total_returned\": value.emeters[0].total_returned, //total returned Watt houres\n            \"b_power\": value.emeters[1].power, //Watts\n            \"b_pf\": value.emeters[1].pf, //Power Factor\n            \"b_total\": value.emeters[1].total, //total consumed Watt houres\n            \"b_total_returned\": value.emeters[1].total_returned, //total returned Watt houres\n            \"c_power\": value.emeters[2].power, //Watts\n            \"c_pf\": value.emeters[2].pf, //Power Factor\n            \"c_total\": value.emeters[2].total, //total consumed Watt houres\n            \"c_total_returned\": value.emeters[2].total_returned //total returned Watt houres\n        }\n    };\n    return record;\n}\n\nlet data = [];\n\ndata.push(addsensordata(\"Solarmeter\", msg.payload));\n\nmsg.payload = data\n\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
@@ -1179,6 +1180,32 @@
         "statusType": "auto",
         "x": 600,
         "y": 160,
+        "wires": []
+    },
+    {
+        "id": "31bb6fa18ac1e5ca",
+        "type": "comment",
+        "z": "ab257fb0cc5ba8f5",
+        "name": "Weatherstation",
+        "info": "",
+        "x": 120,
+        "y": 40,
+        "wires": []
+    },
+    {
+        "id": "c711c427d02ed4dc",
+        "type": "debug",
+        "z": "ab257fb0cc5ba8f5",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 500,
+        "y": 220,
         "wires": []
     }
 ]
