@@ -82,14 +82,14 @@
         "id": "3",
         "type": "function",
         "z": "e48ca2e6e4e7cd76",
-        "name": "Process Files",
+        "name": "Process File",
         "func": "//Generate FilePaths\nlet files = msg.payload\nlet filePaths = files.map(file => '/data/')\nmsg.filePaths = filePaths\n\n//Generate Date of File\nlet dates = files.map(filename => {\n    let datePart = filename.split(\"_\")[1]\n    return new Date(datePart)\n});\nmsg.birthtime = dates\n\n//Generate old Files\nlet now = Date.now()\nlet oneMonthAgo = now - 2419200000  // 4 weeks in ms\nlet oldFiles = []\nlet newFiles = []\nfor (let i = 0; i < msg.filePaths.length; i++) {\n    if (new Date(msg.birthtime[i]) < oneMonthAgo) {\n        oldFiles.push(msg.files[i])\n    } else {\n        newFiles.push(msg.files[i])\n    }\n}\nmsg.oldFiles = oldFiles\nmsg.newFiles = newFiles\n\nreturn msg",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 680,
+        "x": 690,
         "y": 660,
         "wires": [
             [
@@ -681,7 +681,7 @@
         "id": "435edf303db9b89a",
         "type": "inject",
         "z": "e48ca2e6e4e7cd76",
-        "name": "Every Monday 00:00",
+        "name": "Every day 00:00",
         "props": [
             {
                 "p": "payload"
@@ -692,12 +692,12 @@
             }
         ],
         "repeat": "",
-        "crontab": "00 00 * * 1",
+        "crontab": "00 00 * * *",
         "once": false,
         "onceDelay": 0.1,
         "topic": "",
         "payloadType": "date",
-        "x": 280,
+        "x": 270,
         "y": 500,
         "wires": [
             [
@@ -981,7 +981,7 @@
         "id": "12e830df31ebedc3",
         "type": "inject",
         "z": "e48ca2e6e4e7cd76",
-        "name": "Every Monday 00:30",
+        "name": "Every day 00:30",
         "props": [
             {
                 "p": "payload"
@@ -992,12 +992,12 @@
             }
         ],
         "repeat": "",
-        "crontab": "30 00 * * 1",
+        "crontab": "30 00 * * *",
         "once": false,
         "onceDelay": 0.1,
         "topic": "",
         "payloadType": "date",
-        "x": 280,
+        "x": 270,
         "y": 660,
         "wires": [
             [
