@@ -1208,13 +1208,6 @@
         "height": "5",
         "options": [
             {
-                "label": "Brennstoff:",
-                "value": "fuel",
-                "type": "checkbox",
-                "required": true,
-                "rows": null
-            },
-            {
                 "label": "Menge",
                 "value": "amount",
                 "type": "number",
@@ -1237,7 +1230,6 @@
             }
         ],
         "formValue": {
-            "fuel": false,
             "amount": "",
             "start": "",
             "end": ""
@@ -1266,14 +1258,24 @@
         "place": "Select option",
         "group": "c82b10bf46250cde",
         "order": 1,
-        "width": "3",
+        "width": "6",
         "height": "3",
         "passthru": true,
         "multiple": false,
         "options": [
             {
                 "label": "Holz",
-                "value": "fuel",
+                "value": "wood",
+                "type": "str"
+            },
+            {
+                "label": "Gas",
+                "value": "gas",
+                "type": "str"
+            },
+            {
+                "label": "Öl",
+                "value": "oil",
                 "type": "str"
             }
         ],
@@ -1283,7 +1285,9 @@
         "x": 210,
         "y": 420,
         "wires": [
-            []
+            [
+                "cd91a34ba4e7d183"
+            ]
         ]
     }
 ]
