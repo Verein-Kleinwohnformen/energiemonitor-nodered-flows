@@ -83,7 +83,7 @@
         "type": "function",
         "z": "e48ca2e6e4e7cd76",
         "name": "Process Files",
-        "func": "//Generate FilePaths\nlet files = msg.payload\nlet filePaths = files.map(file => '/data/' + file)\nmsg.filePaths = filePaths\n\n//Generate Date of File\nlet dates = files.map(filename => {\n    let datePart = filename.split(\"_\")[1]\n    return new Date(datePart)\n});\nmsg.birthtime = dates\n\n//Generate old Files\nlet now = Date.now()\nlet oneMonthAgo = now - 2419200000  // 4 weeks in ms\nlet oldFiles = []\nlet newFiles = []\nfor (let i = 0; i < msg.filePaths.length; i++) {\n    if (new Date(msg.birthtime[i]) < oneMonthAgo) {\n        oldFiles.push(msg.filePaths[i])\n    } else {\n        newFiles.push(msg.filePaths[i])\n    }\n}\nmsg.oldFiles = oldFiles\nmsg.newFiles = newFiles\n\nreturn msg",
+        "func": "//Generate FilePaths\nlet files = msg.payload\nlet filePaths = files.map(file => '/data/')\nmsg.filePaths = filePaths\n\n//Generate Date of File\nlet dates = files.map(filename => {\n    let datePart = filename.split(\"_\")[1]\n    return new Date(datePart)\n});\nmsg.birthtime = dates\n\n//Generate old Files\nlet now = Date.now()\nlet oneMonthAgo = now - 2419200000  // 4 weeks in ms\nlet oldFiles = []\nlet newFiles = []\nfor (let i = 0; i < msg.filePaths.length; i++) {\n    if (new Date(msg.birthtime[i]) < oneMonthAgo) {\n        oldFiles.push(msg.files[i])\n    } else {\n        newFiles.push(msg.files[i])\n    }\n}\nmsg.oldFiles = oldFiles\nmsg.newFiles = newFiles\n\nreturn msg",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
