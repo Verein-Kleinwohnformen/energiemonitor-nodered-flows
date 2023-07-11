@@ -1204,8 +1204,8 @@
         "label": "Eingabeformular für Brennstoff",
         "group": "c82b10bf46250cde",
         "order": 0,
-        "width": "3",
-        "height": "3",
+        "width": "6",
+        "height": "5",
         "options": [
             {
                 "label": "Brennstoff:",
