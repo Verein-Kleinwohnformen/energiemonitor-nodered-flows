@@ -52,11 +52,11 @@
         "port": "8086",
         "protocol": "http",
         "database": "database",
-        "name": "influx",
+        "name": "testinflux",
         "usetls": false,
         "tls": "",
         "influxdbVersion": "2.0",
-        "url": "https://influxdb.monitor.e-mgmt.cloud/",
+        "url": "https://eu-central-1-1.aws.cloud2.influxdata.com/",
         "rejectUnauthorized": true
     },
     {
@@ -788,7 +788,8 @@
         "y": 160,
         "wires": [
             [
-                "62418716caaba7d7"
+                "62418716caaba7d7",
+                "fa38def812923afd"
             ]
         ]
     },
@@ -1181,6 +1182,24 @@
         "info": "",
         "x": 120,
         "y": 40,
+        "wires": []
+    },
+    {
+        "id": "fa38def812923afd",
+        "type": "influxdb out",
+        "z": "e48ca2e6e4e7cd76",
+        "influxdb": "09b12c680d45a782",
+        "name": "",
+        "measurement": "sensors",
+        "precision": "",
+        "retentionPolicy": "",
+        "database": "database",
+        "precisionV18FluxV20": "ms",
+        "retentionPolicyV18Flux": "",
+        "org": "test",
+        "bucket": "bananapi",
+        "x": 930,
+        "y": 220,
         "wires": []
     }
 ]
