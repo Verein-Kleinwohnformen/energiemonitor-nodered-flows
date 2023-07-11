@@ -215,7 +215,8 @@
         "y": 100,
         "wires": [
             [
-                "a6f9c2d5c3e8bd89"
+                "a6f9c2d5c3e8bd89",
+                "c711c427d02ed4dc"
             ]
         ]
     },
@@ -235,7 +236,7 @@
         "type": "function",
         "z": "ab257fb0cc5ba8f5",
         "name": "JSON",
-        "func": "let measurement = \"sensors\";\nlet uid = global.get('uid');\nlet currentTime = new Date();\n\nfunction addsensordata(device, value){\n    let record = {\n        \"measurement\": measurement,\n        \"timestamp\": currentTime.toISOString(),\n        \"tags\":{\n            \"UID\": uid,\n            \"device\": device,\n            \"model\": value.model,\n        },\n        \"fields\": {\n            \"tempinf\": parseFloat(value.tempinf),\n            \"humidityin\": parseFloat(value.humidityin),\n            \"baromrelin\": parseFloat(value.baromrelin),\n            \"baromabsin\": parseFloat(value.baromabsin),\n            \"tempf\": parseFloat(value.tempf),\n            \"humidity\": parseFloat(value.humidity),\n            \"winddir\": parseFloat(value.winddir),\n            \"winddir_avg10m\": parseFloat(value.winddir_avg10m),\n            \"windspeedmph\": parseFloat(value.windspeedmph),\n            \"maxdailygust\": parseFloat(value.maxdailygust),\n            \"rainratein\": parseFloat(value.rainratein),\n            \"eventrainin\": parseFloat(value.eventrainin),\n            \"hourlyrainin\": parseFloat(value.hourlyrainin),\n            \"dailyrainin\": parseFloat(value.dailyrainin),\n            \"weeklyrainin\": parseFloat(value.weeklyrainin),\n            \"monthlyrainin\": parseFloat(value.monthlyrainin),\n            \"yearlyrainin\": parseFloat(value.yearlyrainin),\n            \"solarradiation\": parseFloat(value.solarradiation),\n            \"uv\": parseFloat(value.uv),\n        }\n    };\n    return record;\n}\n\nlet data = [];\n\ndata.push(addsensordata(\"weatherstation\", msg.payload));\n\nmsg.payload = data;\n\nreturn msg;\n",
+        "func": "let measurement = \"sensors\";\nlet uid = global.get('uid');\nlet currentTime = new Date();\n\nfunction addsensordata(device, value){\n    let record = {\n        \"measurement\": measurement,\n        \"timestamp\": currentTime.toISOString(),\n        \"tags\":{\n            \"UID\": uid,\n            \"device\": device,\n            \"model\": value.model,\n        },\n        \"fields\": {\n            \"tempinf\": ((parseFloat(value.tempinf)-32) * 5/9), //Inhouse Temp in °C\n            \"humidityin\": parseFloat(value.humidityin), //Inhouse relativ humidity\n            \"baromrelin\": parseFloat(value.baromrelin), //\n            \"baromabsin\": parseFloat(value.baromabsin),\n            \"tempf\": parseFloat(value.tempf),\n            \"humidity\": parseFloat(value.humidity),\n            \"winddir\": parseFloat(value.winddir),\n            \"winddir_avg10m\": parseFloat(value.winddir_avg10m),\n            \"windspeedmph\": parseFloat(value.windspeedmph),\n            \"maxdailygust\": parseFloat(value.maxdailygust),\n            \"rainratein\": parseFloat(value.rainratein),\n            \"eventrainin\": parseFloat(value.eventrainin),\n            \"hourlyrainin\": parseFloat(value.hourlyrainin),\n            \"dailyrainin\": parseFloat(value.dailyrainin),\n            \"weeklyrainin\": parseFloat(value.weeklyrainin),\n            \"monthlyrainin\": parseFloat(value.monthlyrainin),\n            \"yearlyrainin\": parseFloat(value.yearlyrainin),\n            \"solarradiation\": parseFloat(value.solarradiation),\n            \"uv\": parseFloat(value.uv),\n        }\n    };\n    return record;\n}\n\nlet data = [];\n\ndata.push(addsensordata(\"weatherstation\", msg.payload));\n\nmsg.payload = data;\n\nreturn msg;\n",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
@@ -246,8 +247,7 @@
         "wires": [
             [
                 "675ba50f9893e483",
-                "e800ada14d5839d9",
-                "c711c427d02ed4dc"
+                "e800ada14d5839d9"
             ]
         ]
     },
@@ -417,8 +417,8 @@
         "method": "get",
         "upload": false,
         "swaggerDoc": "",
-        "x": 400,
-        "y": 260,
+        "x": 100,
+        "y": 100,
         "wires": [
             [
                 "f982a50a.16c1d8"
@@ -436,8 +436,8 @@
         "syntax": "mustache",
         "template": "<!DOCTYPE html>\n<html>\n<head>\n    <title id=\"pageTitle\" data-en=\"Fuel Input Form\" data-de=\"Eingabeformular für Brennstoff\">Fuel Input Form</title>\n    <link rel=\"stylesheet\" href=\"../red/style.min.css\">\n    <style>\n        .language-select {\n            position: absolute;\n            top: 10px;\n            right: 10px;\n        }\n        .language-select img {\n            width: 24px;\n            height: 16px;\n            cursor: pointer;\n            margin-left: 5px;\n        }\n    </style>\n</head>\n<body>\n<div class=\"red-ui-editor-text-container\">\n    <h1 class=\"my-4\" id=\"formTitle\" data-en=\"Fuel Input Form\" data-de=\"Eingabeformular für Brennstoff\">Fuel Input Form</h1>\n    <form action=\"/submit\" method=\"post\">\n        <div class=\"form-group\">\n            <label for=\"fuel\">\n                <span class=\"en-label\" data-en=\"Fuel:\">Fuel:</span>\n                <span class=\"de-label\" style=\"display: none;\" data-de=\"Brennstoff:\">Brennstoff:</span>\n            </label>\n            <select class=\"form-control\" id=\"fuel\" name=\"fuel\">\n                <option value=\"gas\" data-en=\"Gas\" data-de=\"Gas\">Gas</option>\n                <option value=\"oil\" data-en=\"Oil\" data-de=\"Öl\">Oil</option>\n                <option value=\"wood\" data-en=\"Wood\" data-de=\"Holz\">Wood</option>\n            </select>\n        </div>\n        <div class=\"form-group\">\n            <label for=\"amount\">\n                <span class=\"en-label\">Amount:</span>\n                <span class=\"de-label\" style=\"display: none;\">Menge:</span>\n            </label>\n            <input type=\"number\" class=\"form-control\" id=\"amount\" name=\"amount\">\n        </div>\n        \n        <!-- Adding dynamic unit label based on selected fuel -->\n        <div class=\"form-group\">\n            <label for=\"unit\">\n                <span class=\"en-label\">Unit:</span>\n                <span class=\"de-label\" style=\"display: none;\">Einheit:</span>\n            </label>\n            <span id=\"unitLabel\"></span>\n        </div>\n        \n        <div class=\"form-group\">\n            <label for=\"start\">\n                <span class=\"en-label\">Start Date:</span>\n                <span class=\"de-label\" style=\"display: none;\">Startdatum:</span>\n            </label>\n            <input type=\"date\" class=\"form-control\" id=\"start\" name=\"start\">\n        </div>\n        <div class=\"form-group\">\n            <label for=\"end\">\n                <span class=\"en-label\">End Date:</span>\n                <span class=\"de-label\" style=\"display: none;\">Enddatum:</span>\n            </label>\n            <input type=\"date\" class=\"form-control\" id=\"end\" name=\"end\">\n        </div>\n        <button type=\"submit\" class=\"btn btn-primary\">\n            <span class=\"en-label\">Submit</span>\n            <span class=\"de-label\" style=\"display: none;\">Absenden</span>\n        </button>\n    </form>\n    <div class=\"language-select\">\n        <span class=\"en-label\">\n            Language:\n        </span>\n        <span class=\"de-label\" style=\"display: none;\">\n            Sprache:\n        </span>\n        <img src=\"https://www.worldometers.info/img/flags/uk-flag.gif\" alt=\"English\" class=\"language-flag\" data-lang=\"en\">\n        <img src=\"https://www.worldometers.info/img/flags/gm-flag.gif\" alt=\"Deutsch\" class=\"language-flag\" data-lang=\"de\">\n    </div>\n</div>\n<script src=\"https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js\"></script>\n<script>\n    // Get the fuel select element\n    const fuelSelect = document.getElementById('fuel');\n    // Get the unit label element\n    const unitLabel = document.getElementById('unitLabel');\n    // Get the language select element\n    const languageFlags = document.getElementsByClassName('language-flag');\n    // Get the page title element\n    const pageTitle = document.getElementById('pageTitle');\n    // Get the page title element\n    const formTitle = document.getElementById('formTitle');\n    \n    // Function to set the unit label based on the selected fuel and language\n    function setUnitLabel(selectedFuel, selectedLanguage) {\n        if (selectedFuel === 'gas') {\n            unitLabel.textContent = selectedLanguage === 'de' ? 'Kubikmeter' : 'Cubic Meters';\n        } else if (selectedFuel === 'oil') {\n            unitLabel.textContent = selectedLanguage === 'de' ? 'Liter' : 'Liters';\n        } else if (selectedFuel === 'wood') {\n            unitLabel.textContent = selectedLanguage === 'de' ? 'Ster' : 'Cords';\n        }\n    }\n    \n    // Add event listeners to the fuel select element\n    fuelSelect.addEventListener('change', function() {\n        const selectedFuel = fuelSelect.value;\n        const selectedLanguage = getSelectedLanguage();\n        setUnitLabel(selectedFuel, selectedLanguage);\n    });\n    \n    // Add event listeners to the language flags\n    for (let i = 0; i < languageFlags.length; i++) {\n        languageFlags[i].addEventListener('click', function() {\n            const selectedLanguage = this.getAttribute('data-lang');\n            toggleLanguage(selectedLanguage);\n        });\n    }\n    \n    // Function to get the selected language\n    function getSelectedLanguage() {\n        return document.getElementsByClassName('en-label')[0].style.display !== 'none' ? 'en' : 'de';\n    }\n    \n    // Function to toggle the language\n    function toggleLanguage(selectedLanguage) {\n        const enLabels = document.getElementsByClassName('en-label');\n        const deLabels = document.getElementsByClassName('de-label');\n        for (let i = 0; i < enLabels.length; i++) {\n            if (selectedLanguage === 'de') {\n                enLabels[i].style.display = 'none';\n                deLabels[i].style.display = 'inline';\n            } else {\n                enLabels[i].style.display = 'inline';\n                deLabels[i].style.display = 'none';\n            }\n            // Set the fuel options text based on the selected language\n            const fuelOptions = fuelSelect.getElementsByTagName('option');\n            for (let j = 0; j < fuelOptions.length; j++) {\n                const option = fuelOptions[j];\n                if (selectedLanguage === 'de') {\n                    option.textContent = option.getAttribute('data-de');\n                } else {\n                    option.textContent = option.getAttribute('data-en');\n                }\n            }\n        }\n        setUnitLabel(fuelSelect.value, selectedLanguage);\n        // Set the page title based on the selected language\n        if (selectedLanguage === 'de') {\n            pageTitle.textContent = pageTitle.getAttribute('data-de');\n        } else {\n            pageTitle.textContent = pageTitle.getAttribute('data-en');\n        }\n        // Set the form title based on the selected language\n        if (selectedLanguage === 'de') {\n            formTitle.textContent = formTitle.getAttribute('data-de');\n        } else {\n            formTitle.textContent = formTitle.getAttribute('data-en');\n        }\n    }\n</script>\n</body>\n</html>\n",
         "output": "str",
-        "x": 560,
-        "y": 260,
+        "x": 260,
+        "y": 100,
         "wires": [
             [
                 "8eae1b3f.5eb8e8"
@@ -451,8 +451,8 @@
         "name": "",
         "statusCode": "",
         "headers": {},
-        "x": 720,
-        "y": 260,
+        "x": 420,
+        "y": 100,
         "wires": []
     },
     {
@@ -464,29 +464,11 @@
         "method": "post",
         "upload": false,
         "swaggerDoc": "",
-        "x": 410,
-        "y": 360,
+        "x": 110,
+        "y": 160,
         "wires": [
             [
                 "fb7b0f29daebc218"
-            ]
-        ]
-    },
-    {
-        "id": "f78a97a2.765318",
-        "type": "file",
-        "z": "d27ba1192b875173",
-        "name": "",
-        "filename": "./data.json",
-        "appendNewline": true,
-        "createDir": true,
-        "overwriteFile": "false",
-        "encoding": "utf8",
-        "x": 810,
-        "y": 360,
-        "wires": [
-            [
-                "9d9c1193.1a3df"
             ]
         ]
     },
@@ -497,8 +479,8 @@
         "name": "",
         "statusCode": "",
         "headers": {},
-        "x": 990,
-        "y": 360,
+        "x": 450,
+        "y": 160,
         "wires": []
     },
     {
@@ -512,12 +494,12 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 610,
-        "y": 360,
+        "x": 290,
+        "y": 160,
         "wires": [
             [
-                "f78a97a2.765318",
-                "a9d9feb2a9d32795"
+                "a9d9feb2a9d32795",
+                "9d9c1193.1a3df"
             ]
         ]
     },
@@ -529,8 +511,8 @@
         "links": [
             "5ee90d3319bef9d3"
         ],
-        "x": 755,
-        "y": 420,
+        "x": 415,
+        "y": 220,
         "wires": []
     },
     {
@@ -1206,6 +1188,16 @@
         "statusType": "auto",
         "x": 500,
         "y": 220,
+        "wires": []
+    },
+    {
+        "id": "2ce8814510a995d3",
+        "type": "comment",
+        "z": "d27ba1192b875173",
+        "name": "Manuel Input of fuel",
+        "info": "",
+        "x": 120,
+        "y": 40,
         "wires": []
     }
 ]
