@@ -1197,61 +1197,63 @@
         "wires": []
     },
     {
-        "id": "1416747d0a4b6e4a",
+        "id": "cd91a34ba4e7d183",
         "type": "ui_form",
-        "z": "0914f028aec835b0",
+        "z": "d27ba1192b875173",
         "name": "ManualInput",
         "label": "Eingabeformular für Brennstoff",
         "group": "c82b10bf46250cde",
         "order": 0,
-        "width": 0,
-        "height": 0,
+        "width": "3",
+        "height": "3",
         "options": [
             {
                 "label": "Brennstoff:",
-                "value": "Holz",
-                "type": "text",
+                "value": "fuel",
+                "type": "checkbox",
                 "required": true,
                 "rows": null
             },
             {
                 "label": "Menge",
-                "value": "Anzahl",
+                "value": "amount",
                 "type": "number",
                 "required": true,
                 "rows": null
             },
             {
                 "label": "Startdatum",
-                "value": "Start",
+                "value": "start",
                 "type": "date",
                 "required": true,
                 "rows": null
             },
             {
                 "label": "Enddatum",
-                "value": "Ende",
+                "value": "end",
                 "type": "date",
                 "required": true,
                 "rows": null
             }
         ],
         "formValue": {
-            "Holz": "",
-            "Anzahl": "",
-            "Start": "",
-            "Ende": ""
+            "fuel": false,
+            "amount": "",
+            "start": "",
+            "end": ""
         },
         "payload": "",
         "submit": "submit",
         "cancel": "cancel",
         "topic": "topic",
         "topicType": "msg",
-        "splitLayout": "",
-        "x": 350,
+        "splitLayout": true,
+        "x": 410,
         "y": 420,
         "wires": [
-            []
+            [
+                "fb7b0f29daebc218"
+            ]
         ]
     }
 ]
