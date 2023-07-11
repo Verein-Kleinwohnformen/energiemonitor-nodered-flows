@@ -102,8 +102,8 @@
         "type": "fs-ops-delete",
         "z": "e48ca2e6e4e7cd76",
         "name": "Delete old Files",
-        "path": "filePaths",
-        "pathType": "msg",
+        "path": "/data",
+        "pathType": "str",
         "filename": "oldFiles",
         "filenameType": "msg",
         "x": 900,
@@ -720,8 +720,7 @@
         "y": 500,
         "wires": [
             [
-                "node_fsops_move",
-                "0ef0b0a2cc4fc96f"
+                "node_fsops_move"
             ]
         ]
     },
@@ -744,22 +743,6 @@
         "wires": [
             []
         ]
-    },
-    {
-        "id": "0ef0b0a2cc4fc96f",
-        "type": "debug",
-        "z": "e48ca2e6e4e7cd76",
-        "name": "",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "false",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 890,
-        "y": 560,
-        "wires": []
     },
     {
         "id": "3c4b7b1204d9da6c",
@@ -1035,9 +1018,9 @@
         "id": "73e7376fcc80a58b",
         "type": "comment",
         "z": "0914f028aec835b0",
-        "name": "Manuel Datasync (press to sync current week file)",
+        "name": "Manuel Datasync (press to sync current day)",
         "info": "",
-        "x": 280,
+        "x": 270,
         "y": 240,
         "wires": []
     },
