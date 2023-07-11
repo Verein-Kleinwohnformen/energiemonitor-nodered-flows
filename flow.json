@@ -60,6 +60,20 @@
         "rejectUnauthorized": true
     },
     {
+        "id": "c33575314fb52cbd",
+        "type": "influxdb",
+        "hostname": "127.0.0.1",
+        "port": "8086",
+        "protocol": "http",
+        "database": "database",
+        "name": "Influx",
+        "usetls": false,
+        "tls": "",
+        "influxdbVersion": "2.0",
+        "url": "https://influxdb.monitor.e-mgmt.cloud/",
+        "rejectUnauthorized": true
+    },
+    {
         "id": "2",
         "type": "fs-ops-dir",
         "z": "e48ca2e6e4e7cd76",
@@ -106,7 +120,7 @@
         "pathType": "str",
         "filename": "oldFiles",
         "filenameType": "msg",
-        "x": 900,
+        "x": 920,
         "y": 640,
         "wires": [
             []
@@ -167,7 +181,7 @@
         "links": [
             "5ee90d3319bef9d3"
         ],
-        "x": 515,
+        "x": 535,
         "y": 100,
         "wires": []
     },
@@ -198,7 +212,7 @@
         "z": "e48ca2e6e4e7cd76",
         "client": "725f4c36dd3c91a4",
         "output": "output1",
-        "x": 930,
+        "x": 950,
         "y": 160,
         "wires": []
     },
@@ -226,7 +240,7 @@
         "name": "",
         "statusCode": "200",
         "headers": {},
-        "x": 480,
+        "x": 500,
         "y": 100,
         "wires": []
     },
@@ -258,7 +272,7 @@
         "links": [
             "5ee90d3319bef9d3"
         ],
-        "x": 435,
+        "x": 455,
         "y": 160,
         "wires": []
     },
@@ -571,7 +585,7 @@
         "id": "72a3ee3deb599eeb",
         "type": "influxdb in",
         "z": "e48ca2e6e4e7cd76",
-        "influxdb": "09b12c680d45a782",
+        "influxdb": "c33575314fb52cbd",
         "name": "",
         "query": "",
         "rawOutput": false,
@@ -616,7 +630,7 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 920,
+        "x": 940,
         "y": 360,
         "wires": [
             [
@@ -721,7 +735,7 @@
         "destFilename": "newFilename",
         "destFilenameType": "msg",
         "link": false,
-        "x": 880,
+        "x": 900,
         "y": 500,
         "wires": [
             []
@@ -847,7 +861,7 @@
             "17e829d689ec4693",
             "0741c0674db790cd"
         ],
-        "x": 535,
+        "x": 555,
         "y": 100,
         "wires": [
             [
@@ -875,7 +889,7 @@
         "links": [
             "2992401daa37639a"
         ],
-        "x": 1095,
+        "x": 1115,
         "y": 360,
         "wires": []
     },
@@ -1106,7 +1120,7 @@
         "links": [
             "5ee90d3319bef9d3"
         ],
-        "x": 515,
+        "x": 535,
         "y": 340,
         "wires": []
     },
@@ -1160,8 +1174,8 @@
         "complete": "false",
         "statusVal": "",
         "statusType": "auto",
-        "x": 600,
-        "y": 160,
+        "x": 590,
+        "y": 180,
         "wires": []
     },
     {
@@ -1198,8 +1212,91 @@
         "retentionPolicyV18Flux": "",
         "org": "test",
         "bucket": "bananapi",
-        "x": 930,
+        "x": 950,
         "y": 220,
+        "wires": []
+    },
+    {
+        "id": "9cdc7cd273297b18",
+        "type": "inject",
+        "z": "e48ca2e6e4e7cd76",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 230,
+        "y": 720,
+        "wires": [
+            [
+                "539b29212251d552"
+            ]
+        ]
+    },
+    {
+        "id": "539b29212251d552",
+        "type": "function",
+        "z": "e48ca2e6e4e7cd76",
+        "name": "Influx Query",
+        "func": "let measurement = \"sensors\";\nlet tagValue = global.get('uid');\n\n// Flux-Query-Befehl erstellen\nlet fluxQuery = `from(bucket: \"bananapi\")\n  |> range(start: -1h)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"${measurement}\")\n  |> filter(fn: (r) => r[\"tags_UID\"] == \"${tagValue}\")\n  |> filter(fn: (r) => r[\"host\"] == \"telegraf.monitor.e-mgmt.cloud\")\n  |> count()`;\n\n// Flux-Query-Befehl an den influxdb-Node übergeben\nmsg.query = fluxQuery;\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 430,
+        "y": 720,
+        "wires": [
+            [
+                "2de598295778fd70"
+            ]
+        ]
+    },
+    {
+        "id": "2de598295778fd70",
+        "type": "influxdb in",
+        "z": "e48ca2e6e4e7cd76",
+        "influxdb": "09b12c680d45a782",
+        "name": "",
+        "query": "",
+        "rawOutput": false,
+        "precision": "",
+        "retentionPolicy": "",
+        "org": "test",
+        "x": 640,
+        "y": 720,
+        "wires": [
+            [
+                "40a3c63919046b4c"
+            ]
+        ]
+    },
+    {
+        "id": "40a3c63919046b4c",
+        "type": "debug",
+        "z": "e48ca2e6e4e7cd76",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 850,
+        "y": 720,
         "wires": []
     }
 ]
