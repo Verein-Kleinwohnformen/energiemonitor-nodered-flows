@@ -84,7 +84,7 @@
         "filterType": "str",
         "dir": "payload",
         "dirType": "msg",
-        "x": 490,
+        "x": 350,
         "y": 640,
         "wires": [
             [
@@ -103,7 +103,7 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 690,
+        "x": 550,
         "y": 640,
         "wires": [
             [
@@ -120,7 +120,7 @@
         "pathType": "str",
         "filename": "oldFiles",
         "filenameType": "msg",
-        "x": 920,
+        "x": 780,
         "y": 640,
         "wires": [
             []
@@ -141,7 +141,7 @@
         "getstatusoncommand": true,
         "devicetype": "Measure",
         "outputs": 2,
-        "x": 150,
+        "x": 130,
         "y": 100,
         "wires": [
             [
@@ -165,7 +165,7 @@
         "getstatusoncommand": true,
         "devicetype": "Measure",
         "outputs": 1,
-        "x": 170,
+        "x": 150,
         "y": 180,
         "wires": [
             [
@@ -181,7 +181,7 @@
         "links": [
             "5ee90d3319bef9d3"
         ],
-        "x": 535,
+        "x": 515,
         "y": 100,
         "wires": []
     },
@@ -197,7 +197,7 @@
             "907aa8256885c317",
             "2bbe990a1d8abb98"
         ],
-        "x": 195,
+        "x": 55,
         "y": 160,
         "wires": [
             [
@@ -212,7 +212,7 @@
         "z": "e48ca2e6e4e7cd76",
         "client": "725f4c36dd3c91a4",
         "output": "output1",
-        "x": 950,
+        "x": 810,
         "y": 160,
         "wires": []
     },
@@ -287,7 +287,7 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 390,
+        "x": 370,
         "y": 100,
         "wires": [
             [
@@ -307,7 +307,7 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 390,
+        "x": 370,
         "y": 180,
         "wires": [
             [
@@ -335,7 +335,7 @@
         "onceDelay": 0.1,
         "topic": "",
         "payloadType": "date",
-        "x": 170,
+        "x": 110,
         "y": 100,
         "wires": [
             [
@@ -356,7 +356,7 @@
         "complete": "false",
         "statusVal": "",
         "statusType": "auto",
-        "x": 570,
+        "x": 510,
         "y": 100,
         "wires": []
     },
@@ -379,7 +379,7 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 360,
+        "x": 300,
         "y": 100,
         "wires": [
             [
@@ -413,7 +413,7 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 360,
+        "x": 300,
         "y": 160,
         "wires": [
             [
@@ -449,7 +449,7 @@
         "syntax": "mustache",
         "template": "<!DOCTYPE html>\n<html>\n<head>\n    <title id=\"pageTitle\" data-en=\"Fuel Input Form\" data-de=\"Eingabeformular für Brennstoff\">Fuel Input Form</title>\n    <link rel=\"stylesheet\" href=\"../red/style.min.css\">\n    <style>\n        .language-select {\n            position: absolute;\n            top: 10px;\n            right: 10px;\n        }\n        .language-select img {\n            width: 24px;\n            height: 16px;\n            cursor: pointer;\n            margin-left: 5px;\n        }\n    </style>\n</head>\n<body>\n<div class=\"red-ui-editor-text-container\">\n    <h1 class=\"my-4\" id=\"formTitle\" data-en=\"Fuel Input Form\" data-de=\"Eingabeformular für Brennstoff\">Fuel Input Form</h1>\n    <form action=\"/submit\" method=\"post\">\n        <div class=\"form-group\">\n            <label for=\"fuel\">\n                <span class=\"en-label\" data-en=\"Fuel:\">Fuel:</span>\n                <span class=\"de-label\" style=\"display: none;\" data-de=\"Brennstoff:\">Brennstoff:</span>\n            </label>\n            <select class=\"form-control\" id=\"fuel\" name=\"fuel\">\n                <option value=\"gas\" data-en=\"Gas\" data-de=\"Gas\">Gas</option>\n                <option value=\"oil\" data-en=\"Oil\" data-de=\"Öl\">Oil</option>\n                <option value=\"wood\" data-en=\"Wood\" data-de=\"Holz\">Wood</option>\n            </select>\n        </div>\n        <div class=\"form-group\">\n            <label for=\"amount\">\n                <span class=\"en-label\">Amount:</span>\n                <span class=\"de-label\" style=\"display: none;\">Menge:</span>\n            </label>\n            <input type=\"number\" class=\"form-control\" id=\"amount\" name=\"amount\">\n        </div>\n        \n        <!-- Adding dynamic unit label based on selected fuel -->\n        <div class=\"form-group\">\n            <label for=\"unit\">\n                <span class=\"en-label\">Unit:</span>\n                <span class=\"de-label\" style=\"display: none;\">Einheit:</span>\n            </label>\n            <span id=\"unitLabel\"></span>\n        </div>\n        \n        <div class=\"form-group\">\n            <label for=\"start\">\n                <span class=\"en-label\">Start Date:</span>\n                <span class=\"de-label\" style=\"display: none;\">Startdatum:</span>\n            </label>\n            <input type=\"date\" class=\"form-control\" id=\"start\" name=\"start\">\n        </div>\n        <div class=\"form-group\">\n            <label for=\"end\">\n                <span class=\"en-label\">End Date:</span>\n                <span class=\"de-label\" style=\"display: none;\">Enddatum:</span>\n            </label>\n            <input type=\"date\" class=\"form-control\" id=\"end\" name=\"end\">\n        </div>\n        <button type=\"submit\" class=\"btn btn-primary\">\n            <span class=\"en-label\">Submit</span>\n            <span class=\"de-label\" style=\"display: none;\">Absenden</span>\n        </button>\n    </form>\n    <div class=\"language-select\">\n        <span class=\"en-label\">\n            Language:\n        </span>\n        <span class=\"de-label\" style=\"display: none;\">\n            Sprache:\n        </span>\n        <img src=\"https://www.worldometers.info/img/flags/uk-flag.gif\" alt=\"English\" class=\"language-flag\" data-lang=\"en\">\n        <img src=\"https://www.worldometers.info/img/flags/gm-flag.gif\" alt=\"Deutsch\" class=\"language-flag\" data-lang=\"de\">\n    </div>\n</div>\n<script src=\"https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js\"></script>\n<script>\n    // Get the fuel select element\n    const fuelSelect = document.getElementById('fuel');\n    // Get the unit label element\n    const unitLabel = document.getElementById('unitLabel');\n    // Get the language select element\n    const languageFlags = document.getElementsByClassName('language-flag');\n    // Get the page title element\n    const pageTitle = document.getElementById('pageTitle');\n    // Get the page title element\n    const formTitle = document.getElementById('formTitle');\n    \n    // Function to set the unit label based on the selected fuel and language\n    function setUnitLabel(selectedFuel, selectedLanguage) {\n        if (selectedFuel === 'gas') {\n            unitLabel.textContent = selectedLanguage === 'de' ? 'Kubikmeter' : 'Cubic Meters';\n        } else if (selectedFuel === 'oil') {\n            unitLabel.textContent = selectedLanguage === 'de' ? 'Liter' : 'Liters';\n        } else if (selectedFuel === 'wood') {\n            unitLabel.textContent = selectedLanguage === 'de' ? 'Ster' : 'Cords';\n        }\n    }\n    \n    // Add event listeners to the fuel select element\n    fuelSelect.addEventListener('change', function() {\n        const selectedFuel = fuelSelect.value;\n        const selectedLanguage = getSelectedLanguage();\n        setUnitLabel(selectedFuel, selectedLanguage);\n    });\n    \n    // Add event listeners to the language flags\n    for (let i = 0; i < languageFlags.length; i++) {\n        languageFlags[i].addEventListener('click', function() {\n            const selectedLanguage = this.getAttribute('data-lang');\n            toggleLanguage(selectedLanguage);\n        });\n    }\n    \n    // Function to get the selected language\n    function getSelectedLanguage() {\n        return document.getElementsByClassName('en-label')[0].style.display !== 'none' ? 'en' : 'de';\n    }\n    \n    // Function to toggle the language\n    function toggleLanguage(selectedLanguage) {\n        const enLabels = document.getElementsByClassName('en-label');\n        const deLabels = document.getElementsByClassName('de-label');\n        for (let i = 0; i < enLabels.length; i++) {\n            if (selectedLanguage === 'de') {\n                enLabels[i].style.display = 'none';\n                deLabels[i].style.display = 'inline';\n            } else {\n                enLabels[i].style.display = 'inline';\n                deLabels[i].style.display = 'none';\n            }\n            // Set the fuel options text based on the selected language\n            const fuelOptions = fuelSelect.getElementsByTagName('option');\n            for (let j = 0; j < fuelOptions.length; j++) {\n                const option = fuelOptions[j];\n                if (selectedLanguage === 'de') {\n                    option.textContent = option.getAttribute('data-de');\n                } else {\n                    option.textContent = option.getAttribute('data-en');\n                }\n            }\n        }\n        setUnitLabel(fuelSelect.value, selectedLanguage);\n        // Set the page title based on the selected language\n        if (selectedLanguage === 'de') {\n            pageTitle.textContent = pageTitle.getAttribute('data-de');\n        } else {\n            pageTitle.textContent = pageTitle.getAttribute('data-en');\n        }\n        // Set the form title based on the selected language\n        if (selectedLanguage === 'de') {\n            formTitle.textContent = formTitle.getAttribute('data-de');\n        } else {\n            formTitle.textContent = formTitle.getAttribute('data-en');\n        }\n    }\n</script>\n</body>\n</html>\n",
         "output": "str",
-        "x": 260,
+        "x": 280,
         "y": 100,
         "wires": [
             [
@@ -464,7 +464,7 @@
         "name": "",
         "statusCode": "",
         "headers": {},
-        "x": 420,
+        "x": 450,
         "y": 100,
         "wires": []
     },
@@ -544,7 +544,7 @@
         "onceDelay": "4200",
         "topic": "",
         "payloadType": "date",
-        "x": 270,
+        "x": 130,
         "y": 360,
         "wires": [
             [
@@ -558,7 +558,7 @@
         "z": "e48ca2e6e4e7cd76",
         "name": "Check InfluxDB data",
         "info": "",
-        "x": 270,
+        "x": 130,
         "y": 300,
         "wires": []
     },
@@ -573,7 +573,7 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 350,
+        "x": 210,
         "y": 160,
         "wires": [
             [
@@ -592,7 +592,7 @@
         "precision": "",
         "retentionPolicy": "",
         "org": "Kleinwohnformen",
-        "x": 690,
+        "x": 550,
         "y": 360,
         "wires": [
             [
@@ -611,7 +611,7 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 490,
+        "x": 350,
         "y": 360,
         "wires": [
             [
@@ -630,7 +630,7 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 940,
+        "x": 800,
         "y": 360,
         "wires": [
             [
@@ -648,7 +648,7 @@
         "createDir": false,
         "overwriteFile": "false",
         "encoding": "utf8",
-        "x": 350,
+        "x": 210,
         "y": 100,
         "wires": [
             []
@@ -660,7 +660,7 @@
         "z": "e48ca2e6e4e7cd76",
         "name": "Upload IoT Hub",
         "info": "",
-        "x": 260,
+        "x": 120,
         "y": 40,
         "wires": []
     },
@@ -670,7 +670,7 @@
         "z": "e48ca2e6e4e7cd76",
         "name": "New File all 7 days",
         "info": "",
-        "x": 270,
+        "x": 130,
         "y": 440,
         "wires": []
     },
@@ -694,7 +694,7 @@
         "onceDelay": 0.1,
         "topic": "",
         "payloadType": "date",
-        "x": 270,
+        "x": 130,
         "y": 500,
         "wires": [
             [
@@ -713,7 +713,7 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 590,
+        "x": 450,
         "y": 500,
         "wires": [
             [
@@ -735,7 +735,7 @@
         "destFilename": "newFilename",
         "destFilenameType": "msg",
         "link": false,
-        "x": 900,
+        "x": 760,
         "y": 500,
         "wires": [
             []
@@ -749,7 +749,7 @@
         "scope": [
             "62418716caaba7d7"
         ],
-        "x": 240,
+        "x": 100,
         "y": 220,
         "wires": [
             [
@@ -776,7 +776,7 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 460,
+        "x": 320,
         "y": 220,
         "wires": [
             []
@@ -798,7 +798,7 @@
         "randomUnits": "seconds",
         "drop": false,
         "allowrate": false,
-        "x": 700,
+        "x": 560,
         "y": 160,
         "wires": [
             [
@@ -860,7 +860,7 @@
             "17e829d689ec4693",
             "0741c0674db790cd"
         ],
-        "x": 555,
+        "x": 415,
         "y": 100,
         "wires": [
             [
@@ -888,7 +888,7 @@
         "links": [
             "2992401daa37639a"
         ],
-        "x": 1115,
+        "x": 975,
         "y": 360,
         "wires": []
     },
@@ -936,7 +936,7 @@
         "z": "e48ca2e6e4e7cd76",
         "name": "Delete Files older 4 Weeks",
         "info": "",
-        "x": 290,
+        "x": 150,
         "y": 580,
         "wires": []
     },
@@ -960,7 +960,7 @@
         "onceDelay": 0.1,
         "topic": "",
         "payloadType": "date",
-        "x": 270,
+        "x": 130,
         "y": 640,
         "wires": [
             [
@@ -990,7 +990,7 @@
         "z": "0914f028aec835b0",
         "name": "Init Settings",
         "info": "",
-        "x": 170,
+        "x": 110,
         "y": 40,
         "wires": []
     },
@@ -1000,7 +1000,7 @@
         "z": "0914f028aec835b0",
         "name": "Manuel Datasync (press to sync current day)",
         "info": "",
-        "x": 270,
+        "x": 210,
         "y": 240,
         "wires": []
     },
@@ -1024,7 +1024,7 @@
         "onceDelay": 0.1,
         "topic": "",
         "payloadType": "date",
-        "x": 160,
+        "x": 100,
         "y": 300,
         "wires": [
             [
@@ -1040,7 +1040,7 @@
         "links": [
             "e96ce99e239867c8"
         ],
-        "x": 295,
+        "x": 235,
         "y": 300,
         "wires": []
     },
@@ -1050,7 +1050,7 @@
         "z": "c6e1822c71f940ee",
         "name": "Shelly Housemeter",
         "info": "",
-        "x": 150,
+        "x": 130,
         "y": 40,
         "wires": []
     },
@@ -1060,7 +1060,7 @@
         "z": "c6e1822c71f940ee",
         "name": "Shelly Solarmeter",
         "info": "",
-        "x": 150,
+        "x": 130,
         "y": 280,
         "wires": []
     },
@@ -1079,7 +1079,7 @@
         "getstatusoncommand": true,
         "devicetype": "Measure",
         "outputs": 2,
-        "x": 150,
+        "x": 130,
         "y": 340,
         "wires": [
             [
@@ -1103,7 +1103,7 @@
         "getstatusoncommand": true,
         "devicetype": "Measure",
         "outputs": 1,
-        "x": 170,
+        "x": 150,
         "y": 420,
         "wires": [
             [
@@ -1119,7 +1119,7 @@
         "links": [
             "5ee90d3319bef9d3"
         ],
-        "x": 535,
+        "x": 515,
         "y": 340,
         "wires": []
     },
@@ -1134,7 +1134,7 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 390,
+        "x": 370,
         "y": 340,
         "wires": [
             [
@@ -1153,7 +1153,7 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 390,
+        "x": 370,
         "y": 420,
         "wires": [
             [
@@ -1173,7 +1173,7 @@
         "complete": "false",
         "statusVal": "",
         "statusType": "auto",
-        "x": 590,
+        "x": 570,
         "y": 180,
         "wires": []
     },
