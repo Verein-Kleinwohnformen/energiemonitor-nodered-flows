@@ -154,7 +154,7 @@
         "id": "42f5d918c1ce014d",
         "type": "shelly-gen2",
         "z": "c6e1822c71f940ee",
-        "hostname": "",
+        "hostname": "192.168.33.1",
         "description": "Shelly Gen2 (Pro 3EM)",
         "mode": "polling",
         "server": "",
@@ -1024,7 +1024,7 @@
         "onceDelay": 0.1,
         "topic": "",
         "payloadType": "date",
-        "x": 100,
+        "x": 110,
         "y": 300,
         "wires": [
             [
