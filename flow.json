@@ -462,9 +462,9 @@
         "type": "http response",
         "z": "d27ba1192b875173",
         "name": "",
-        "statusCode": "",
+        "statusCode": "200",
         "headers": {},
-        "x": 450,
+        "x": 460,
         "y": 100,
         "wires": []
     },
@@ -490,9 +490,9 @@
         "type": "http response",
         "z": "d27ba1192b875173",
         "name": "",
-        "statusCode": "",
+        "statusCode": "200",
         "headers": {},
-        "x": 450,
+        "x": 460,
         "y": 160,
         "wires": []
     },
