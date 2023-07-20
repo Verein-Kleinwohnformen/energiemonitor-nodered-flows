@@ -154,7 +154,7 @@
         "id": "42f5d918c1ce014d",
         "type": "shelly-gen2",
         "z": "c6e1822c71f940ee",
-        "hostname": "192.168.33.1",
+        "hostname": "",
         "description": "Shelly Gen2 (Pro 3EM)",
         "mode": "polling",
         "server": "",
@@ -481,7 +481,8 @@
         "y": 160,
         "wires": [
             [
-                "fb7b0f29daebc218"
+                "fb7b0f29daebc218",
+                "41f61016fd97ba25"
             ]
         ]
     },
@@ -1195,6 +1196,22 @@
         "info": "",
         "x": 130,
         "y": 40,
+        "wires": []
+    },
+    {
+        "id": "41f61016fd97ba25",
+        "type": "debug",
+        "z": "d27ba1192b875173",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 310,
+        "y": 220,
         "wires": []
     }
 ]
