@@ -481,8 +481,7 @@
         "y": 160,
         "wires": [
             [
-                "fb7b0f29daebc218",
-                "41f61016fd97ba25"
+                "fb7b0f29daebc218"
             ]
         ]
     },
@@ -502,7 +501,7 @@
         "type": "function",
         "z": "d27ba1192b875173",
         "name": "JSON",
-        "func": "let measurement = \"manualInput\";\nlet uid = global.get('uid');\nlet currentTime = new Date();\n\nfunction addsensordata(device, value){\n    let record = {\n        \"measurement\": measurement,\n        \"timestamp\": currentTime.toISOString(),\n        \"tags\":{\n            \"UID\": uid,\n            \"device\": device,\n            \"model\": value.model,\n        },\n        \"fields\": {\n            \"fuel\": value.fuel,\n            \"amount\": parseFloat(value.amount),\n            \"unit\": value.unit,\n            \"start\": value.start,\n            \"end\": value.end\n        }\n    };\n    return record;\n}\n\nlet data = [];\n\ndata.push(addsensordata(\"manualInput\", msg.payload));\n\nmsg.payload = data;\n\nreturn msg;\n",
+        "func": "let measurement = \"manualInput\";\nlet uid = global.get('uid');\nlet currentTime = new Date();\n\nfunction addsensordata(device, value){\n    let record = {\n        \"measurement\": measurement,\n        \"timestamp\": currentTime.toISOString(),\n        \"tags\":{\n            \"UID\": uid,\n            \"device\": device,\n            \"model\": value.model,\n        },\n        \"fields\": {\n            \"fuel\": value.fuel,\n            \"amount\": parseFloat(value.amount),\n            \"unit\": value.unit,\n            \"start\": value.start.toIsoString(),\n            \"end\": value.end.toIsoString()\n        }\n    };\n    return record;\n}\n\nlet data = [];\n\ndata.push(addsensordata(\"manualInput\", msg.payload));\n\nmsg.payload = data;\n\nreturn msg;\n",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
@@ -1199,19 +1198,82 @@
         "wires": []
     },
     {
-        "id": "41f61016fd97ba25",
-        "type": "debug",
+        "id": "620d3ec2293e3ffc",
+        "type": "inject",
         "z": "d27ba1192b875173",
+        "name": "Trigger every hour",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "3600",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "4200",
+        "topic": "",
+        "payloadType": "date",
+        "x": 150,
+        "y": 340,
+        "wires": [
+            [
+                "72f758d52152baa9"
+            ]
+        ]
+    },
+    {
+        "id": "bca9e5de01479c07",
+        "type": "influxdb in",
+        "z": "d27ba1192b875173",
+        "influxdb": "c33575314fb52cbd",
         "name": "",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "false",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 310,
-        "y": 220,
-        "wires": []
+        "query": "",
+        "rawOutput": false,
+        "precision": "",
+        "retentionPolicy": "",
+        "org": "Kleinwohnformen",
+        "x": 570,
+        "y": 340,
+        "wires": [
+            [
+                "0cfa603dce391847"
+            ]
+        ]
+    },
+    {
+        "id": "72f758d52152baa9",
+        "type": "function",
+        "z": "d27ba1192b875173",
+        "name": "Influx Query",
+        "func": "let measurement = \"sensors\";\nlet tagValue = global.get('uid');\n\n// Flux-Query-Befehl erstellen\nlet fluxQuery = `from(bucket: \"bananapi\")\n  |> range(start: -1h)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"${measurement}\")\n  |> filter(fn: (r) => r[\"tags_UID\"] == \"${tagValue}\")\n  |> filter(fn: (r) => r[\"host\"] == \"telegraf.monitor.e-mgmt.cloud\")\n  |> count()`;\n\n// Flux-Query-Befehl an den influxdb-Node übergeben\nmsg.query = fluxQuery;\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 370,
+        "y": 340,
+        "wires": [
+            [
+                "bca9e5de01479c07"
+            ]
+        ]
+    },
+    {
+        "id": "0cfa603dce391847",
+        "type": "function",
+        "z": "d27ba1192b875173",
+        "name": "Calculate recived Data",
+        "func": "// Get the dataCache\nlet dataCache = flow.get(\"DataCache\")\nlet stat = flow.get(\"ConStatus\")\n\n// Group Data\nlet groupedData = dataCache.reduce((result, entry) => {\n    if (entry[0].tags) {\n        let device = entry[0].tags.device\n        if (!result[device]) {\n            result[device] = 0;\n        }\n        result[device]++;\n    }\n    return result;\n}, {});\n\n// Array im msg.payload\nlet array = msg.payload\nlet dataTrue = 0\nlet dataComplete = false\n\n// Über das Array iterieren _value-Wert prüfen\nfor (let i = 0; i < array.length; i++) {\n  let value = array[i]._value\n  let device = array[i].tags_device\n  let sentData = groupedData[device]\n  if (sentData === value || sentData === (value+1)) {\n    dataTrue++\n  } else{\n      \n  }\n}\n\nif(dataTrue === array.length){\n    dataComplete = true\n}else{\n    dataComplete = false\n}\n\nif (dataComplete) {\n    node.status({fill:\"green\",shape:\"dot\",text:\"All data received\"})\n} else {\n    node.status({fill:\"red\",shape:\"dot\",text:\"Data missing\"})\n    if (stat === \"Connected\" || stat === \"Sending message\"){\n        for (let item of dataCache) {\n            node.send({ payload: item });\n        }\n    }\n}",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 820,
+        "y": 340,
+        "wires": [
+            []
+        ]
     }
 ]
