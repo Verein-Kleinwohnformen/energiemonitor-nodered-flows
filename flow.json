@@ -971,7 +971,7 @@
         "id": "d9091e28eb107a7b",
         "type": "shelly-gen1",
         "z": "c6e1822c71f940ee",
-        "hostname": "msg.solarmeter",
+        "hostname": "",
         "description": "Shelly Gen1 (EM3)",
         "mode": "polling",
         "server": "",
