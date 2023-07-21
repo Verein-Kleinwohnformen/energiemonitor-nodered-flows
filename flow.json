@@ -130,7 +130,7 @@
         "id": "8e2e1ca31341359b",
         "type": "shelly-gen1",
         "z": "c6e1822c71f940ee",
-        "hostname": "msg.payload",
+        "hostname": "{msg.payload}",
         "description": "Shelly Gen1 (EM3)",
         "mode": "polling",
         "server": "",
