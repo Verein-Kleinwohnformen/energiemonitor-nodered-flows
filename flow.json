@@ -130,7 +130,7 @@
         "id": "8e2e1ca31341359b",
         "type": "shelly-gen1",
         "z": "c6e1822c71f940ee",
-        "hostname": "{msg.payload}",
+        "hostname": "",
         "description": "Shelly Gen1 (EM3)",
         "mode": "polling",
         "server": "",
@@ -1508,7 +1508,9 @@
         "name": "",
         "props": [
             {
-                "p": "payload"
+                "p": "payload.hostname",
+                "v": "housemeter",
+                "vt": "global"
             }
         ],
         "repeat": "",
@@ -1516,9 +1518,7 @@
         "once": false,
         "onceDelay": 0.1,
         "topic": "",
-        "payload": "housemeter",
-        "payloadType": "global",
-        "x": 130,
+        "x": 90,
         "y": 100,
         "wires": [
             [
