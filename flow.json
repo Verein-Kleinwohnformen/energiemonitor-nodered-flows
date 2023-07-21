@@ -1235,23 +1235,6 @@
         "wires": []
     },
     {
-        "id": "54c1c89216b82976",
-        "type": "function",
-        "z": "c6e1822c71f940ee",
-        "name": "",
-        "func": "\nreturn msg;",
-        "outputs": 1,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 820,
-        "y": 540,
-        "wires": [
-            []
-        ]
-    },
-    {
         "id": "e7b8a20c1f3a0fec",
         "type": "file in",
         "z": "0914f028aec835b0",
@@ -1586,7 +1569,7 @@
         "type": "function",
         "z": "0914f028aec835b0",
         "name": "",
-        "func": "\nglobal.set('solarmeterModel', undefined);\nreturn msg;",
+        "func": "\nglobal.set('uid', 'a40435b9-d578-4f2c-8395-fa51b19925bb');\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
