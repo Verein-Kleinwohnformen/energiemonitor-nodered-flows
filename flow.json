@@ -1406,12 +1406,12 @@
                 "vt": "global"
             }
         ],
-        "repeat": "",
+        "repeat": "60",
         "crontab": "",
         "once": true,
         "onceDelay": "5",
         "topic": "",
-        "x": 120,
+        "x": 130,
         "y": 140,
         "wires": [
             [
@@ -1436,12 +1436,12 @@
                 "vt": "global"
             }
         ],
-        "repeat": "",
+        "repeat": "60",
         "crontab": "",
         "once": true,
         "onceDelay": "5",
         "topic": "",
-        "x": 120,
+        "x": 130,
         "y": 380,
         "wires": [
             [
