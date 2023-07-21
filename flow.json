@@ -416,7 +416,7 @@
             "5ee90d3319bef9d3"
         ],
         "x": 835,
-        "y": 220,
+        "y": 240,
         "wires": []
     },
     {
@@ -1086,9 +1086,7 @@
         "x": 290,
         "y": 160,
         "wires": [
-            [
-                "f8b5f9736e147f0c"
-            ]
+            []
         ]
     },
     {
@@ -1134,18 +1132,21 @@
         "type": "function",
         "z": "d27ba1192b875173",
         "name": "",
-        "func": "// Zugriff auf DataCache\nlet cache = flow.get('DataCache') || [];\n\n// Durchlaufen des msg.payload-Arrays\nfor(let item of msg.payload) {\n    // Überprüfen, ob der aktuelle Timestamp bereits im Cache existiert\n    for(let cItem of cache){\n        node.warn(cItem.timestamp);\n        if(cItem.timestamp == item._time) {\n            // Ein Fehler wird geworfen, wenn Daten mit dem gleichen Timestamp existieren\n            node.error(\"Daten mit dem gleichen Timestamp existieren bereits\");\n            return;\n        }\n    }\n}\n\n// Daten an den nächsten Node weitergeben, wenn kein Fehler aufgetreten ist\nreturn msg;\n",
-        "outputs": 1,
+        "func": "// Zugriff auf DataCache\nlet cache = flow.get('DataCache') || [];\nlet overlappingDates = [];\n\n// Durchlaufen des msg.payload-Arrays\nfor(let item of msg.payload) {\n    // Überprüfen, ob der aktuelle Timestamp bereits im Cache existiert\n    for(let cItem of cache){\n        if(cItem.timestamp == item._time) {\n            // Füge das Datum zur Liste der überlappenden Daten hinzu\n            overlappingDates.push(new Date(item._time));\n        }\n    }\n}\n\nif(overlappingDates.length > 0) {\n    // Überlappungen gefunden - sende Fehler\n    msg.payload = {\n        error: \"Es gibt zeitliche Überschneidungen\",\n        overlappingDates: overlappingDates.map(date => date.toISOString())\n    };\n    return [msg, null];\n}\n\n// Keine Überlappungen gefunden - Daten weitergeben\nreturn [null, msg];\n",
+        "outputs": 2,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
         "libs": [],
         "x": 700,
-        "y": 180,
+        "y": 200,
         "wires": [
             [
                 "a1277ad639bebe3d",
-                "0b6f6a54d5facb7c"
+                "a84b0aec6d22f86a"
+            ],
+            [
+                "a84b0aec6d22f86a"
             ]
         ]
     },
@@ -1559,39 +1560,23 @@
         "statusCode": "200",
         "headers": {},
         "x": 880,
-        "y": 140,
-        "wires": []
-    },
-    {
-        "id": "0b6f6a54d5facb7c",
-        "type": "debug",
-        "z": "d27ba1192b875173",
-        "name": "",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "false",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 900,
-        "y": 280,
-        "wires": []
-    },
-    {
-        "id": "f8b5f9736e147f0c",
-        "type": "debug",
-        "z": "d27ba1192b875173",
-        "name": "",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "false",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 480,
         "y": 160,
+        "wires": []
+    },
+    {
+        "id": "a84b0aec6d22f86a",
+        "type": "debug",
+        "z": "d27ba1192b875173",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 890,
+        "y": 280,
         "wires": []
     }
 ]
