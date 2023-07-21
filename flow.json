@@ -399,24 +399,13 @@
         "upload": false,
         "swaggerDoc": "",
         "x": 110,
-        "y": 160,
+        "y": 200,
         "wires": [
             [
                 "fb7b0f29daebc218",
                 "d2a9920ac9315176"
             ]
         ]
-    },
-    {
-        "id": "9d9c1193.1a3df",
-        "type": "http response",
-        "z": "d27ba1192b875173",
-        "name": "",
-        "statusCode": "200",
-        "headers": {},
-        "x": 460,
-        "y": 160,
-        "wires": []
     },
     {
         "id": "a9d9feb2a9d32795",
@@ -426,7 +415,7 @@
         "links": [
             "5ee90d3319bef9d3"
         ],
-        "x": 995,
+        "x": 835,
         "y": 220,
         "wires": []
     },
@@ -1088,7 +1077,7 @@
         "type": "function",
         "z": "d27ba1192b875173",
         "name": "JSON",
-        "func": "let measurement = \"manualInput\";\nlet uid = global.get('uid');\n\nfunction addDailyData(device, value, day, dailyAmount){\n    let record = {\n        \"measurement\": measurement,\n        \"timestamp\": day.toISOString(),\n        \"tags\":{\n            \"UID\": uid,\n            \"device\": device,\n            \"fuel\": value.fuel,\n            \"unit\": value.unit,\n        },\n        \"fields\": {\n            \"amount\": dailyAmount,\n        }\n    };\n    return record;\n}\n\nlet startDate = new Date(msg.payload.start);\nlet endDate = new Date(msg.payload.end);\n\nlet totalDays = 1 + Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24)); // Berechnen der Gesamtzahl der Tage\nlet dailyAmount = parseFloat(msg.payload.amount) / totalDays; // Täglicher Betrag\n\nlet data = [];\n\n// Erstellen Sie einen Eintrag für jeden Tag zwischen Start- und Enddatum\nfor (let day = startDate; day <= endDate; day.setDate(day.getDate() + 1)) {\n    data.push(addDailyData(\"manualInput\", msg.payload, new Date(day), dailyAmount));\n}\n\nmsg.payload = data;\n\nreturn msg;\n",
+        "func": "let measurement = \"manualInput\";\nlet uid = global.get('uid');\n\nfunction addDailyData(device, value, day, dailyAmount){\n    let record = {\n        \"measurement\": measurement,\n        \"timestamp\": day.toISOString(),\n        \"tags\":{\n            \"UID\": uid,\n            \"device\": device,\n            \"fuel\": value.fuel,\n            \"unit\": value.unit,\n        },\n        \"fields\": {\n            \"amount\": dailyAmount,\n        }\n    };\n    return record;\n}\n\nlet startDate = new Date(msg.payload.start);\nlet endDate = new Date(msg.payload.end);\n\nlet totalDays = 1 + Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24)); // Berechnen der Gesamtzahl der Tage\nlet dailyAmount = parseFloat(msg.payload.amount) / totalDays; // Täglicher Betrag\n\nlet data = [];\n\n// Erstellen Sie einen Eintrag für jeden Tag zwischen Start- und Enddatum\nfor (let day = startDate; day <= endDate; day.setDate(day.getDate() + 1)) {\n    data.push(addDailyData(\"manualInput\", msg.payload, new Date(day), dailyAmount));\n}\n\nmsg.payload = data;\nflow.set(\"DataCache\", data)\n\nreturn msg;\n",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
@@ -1097,10 +1086,7 @@
         "x": 290,
         "y": 160,
         "wires": [
-            [
-                "9d9c1193.1a3df",
-                "236107f380c993ba"
-            ]
+            []
         ]
     },
     {
@@ -1115,7 +1101,7 @@
         "finalize": "",
         "libs": [],
         "x": 310,
-        "y": 220,
+        "y": 240,
         "wires": [
             [
                 "930e20869788563a"
@@ -1134,10 +1120,10 @@
         "retentionPolicy": "",
         "org": "Kleinwohnformen",
         "x": 510,
-        "y": 220,
+        "y": 240,
         "wires": [
             [
-                "236107f380c993ba"
+                "aa8ab5e9d2dfe9f4"
             ]
         ]
     },
@@ -1146,16 +1132,18 @@
         "type": "function",
         "z": "d27ba1192b875173",
         "name": "",
-        "func": "\nreturn msg;",
+        "func": "// Zugriff auf DataCache\nlet cache = flow.get('DataCache') || [];\n\n// Überprüfen, ob msg.payload ein Array ist\nif(Array.isArray(msg.payload)) {\n    // Durchlaufen des msg.payload-Arrays\n    for(let item of msg.payload) {\n        // Überprüfen, ob der aktuelle Timestamp bereits im Cache existiert\n        if(cache.some(cacheItem => cacheItem.timestamp === item.timestamp)) {\n            // Ein Fehler wird geworfen, wenn Daten mit dem gleichen Timestamp existieren\n            node.error(\"Daten mit dem gleichen Timestamp existieren bereits\");\n            return;\n        }\n    }\n} else {\n    node.error(\"msg.payload ist kein Array\");\n    return;\n}\n\n// Daten an den nächsten Node weitergeben, wenn kein Fehler aufgetreten ist\nreturn msg;\n",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 870,
-        "y": 220,
+        "x": 700,
+        "y": 180,
         "wires": [
-            []
+            [
+                "a1277ad639bebe3d"
+            ]
         ]
     },
     {
@@ -1538,19 +1526,37 @@
         "wires": []
     },
     {
-        "id": "236107f380c993ba",
-        "type": "debug",
+        "id": "bb94a15fe429f7fc",
+        "type": "switch",
         "z": "d27ba1192b875173",
         "name": "",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "false",
-        "statusVal": "",
-        "statusType": "auto",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
         "x": 700,
-        "y": 200,
+        "y": 380,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "a1277ad639bebe3d",
+        "type": "http response",
+        "z": "d27ba1192b875173",
+        "name": "",
+        "statusCode": "200",
+        "headers": {},
+        "x": 880,
+        "y": 140,
         "wires": []
     }
 ]
