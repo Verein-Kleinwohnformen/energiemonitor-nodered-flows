@@ -1511,6 +1511,11 @@
                 "p": "payload.hostname",
                 "v": "housemeter",
                 "vt": "global"
+            },
+            {
+                "p": "payload.housemeter.model",
+                "v": "housemeter.model",
+                "vt": "global"
             }
         ],
         "repeat": "",
@@ -1535,6 +1540,11 @@
             {
                 "p": "payload.hostname",
                 "v": "solarmeter",
+                "vt": "global"
+            },
+            {
+                "p": "payload.solarmeter.model",
+                "v": "solarmeter.model",
                 "vt": "global"
             }
         ],
