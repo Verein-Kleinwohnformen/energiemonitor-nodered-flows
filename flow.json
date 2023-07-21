@@ -291,8 +291,7 @@
         "y": 100,
         "wires": [
             [
-                "74e01a6004d724e8",
-                "457ad221981a6d8e"
+                "74e01a6004d724e8"
             ]
         ]
     },
@@ -331,7 +330,7 @@
         ],
         "repeat": "",
         "crontab": "",
-        "once": false,
+        "once": true,
         "onceDelay": 0.1,
         "topic": "",
         "payloadType": "date",
@@ -339,8 +338,7 @@
         "y": 100,
         "wires": [
             [
-                "e0f9f20b1d6fa7b1",
-                "f27c8db25019c383"
+                "e7b8a20c1f3a0fec"
             ]
         ]
     },
@@ -348,13 +346,13 @@
         "id": "f27c8db25019c383",
         "type": "change",
         "z": "0914f028aec835b0",
-        "name": "",
+        "name": "Uid",
         "rules": [
             {
                 "t": "set",
                 "p": "uid",
                 "pt": "global",
-                "to": "payload",
+                "to": "uid",
                 "tot": "msg"
             }
         ],
@@ -363,7 +361,7 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 300,
+        "x": 1170,
         "y": 100,
         "wires": [
             []
@@ -399,7 +397,7 @@
             {
                 "t": "set",
                 "p": "solarmeter.model",
-                "pt": "msg",
+                "pt": "global",
                 "to": "gen2",
                 "tot": "str"
             }
@@ -409,7 +407,7 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 300,
+        "x": 1160,
         "y": 160,
         "wires": [
             []
@@ -777,7 +775,8 @@
         "y": 160,
         "wires": [
             [
-                "62418716caaba7d7"
+                "62418716caaba7d7",
+                "6d15f623f8d42a8a"
             ]
         ]
     },
@@ -1137,22 +1136,6 @@
         ]
     },
     {
-        "id": "457ad221981a6d8e",
-        "type": "debug",
-        "z": "c6e1822c71f940ee",
-        "name": "",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "false",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 570,
-        "y": 180,
-        "wires": []
-    },
-    {
         "id": "31bb6fa18ac1e5ca",
         "type": "comment",
         "z": "ab257fb0cc5ba8f5",
@@ -1259,7 +1242,7 @@
         "complete": "false",
         "statusVal": "",
         "statusType": "auto",
-        "x": 720,
+        "x": 690,
         "y": 220,
         "wires": []
     },
@@ -1338,5 +1321,184 @@
         "wires": [
             []
         ]
+    },
+    {
+        "id": "e7b8a20c1f3a0fec",
+        "type": "file in",
+        "z": "0914f028aec835b0",
+        "name": "Read Data",
+        "filename": "/data/config.json",
+        "format": "utf8",
+        "chunk": false,
+        "sendError": false,
+        "encoding": "utf8",
+        "allProps": false,
+        "x": 290,
+        "y": 100,
+        "wires": [
+            [
+                "77121a4d28d33b5d"
+            ]
+        ]
+    },
+    {
+        "id": "6d15f623f8d42a8a",
+        "type": "debug",
+        "z": "e48ca2e6e4e7cd76",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 750,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "d48c760c4009402d",
+        "type": "file",
+        "z": "0914f028aec835b0",
+        "name": "Save Data",
+        "filename": "/data/config.json",
+        "appendNewline": true,
+        "createDir": false,
+        "overwriteFile": "true",
+        "encoding": "utf8",
+        "x": 690,
+        "y": 420,
+        "wires": [
+            [
+                "9e0f9b129ba6ca62"
+            ]
+        ]
+    },
+    {
+        "id": "d84978dc5357a61c",
+        "type": "inject",
+        "z": "0914f028aec835b0",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payloadType": "date",
+        "x": 120,
+        "y": 420,
+        "wires": [
+            [
+                "54740c6167927264"
+            ]
+        ]
+    },
+    {
+        "id": "54740c6167927264",
+        "type": "function",
+        "z": "0914f028aec835b0",
+        "name": "Global Values",
+        "func": "var globals = global.keys();\nvar global_values = {};\n\nfor (var i = 0; i < globals.length; i++) {\n    global_values[globals[i]] = global.get(globals[i]);\n}\n\nmsg.payload = global_values;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 320,
+        "y": 420,
+        "wires": [
+            [
+                "143c33e5349e8aa3"
+            ]
+        ]
+    },
+    {
+        "id": "143c33e5349e8aa3",
+        "type": "json",
+        "z": "0914f028aec835b0",
+        "name": "",
+        "property": "payload",
+        "action": "",
+        "pretty": false,
+        "x": 510,
+        "y": 420,
+        "wires": [
+            [
+                "d48c760c4009402d"
+            ]
+        ]
+    },
+    {
+        "id": "62dc5fdcdd6f68a4",
+        "type": "comment",
+        "z": "0914f028aec835b0",
+        "name": "Save Settings",
+        "info": "",
+        "x": 110,
+        "y": 360,
+        "wires": []
+    },
+    {
+        "id": "77121a4d28d33b5d",
+        "type": "json",
+        "z": "0914f028aec835b0",
+        "name": "",
+        "property": "payload",
+        "action": "",
+        "pretty": false,
+        "x": 470,
+        "y": 100,
+        "wires": [
+            [
+                "06ed9f15d6dd45de"
+            ]
+        ]
+    },
+    {
+        "id": "06ed9f15d6dd45de",
+        "type": "function",
+        "z": "0914f028aec835b0",
+        "name": "Set Values",
+        "func": "for (var key in msg.payload) {\n    global.set(key, msg.payload[key]);\n}\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 630,
+        "y": 100,
+        "wires": [
+            [
+                "9e0f9b129ba6ca62"
+            ]
+        ]
+    },
+    {
+        "id": "9e0f9b129ba6ca62",
+        "type": "debug",
+        "z": "0914f028aec835b0",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 870,
+        "y": 100,
+        "wires": []
     }
 ]
