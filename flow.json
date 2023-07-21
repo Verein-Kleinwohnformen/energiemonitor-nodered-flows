@@ -1599,7 +1599,7 @@
         "type": "switch",
         "z": "c6e1822c71f940ee",
         "name": "",
-        "property": "payload.solarmeter.model",
+        "property": "payload.housemeter.model",
         "propertyType": "msg",
         "rules": [
             {
