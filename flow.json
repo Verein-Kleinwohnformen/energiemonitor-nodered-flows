@@ -389,7 +389,7 @@
             },
             {
                 "t": "set",
-                "p": "housmeter.model",
+                "p": "housemeter.model",
                 "pt": "global",
                 "to": "gen1",
                 "tot": "str"
