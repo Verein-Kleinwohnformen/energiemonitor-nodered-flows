@@ -1571,5 +1571,51 @@
         "x": 510,
         "y": 260,
         "wires": []
+    },
+    {
+        "id": "543e4bcb358c1be5",
+        "type": "inject",
+        "z": "0914f028aec835b0",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 1090,
+        "y": 240,
+        "wires": [
+            [
+                "375b9000061b2e4b"
+            ]
+        ]
+    },
+    {
+        "id": "375b9000061b2e4b",
+        "type": "function",
+        "z": "0914f028aec835b0",
+        "name": "",
+        "func": "global.set(housemeter.model, \"gen1\");\nglobal.set(solarmeter.model, \"gen2\");\nglobal.set(housmeter.model, undefined);\nglobal.set(housmeter, undefined);\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1310,
+        "y": 240,
+        "wires": [
+            []
+        ]
     }
 ]
