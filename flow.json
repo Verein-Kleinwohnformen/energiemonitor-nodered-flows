@@ -343,77 +343,6 @@
         ]
     },
     {
-        "id": "f27c8db25019c383",
-        "type": "change",
-        "z": "0914f028aec835b0",
-        "name": "Uid",
-        "rules": [
-            {
-                "t": "set",
-                "p": "uid",
-                "pt": "global",
-                "to": "uid",
-                "tot": "msg"
-            }
-        ],
-        "action": "",
-        "property": "",
-        "from": "",
-        "to": "",
-        "reg": false,
-        "x": 1170,
-        "y": 100,
-        "wires": [
-            []
-        ]
-    },
-    {
-        "id": "e0f9f20b1d6fa7b1",
-        "type": "change",
-        "z": "0914f028aec835b0",
-        "name": "Shelly Device",
-        "rules": [
-            {
-                "t": "set",
-                "p": "housemeter",
-                "pt": "global",
-                "to": "192.168.1.120",
-                "tot": "str"
-            },
-            {
-                "t": "set",
-                "p": "solarmeter",
-                "pt": "global",
-                "to": "192.168.33.1",
-                "tot": "str"
-            },
-            {
-                "t": "set",
-                "p": "housemeter.model",
-                "pt": "global",
-                "to": "gen1",
-                "tot": "str"
-            },
-            {
-                "t": "set",
-                "p": "solarmeter.model",
-                "pt": "global",
-                "to": "gen2",
-                "tot": "str"
-            }
-        ],
-        "action": "",
-        "property": "",
-        "from": "",
-        "to": "",
-        "reg": false,
-        "x": 1160,
-        "y": 160,
-        "wires": [
-            []
-        ]
-    },
-    {
         "id": "82a54d.27b8a5b",
         "type": "http in",
         "z": "d27ba1192b875173",
@@ -1623,35 +1552,6 @@
             [
                 "42f5d918c1ce014d",
                 "94e05cfa8230a8ee"
-            ]
-        ]
-    },
-    {
-        "id": "41cd296fc07afd66",
-        "type": "inject",
-        "z": "0914f028aec835b0",
-        "name": "",
-        "props": [
-            {
-                "p": "payload"
-            },
-            {
-                "p": "topic",
-                "vt": "str"
-            }
-        ],
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "",
-        "payload": "",
-        "payloadType": "date",
-        "x": 970,
-        "y": 180,
-        "wires": [
-            [
-                "e0f9f20b1d6fa7b1"
             ]
         ]
     },
