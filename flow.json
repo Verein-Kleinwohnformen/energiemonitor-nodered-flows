@@ -141,7 +141,7 @@
         "getstatusoncommand": true,
         "devicetype": "Measure",
         "outputs": 2,
-        "x": 130,
+        "x": 250,
         "y": 100,
         "wires": [
             [
@@ -165,7 +165,7 @@
         "getstatusoncommand": true,
         "devicetype": "Measure",
         "outputs": 1,
-        "x": 150,
+        "x": 270,
         "y": 180,
         "wires": [
             [
@@ -181,7 +181,7 @@
         "links": [
             "5ee90d3319bef9d3"
         ],
-        "x": 515,
+        "x": 635,
         "y": 100,
         "wires": []
     },
@@ -287,7 +287,7 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 370,
+        "x": 490,
         "y": 100,
         "wires": [
             [
@@ -307,7 +307,7 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 370,
+        "x": 490,
         "y": 180,
         "wires": [
             [
@@ -339,8 +339,8 @@
         "y": 100,
         "wires": [
             [
-                "f27c8db25019c383",
-                "e0f9f20b1d6fa7b1"
+                "e0f9f20b1d6fa7b1",
+                "f27c8db25019c383"
             ]
         ]
     },
@@ -395,14 +395,14 @@
         "rules": [
             {
                 "t": "set",
-                "p": "shellyHouse",
+                "p": "housemeter",
                 "pt": "global",
-                "to": "192.168.33.1",
+                "to": "192.168.1.120",
                 "tot": "str"
             },
             {
                 "t": "set",
-                "p": "shellySolar",
+                "p": "solarmeter",
                 "pt": "global",
                 "to": "192.168.33.1",
                 "tot": "str"
@@ -1049,7 +1049,7 @@
         "id": "d9091e28eb107a7b",
         "type": "shelly-gen1",
         "z": "c6e1822c71f940ee",
-        "hostname": "",
+        "hostname": "msg.solarmeter",
         "description": "Shelly Gen1 (EM3)",
         "mode": "polling",
         "server": "",
@@ -1060,7 +1060,7 @@
         "getstatusoncommand": true,
         "devicetype": "Measure",
         "outputs": 2,
-        "x": 130,
+        "x": 250,
         "y": 340,
         "wires": [
             [
@@ -1084,7 +1084,7 @@
         "getstatusoncommand": true,
         "devicetype": "Measure",
         "outputs": 1,
-        "x": 150,
+        "x": 270,
         "y": 420,
         "wires": [
             [
@@ -1100,7 +1100,7 @@
         "links": [
             "5ee90d3319bef9d3"
         ],
-        "x": 515,
+        "x": 635,
         "y": 340,
         "wires": []
     },
@@ -1115,7 +1115,7 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 370,
+        "x": 490,
         "y": 340,
         "wires": [
             [
@@ -1134,7 +1134,7 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 370,
+        "x": 490,
         "y": 420,
         "wires": [
             [
@@ -1154,7 +1154,7 @@
         "complete": "false",
         "statusVal": "",
         "statusType": "auto",
-        "x": 570,
+        "x": 690,
         "y": 180,
         "wires": []
     },
@@ -1267,6 +1267,115 @@
         "statusType": "auto",
         "x": 720,
         "y": 220,
+        "wires": []
+    },
+    {
+        "id": "99f6f752fe2b7c1b",
+        "type": "cronplus",
+        "z": "c6e1822c71f940ee",
+        "name": "Reset Timer",
+        "outputField": "payload",
+        "timeZone": "",
+        "persistDynamic": false,
+        "commandResponseMsgOutput": "output1",
+        "outputs": 1,
+        "options": [
+            {
+                "name": "schedule1",
+                "topic": "topic1",
+                "payloadType": "default",
+                "payload": "",
+                "expressionType": "cron",
+                "expression": "0 0 1 1 *",
+                "location": "",
+                "offset": "0",
+                "solarType": "all",
+                "solarEvents": "sunrise,sunset"
+            }
+        ],
+        "x": 130,
+        "y": 580,
+        "wires": [
+            [
+                "b860a946062e0db6"
+            ]
+        ]
+    },
+    {
+        "id": "b860a946062e0db6",
+        "type": "function",
+        "z": "c6e1822c71f940ee",
+        "name": "Reset Shelly",
+        "func": "\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 340,
+        "y": 580,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "327be3ac54228866",
+        "type": "comment",
+        "z": "c6e1822c71f940ee",
+        "name": "Reset counter once per year",
+        "info": "",
+        "x": 160,
+        "y": 520,
+        "wires": []
+    },
+    {
+        "id": "3bb7a8b9b157b6ee",
+        "type": "inject",
+        "z": "c6e1822c71f940ee",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "solarmeter",
+                "v": "solarmeter",
+                "vt": "global"
+            },
+            {
+                "p": "housmeter",
+                "v": "housemeter",
+                "vt": "global"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payloadType": "date",
+        "x": 110,
+        "y": 240,
+        "wires": [
+            [
+                "acfb55225f39701d"
+            ]
+        ]
+    },
+    {
+        "id": "acfb55225f39701d",
+        "type": "debug",
+        "z": "c6e1822c71f940ee",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 700,
+        "y": 240,
         "wires": []
     }
 ]
