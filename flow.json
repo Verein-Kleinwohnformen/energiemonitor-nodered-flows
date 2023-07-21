@@ -141,7 +141,7 @@
         "getstatusoncommand": true,
         "devicetype": "Measure",
         "outputs": 2,
-        "x": 350,
+        "x": 330,
         "y": 100,
         "wires": [
             [
@@ -165,7 +165,7 @@
         "getstatusoncommand": true,
         "devicetype": "Measure",
         "outputs": 1,
-        "x": 370,
+        "x": 350,
         "y": 180,
         "wires": [
             [
@@ -181,7 +181,7 @@
         "links": [
             "5ee90d3319bef9d3"
         ],
-        "x": 735,
+        "x": 715,
         "y": 100,
         "wires": []
     },
@@ -287,7 +287,7 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 590,
+        "x": 570,
         "y": 100,
         "wires": [
             [
@@ -306,7 +306,7 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 590,
+        "x": 570,
         "y": 180,
         "wires": [
             [
@@ -1053,7 +1053,7 @@
         "getstatusoncommand": true,
         "devicetype": "Measure",
         "outputs": 2,
-        "x": 130,
+        "x": 330,
         "y": 340,
         "wires": [
             [
@@ -1077,7 +1077,7 @@
         "getstatusoncommand": true,
         "devicetype": "Measure",
         "outputs": 1,
-        "x": 150,
+        "x": 350,
         "y": 420,
         "wires": [
             [
@@ -1093,7 +1093,7 @@
         "links": [
             "5ee90d3319bef9d3"
         ],
-        "x": 515,
+        "x": 715,
         "y": 340,
         "wires": []
     },
@@ -1108,7 +1108,7 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 370,
+        "x": 570,
         "y": 340,
         "wires": [
             [
@@ -1127,7 +1127,7 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 370,
+        "x": 570,
         "y": 420,
         "wires": [
             [
@@ -1505,7 +1505,7 @@
         "id": "2f6f7ec747e4f8c6",
         "type": "inject",
         "z": "c6e1822c71f940ee",
-        "name": "",
+        "name": "hostname",
         "props": [
             {
                 "p": "payload.hostname",
@@ -1515,32 +1515,42 @@
         ],
         "repeat": "",
         "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
+        "once": true,
+        "onceDelay": "5",
         "topic": "",
-        "x": 90,
+        "x": 120,
         "y": 100,
         "wires": [
             [
                 "8e2e1ca31341359b",
-                "605125c527668507"
+                "42f5d918c1ce014d"
             ]
         ]
     },
     {
-        "id": "605125c527668507",
-        "type": "debug",
+        "id": "bf66601c0828eb69",
+        "type": "inject",
         "z": "c6e1822c71f940ee",
-        "name": "",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "false",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 360,
-        "y": 40,
-        "wires": []
+        "name": "hostname",
+        "props": [
+            {
+                "p": "payload.hostname",
+                "v": "solarmeter",
+                "vt": "global"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "5",
+        "topic": "",
+        "x": 120,
+        "y": 340,
+        "wires": [
+            [
+                "d9091e28eb107a7b",
+                "e62d306285c22a96"
+            ]
+        ]
     }
 ]
