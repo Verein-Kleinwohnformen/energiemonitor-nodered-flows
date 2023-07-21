@@ -130,7 +130,7 @@
         "id": "8e2e1ca31341359b",
         "type": "shelly-gen1",
         "z": "c6e1822c71f940ee",
-        "hostname": "{global.housemeter}",
+        "hostname": "msg.payload",
         "description": "Shelly Gen1 (EM3)",
         "mode": "polling",
         "server": "",
@@ -141,7 +141,7 @@
         "getstatusoncommand": true,
         "devicetype": "Measure",
         "outputs": 2,
-        "x": 130,
+        "x": 350,
         "y": 100,
         "wires": [
             [
@@ -165,7 +165,7 @@
         "getstatusoncommand": true,
         "devicetype": "Measure",
         "outputs": 1,
-        "x": 150,
+        "x": 370,
         "y": 180,
         "wires": [
             [
@@ -181,7 +181,7 @@
         "links": [
             "5ee90d3319bef9d3"
         ],
-        "x": 515,
+        "x": 735,
         "y": 100,
         "wires": []
     },
@@ -287,7 +287,7 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 370,
+        "x": 590,
         "y": 100,
         "wires": [
             [
@@ -306,7 +306,7 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 370,
+        "x": 590,
         "y": 180,
         "wires": [
             [
@@ -1500,5 +1500,30 @@
         "x": 870,
         "y": 100,
         "wires": []
+    },
+    {
+        "id": "2f6f7ec747e4f8c6",
+        "type": "inject",
+        "z": "c6e1822c71f940ee",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "housemeter",
+        "payloadType": "global",
+        "x": 130,
+        "y": 100,
+        "wires": [
+            [
+                "8e2e1ca31341359b"
+            ]
+        ]
     }
 ]
