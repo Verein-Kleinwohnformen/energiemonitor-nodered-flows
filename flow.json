@@ -1134,7 +1134,7 @@
         "type": "function",
         "z": "d27ba1192b875173",
         "name": "",
-        "func": "// Zugriff auf DataCache\nlet cache = flow.get('DataCache') || [];\n\n// Durchlaufen des msg.payload-Arrays\nfor(let item of msg.payload) {\n    // Überprüfen, ob der aktuelle Timestamp bereits im Cache existiert\n    for(let cItem of cache){\n        if(cItem.timestamp === item._time) {\n            // Ein Fehler wird geworfen, wenn Daten mit dem gleichen Timestamp existieren\n            node.error(\"Daten mit dem gleichen Timestamp existieren bereits\");\n            return;\n        }\n    }\n}\n\n// Daten an den nächsten Node weitergeben, wenn kein Fehler aufgetreten ist\nreturn msg;\n",
+        "func": "// Zugriff auf DataCache\nlet cache = flow.get('DataCache') || [];\n\n// Durchlaufen des msg.payload-Arrays\nfor(let item of msg.payload) {\n    // Überprüfen, ob der aktuelle Timestamp bereits im Cache existiert\n    for(let cItem of cache){\n        node.warn(cItem.timestamp);\n        node.warn(item._time)\n        if(cItem.timestamp == item._time) {\n            // Ein Fehler wird geworfen, wenn Daten mit dem gleichen Timestamp existieren\n            node.error(\"Daten mit dem gleichen Timestamp existieren bereits\");\n            return;\n        }\n    }\n}\n\n// Daten an den nächsten Node weitergeben, wenn kein Fehler aufgetreten ist\nreturn msg;\n",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
