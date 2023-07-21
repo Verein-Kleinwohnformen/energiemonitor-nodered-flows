@@ -1606,7 +1606,7 @@
         "type": "function",
         "z": "0914f028aec835b0",
         "name": "",
-        "func": "global.set(housemeter.model, \"gen1\");\nglobal.set(solarmeter.model, \"gen2\");\n",
+        "func": "global.set(housemeterModel, \"gen1\");\nglobal.set(solarmeterModel, \"gen2\");\n",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
