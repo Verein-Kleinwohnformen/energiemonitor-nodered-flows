@@ -1513,7 +1513,7 @@
                 "vt": "global"
             },
             {
-                "p": "payload.housemeter.model",
+                "p": "payload.model",
                 "v": "housemeter.model",
                 "vt": "global"
             }
@@ -1600,7 +1600,7 @@
         "type": "switch",
         "z": "c6e1822c71f940ee",
         "name": "",
-        "property": "payload.housemeter.model",
+        "property": "payload.model",
         "propertyType": "msg",
         "rules": [
             {
