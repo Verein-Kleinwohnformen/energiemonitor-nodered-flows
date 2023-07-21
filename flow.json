@@ -481,7 +481,8 @@
         "y": 160,
         "wires": [
             [
-                "fb7b0f29daebc218"
+                "fb7b0f29daebc218",
+                "d2a9920ac9315176"
             ]
         ]
     },
@@ -1182,7 +1183,7 @@
         "type": "function",
         "z": "d27ba1192b875173",
         "name": "JSON",
-        "func": "let measurement = \"manualInput\";\nlet uid = global.get('uid');\n\nfunction addDailyData(device, value, day, dailyAmount){\n    let record = {\n        \"measurement\": measurement,\n        \"timestamp\": day.toISOString(),\n        \"tags\":{\n            \"UID\": uid,\n            \"device\": device,\n            \"model\": value.model,\n        },\n        \"fields\": {\n            \"fuel\": value.fuel,\n            \"amount\": dailyAmount,\n            \"unit\": value.unit,\n            \"start\": value.start,\n            \"end\": value.end\n        }\n    };\n    return record;\n}\n\nlet startDate = new Date(msg.payload.start);\nlet endDate = new Date(msg.payload.end);\n\nlet totalDays = 1 + Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24)); // Berechnen der Gesamtzahl der Tage\nlet dailyAmount = parseFloat(msg.payload.amount) / totalDays; // Täglicher Betrag\n\nlet data = [];\n\n// Erstellen Sie einen Eintrag für jeden Tag zwischen Start- und Enddatum\nfor (let day = startDate; day <= endDate; day.setDate(day.getDate() + 1)) {\n    data.push(addDailyData(\"manualInput\", msg.payload, new Date(day), dailyAmount));\n}\n\nmsg.payload = data;\n\nreturn msg;\n",
+        "func": "let measurement = \"manualInput\";\nlet uid = global.get('uid');\n\nfunction addDailyData(device, value, day, dailyAmount){\n    let record = {\n        \"measurement\": measurement,\n        \"timestamp\": day.toISOString(),\n        \"tags\":{\n            \"UID\": uid,\n            \"device\": device,\n            \"fuel\": value.fuel,\n            \"unit\": value.unit,\n        },\n        \"fields\": {\n            \"amount\": dailyAmount,\n        }\n    };\n    return record;\n}\n\nlet startDate = new Date(msg.payload.start);\nlet endDate = new Date(msg.payload.end);\n\nlet totalDays = 1 + Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24)); // Berechnen der Gesamtzahl der Tage\nlet dailyAmount = parseFloat(msg.payload.amount) / totalDays; // Täglicher Betrag\n\nlet data = [];\n\n// Erstellen Sie einen Eintrag für jeden Tag zwischen Start- und Enddatum\nfor (let day = startDate; day <= endDate; day.setDate(day.getDate() + 1)) {\n    data.push(addDailyData(\"manualInput\", msg.payload, new Date(day), dailyAmount));\n}\n\nmsg.payload = data;\n\nreturn msg;\n",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
@@ -1196,5 +1197,59 @@
                 "9d9c1193.1a3df"
             ]
         ]
+    },
+    {
+        "id": "d2a9920ac9315176",
+        "type": "function",
+        "z": "d27ba1192b875173",
+        "name": "Influx Query",
+        "func": "let measurement = \"manualInput\";\nlet tagValue = global.get('uid');\n\n// Flux-Query-Befehl erstellen\nlet startDate = new Date(msg.payload.start);\nlet endDate = new Date(msg.payload.end);\n\nlet fluxQuery = `from(bucket: \"bananapi\")\n  |> range(start: ${startDate}, stop: ${endDate})\n  |> filter(fn: (r) => r[\"_measurement\"] == \"${measurement}\")\n  |> filter(fn: (r) => r[\"tags_UID\"] == \"${tagValue}\")\n  |> filter(fn: (r) => r[\"host\"] == \"telegraf.monitor.e-mgmt.cloud\")`;\n\n\n// Flux-Query-Befehl an den influxdb-Node übergeben\nmsg.query = fluxQuery;\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 310,
+        "y": 280,
+        "wires": [
+            [
+                "930e20869788563a"
+            ]
+        ]
+    },
+    {
+        "id": "930e20869788563a",
+        "type": "influxdb in",
+        "z": "d27ba1192b875173",
+        "influxdb": "c33575314fb52cbd",
+        "name": "",
+        "query": "",
+        "rawOutput": false,
+        "precision": "",
+        "retentionPolicy": "",
+        "org": "Kleinwohnformen",
+        "x": 510,
+        "y": 280,
+        "wires": [
+            [
+                "038c588a419e3207"
+            ]
+        ]
+    },
+    {
+        "id": "038c588a419e3207",
+        "type": "debug",
+        "z": "d27ba1192b875173",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 710,
+        "y": 280,
+        "wires": []
     }
 ]
