@@ -1606,7 +1606,7 @@
         "type": "function",
         "z": "0914f028aec835b0",
         "name": "",
-        "func": "global.set('housemeterModel', undefined);\nglobal.set('solarmeterModel', undefined);\nglobal.set('housmeter', undefined);\nglobal.set('housemeter.model', 'gen1');\nglobal.set('solarmeter.model', 'gen2');\nreturn msg;",
+        "func": "global.set('housemeterModel', undefined);\nglobal.set('solarmeterModel', undefined);\nglobal.set('housmeter', undefined);\nglobal.set('housemeterModel', 'gen1');\nglobal.set('solarmeterModel', 'gen2');\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
