@@ -1439,7 +1439,7 @@
             },
             {
                 "p": "payload.model",
-                "v": "housemeter.model",
+                "v": "housemeterModel",
                 "vt": "global"
             }
         ],
@@ -1470,7 +1470,7 @@
             },
             {
                 "p": "payload.solarmeter.model",
-                "v": "solarmeter.model",
+                "v": "solarmeterModel",
                 "vt": "global"
             }
         ],
