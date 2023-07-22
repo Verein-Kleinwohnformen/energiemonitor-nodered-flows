@@ -1820,5 +1820,53 @@
         "x": 120,
         "y": 40,
         "wires": []
+    },
+    {
+        "id": "991274296fd7f777",
+        "type": "http request",
+        "z": "c6e1822c71f940ee",
+        "name": "",
+        "method": "POST",
+        "ret": "txt",
+        "paytoqs": "ignore",
+        "url": "http://192.168.1.120/emeter/0/reset_totals",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "authType": "",
+        "x": 550,
+        "y": 680,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "e7c42b566f030af7",
+        "type": "inject",
+        "z": "c6e1822c71f940ee",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 350,
+        "y": 680,
+        "wires": [
+            [
+                "991274296fd7f777"
+            ]
+        ]
     }
 ]
