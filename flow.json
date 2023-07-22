@@ -1486,11 +1486,11 @@
         "type": "http in",
         "z": "d27ba1192b875173",
         "name": "",
-        "url": "/conf",
+        "url": "/config",
         "method": "get",
         "upload": false,
         "swaggerDoc": "",
-        "x": 100,
+        "x": 110,
         "y": 360,
         "wires": [
             [
@@ -1565,102 +1565,6 @@
         "wires": []
     },
     {
-        "id": "3c10cd3b.42c9f2",
-        "type": "http in",
-        "z": "d27ba1192b875173",
-        "name": "Get Global Variables",
-        "url": "/config",
-        "method": "get",
-        "upload": false,
-        "swaggerDoc": "",
-        "x": 130,
-        "y": 480,
-        "wires": [
-            [
-                "e71ccfc9.70af2"
-            ]
-        ]
-    },
-    {
-        "id": "e71ccfc9.70af2",
-        "type": "function",
-        "z": "d27ba1192b875173",
-        "name": "Get Global Variables",
-        "func": "let globalVars = {}; // Add code to fetch global variables\nreturn {payload: globalVars};",
-        "outputs": 1,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 370,
-        "y": 480,
-        "wires": [
-            [
-                "9f242788.6d3158",
-                "1fd57df591e1ffd2"
-            ]
-        ]
-    },
-    {
-        "id": "9f242788.6d3158",
-        "type": "http response",
-        "z": "d27ba1192b875173",
-        "name": "",
-        "statusCode": "",
-        "headers": {},
-        "x": 610,
-        "y": 480,
-        "wires": []
-    },
-    {
-        "id": "ebbe257a.6c8e38",
-        "type": "http in",
-        "z": "d27ba1192b875173",
-        "name": "Set Global Variables",
-        "url": "/commit",
-        "method": "post",
-        "upload": false,
-        "swaggerDoc": "",
-        "x": 130,
-        "y": 560,
-        "wires": [
-            [
-                "cc40ed83.723f8"
-            ]
-        ]
-    },
-    {
-        "id": "cc40ed83.723f8",
-        "type": "function",
-        "z": "d27ba1192b875173",
-        "name": "Set Global Variables",
-        "func": "for (let key in msg.payload) {\n    // Add code to set global variables\n}\nreturn {payload: 'OK'};",
-        "outputs": 1,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 370,
-        "y": 560,
-        "wires": [
-            [
-                "69ab2398.6185fc",
-                "1fd57df591e1ffd2"
-            ]
-        ]
-    },
-    {
-        "id": "69ab2398.6185fc",
-        "type": "http response",
-        "z": "d27ba1192b875173",
-        "name": "",
-        "statusCode": "",
-        "headers": {},
-        "x": 610,
-        "y": 560,
-        "wires": []
-    },
-    {
         "id": "69de091912069e3b",
         "type": "link out",
         "z": "d27ba1192b875173",
@@ -1668,8 +1572,8 @@
         "links": [
             "5ddaf670df87715d"
         ],
-        "x": 575,
-        "y": 620,
+        "x": 475,
+        "y": 540,
         "wires": []
     },
     {
@@ -1689,7 +1593,102 @@
         ]
     },
     {
-        "id": "1fd57df591e1ffd2",
+        "id": "0b30aa45.4091a6",
+        "type": "http in",
+        "z": "d27ba1192b875173",
+        "name": "Get Globals",
+        "url": "/getGlobalVariables",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 110,
+        "y": 420,
+        "wires": [
+            [
+                "a275f79e.2e96c8"
+            ]
+        ]
+    },
+    {
+        "id": "a275f79e.2e96c8",
+        "type": "function",
+        "z": "d27ba1192b875173",
+        "name": "Fetch Globals",
+        "func": "let keys = global.keys();\nlet globals = {};\n\nfor (let key of keys) {\n    globals[key] = global.get(key);\n}\n\nmsg.payload = globals;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 310,
+        "y": 420,
+        "wires": [
+            [
+                "36b6c021.2b184"
+            ]
+        ]
+    },
+    {
+        "id": "36b6c021.2b184",
+        "type": "http response",
+        "z": "d27ba1192b875173",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 510,
+        "y": 420,
+        "wires": []
+    },
+    {
+        "id": "471d0f63.10d03",
+        "type": "http in",
+        "z": "d27ba1192b875173",
+        "name": "Set Globals",
+        "url": "/setGlobalVariables",
+        "method": "post",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 110,
+        "y": 480,
+        "wires": [
+            [
+                "e536c76a.00a6e8"
+            ]
+        ]
+    },
+    {
+        "id": "e536c76a.00a6e8",
+        "type": "function",
+        "z": "d27ba1192b875173",
+        "name": "Set Globals",
+        "func": "let globals = msg.payload;\n\nfor (let key in globals) {\n    global.set(key, globals[key]);\n}\n\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 310,
+        "y": 480,
+        "wires": [
+            [
+                "b0f29271.93d09",
+                "8bc088c361be261b"
+            ]
+        ]
+    },
+    {
+        "id": "b0f29271.93d09",
+        "type": "http response",
+        "z": "d27ba1192b875173",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 510,
+        "y": 480,
+        "wires": []
+    },
+    {
+        "id": "8bc088c361be261b",
         "type": "debug",
         "z": "d27ba1192b875173",
         "name": "",
@@ -1697,11 +1696,12 @@
         "tosidebar": true,
         "console": false,
         "tostatus": false,
-        "complete": "false",
+        "complete": "true",
+        "targetType": "full",
         "statusVal": "",
         "statusType": "auto",
-        "x": 600,
-        "y": 800,
+        "x": 520,
+        "y": 600,
         "wires": []
     }
 ]
