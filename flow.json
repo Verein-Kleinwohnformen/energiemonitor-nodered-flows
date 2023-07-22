@@ -1834,7 +1834,7 @@
         "arraySplt": 1,
         "arraySpltType": "len",
         "stream": false,
-        "addname": "",
+        "addname": "url",
         "x": 530,
         "y": 580,
         "wires": [
@@ -1852,7 +1852,7 @@
         "method": "GET",
         "ret": "txt",
         "paytoqs": "query",
-        "url": "msg.payload",
+        "url": "",
         "tls": "",
         "persist": false,
         "proxy": "",
