@@ -1187,8 +1187,7 @@
         "y": 580,
         "wires": [
             [
-                "b1268d9d.ee4e6",
-                "d7e3589e.c073d8"
+                "b1268d9d.ee4e6"
             ]
         ]
     },
@@ -1820,27 +1819,8 @@
         "y": 580,
         "wires": [
             [
-                "df8a3f7d.7336d",
-                "c3a99553644be714"
-            ]
-        ]
-    },
-    {
-        "id": "df8a3f7d.7336d",
-        "type": "split",
-        "z": "c6e1822c71f940ee",
-        "name": "",
-        "splt": "\\n",
-        "spltType": "str",
-        "arraySplt": 1,
-        "arraySpltType": "len",
-        "stream": false,
-        "addname": "",
-        "x": 530,
-        "y": 580,
-        "wires": [
-            [
-                "c3a99553644be714"
+                "c3a99553644be714",
+                "d7e3589e.c073d8"
             ]
         ]
     },
@@ -1857,7 +1837,7 @@
         "persist": false,
         "proxy": "",
         "authType": "",
-        "x": 710,
+        "x": 570,
         "y": 580,
         "wires": [
             [
