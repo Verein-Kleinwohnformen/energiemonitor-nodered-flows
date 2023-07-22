@@ -1485,7 +1485,8 @@
         "y": 140,
         "wires": [
             [
-                "8e2e1ca31341359b"
+                "8e2e1ca31341359b",
+                "e8bc9d5a51c9db69"
             ],
             [
                 "42f5d918c1ce014d"
@@ -1730,7 +1731,9 @@
         "propertyType": "msg",
         "rules": [
             {
-                "t": "true"
+                "t": "eq",
+                "v": "true",
+                "vt": "str"
             }
         ],
         "checkall": "true",
