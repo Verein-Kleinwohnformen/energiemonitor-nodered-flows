@@ -1809,7 +1809,7 @@
         "type": "function",
         "z": "c6e1822c71f940ee",
         "name": "Generate URLs",
-        "func": "const housemeter = global.get('housemeter');\n\nmsg.urls = [\n    `http://${housemeter}/emeter/0?reset_totals=true`,\n    `http://${housemeter}/emeter/1?reset_totals=true`,\n    `http://${housemeter}/emeter/2?reset_totals=true`\n];\n\nreturn msg;",
+        "func": "let housemeter = global.get('housemeter');\n\nmsg.urls = [\n    `http://${housemeter}/emeter/0?reset_totals=true`,\n    `http://${housemeter}/emeter/1?reset_totals=true`,\n    `http://${housemeter}/emeter/2?reset_totals=true`\n];\n\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
@@ -1819,7 +1819,8 @@
         "y": 580,
         "wires": [
             [
-                "df8a3f7d.7336d"
+                "df8a3f7d.7336d",
+                "c3a99553644be714"
             ]
         ]
     },
