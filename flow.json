@@ -211,8 +211,7 @@
         "wires": [
             [
                 "f871afd17d33fea9",
-                "746b38fcf65019b1",
-                "717a53f8ec3e339a"
+                "746b38fcf65019b1"
             ]
         ]
     },
@@ -1487,11 +1486,11 @@
         "type": "http in",
         "z": "d27ba1192b875173",
         "name": "",
-        "url": "/config",
+        "url": "/conf",
         "method": "get",
         "upload": false,
         "swaggerDoc": "",
-        "x": 110,
+        "x": 100,
         "y": 360,
         "wires": [
             [
@@ -1566,9 +1565,133 @@
         "wires": []
     },
     {
-        "id": "717a53f8ec3e339a",
+        "id": "3c10cd3b.42c9f2",
+        "type": "http in",
+        "z": "d27ba1192b875173",
+        "name": "Get Global Variables",
+        "url": "/config",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 130,
+        "y": 480,
+        "wires": [
+            [
+                "e71ccfc9.70af2"
+            ]
+        ]
+    },
+    {
+        "id": "e71ccfc9.70af2",
+        "type": "function",
+        "z": "d27ba1192b875173",
+        "name": "Get Global Variables",
+        "func": "let globalVars = {}; // Add code to fetch global variables\nreturn {payload: globalVars};",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 370,
+        "y": 480,
+        "wires": [
+            [
+                "9f242788.6d3158",
+                "1fd57df591e1ffd2"
+            ]
+        ]
+    },
+    {
+        "id": "9f242788.6d3158",
+        "type": "http response",
+        "z": "d27ba1192b875173",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 610,
+        "y": 480,
+        "wires": []
+    },
+    {
+        "id": "ebbe257a.6c8e38",
+        "type": "http in",
+        "z": "d27ba1192b875173",
+        "name": "Set Global Variables",
+        "url": "/commit",
+        "method": "post",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 130,
+        "y": 560,
+        "wires": [
+            [
+                "cc40ed83.723f8"
+            ]
+        ]
+    },
+    {
+        "id": "cc40ed83.723f8",
+        "type": "function",
+        "z": "d27ba1192b875173",
+        "name": "Set Global Variables",
+        "func": "for (let key in msg.payload) {\n    // Add code to set global variables\n}\nreturn {payload: 'OK'};",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 370,
+        "y": 560,
+        "wires": [
+            [
+                "69ab2398.6185fc",
+                "1fd57df591e1ffd2"
+            ]
+        ]
+    },
+    {
+        "id": "69ab2398.6185fc",
+        "type": "http response",
+        "z": "d27ba1192b875173",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 610,
+        "y": 560,
+        "wires": []
+    },
+    {
+        "id": "69de091912069e3b",
+        "type": "link out",
+        "z": "d27ba1192b875173",
+        "name": "SetVariabels",
+        "links": [
+            "5ddaf670df87715d"
+        ],
+        "x": 575,
+        "y": 620,
+        "wires": []
+    },
+    {
+        "id": "5ddaf670df87715d",
+        "type": "link in",
+        "z": "0914f028aec835b0",
+        "name": "SaveSettings",
+        "links": [
+            "69de091912069e3b"
+        ],
+        "x": 155,
+        "y": 260,
+        "wires": [
+            [
+                "54740c6167927264"
+            ]
+        ]
+    },
+    {
+        "id": "1fd57df591e1ffd2",
         "type": "debug",
-        "z": "e48ca2e6e4e7cd76",
+        "z": "d27ba1192b875173",
         "name": "",
         "active": true,
         "tosidebar": true,
@@ -1577,8 +1700,8 @@
         "complete": "false",
         "statusVal": "",
         "statusType": "auto",
-        "x": 570,
-        "y": 220,
+        "x": 600,
+        "y": 800,
         "wires": []
     }
 ]
