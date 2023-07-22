@@ -347,7 +347,7 @@
         "y": 100,
         "wires": [
             [
-                "e7b8a20c1f3a0fec"
+                "15bdcfc83916f5b0"
             ]
         ]
     },
@@ -1229,7 +1229,7 @@
         "sendError": false,
         "encoding": "utf8",
         "allProps": false,
-        "x": 290,
+        "x": 530,
         "y": 100,
         "wires": [
             [
@@ -1330,7 +1330,7 @@
         "property": "payload",
         "action": "",
         "pretty": false,
-        "x": 470,
+        "x": 710,
         "y": 100,
         "wires": [
             [
@@ -1349,7 +1349,7 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 650,
+        "x": 890,
         "y": 100,
         "wires": [
             []
@@ -1791,6 +1791,25 @@
         "y": 620,
         "wires": [
             []
+        ]
+    },
+    {
+        "id": "15bdcfc83916f5b0",
+        "type": "function",
+        "z": "0914f028aec835b0",
+        "name": "Init Global Values",
+        "func": "global.set(\"uid\", \"00000000-0000-0000-0000-000000000000\");\nglobal.set(\"housemeter\", \"0.0.0.0\");\nglobal.set(\"housemeterModel\", \"init\");\nglobal.set(\"housemeterActive\", \"false\");\nglobal.set(\"solarmeter\", \"0.0.0.0\");\nglobal.set(\"solarmeterModel\", \"init\");\nglobal.set(\"solarmeterActive\", \"false\");\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 310,
+        "y": 100,
+        "wires": [
+            [
+                "e7b8a20c1f3a0fec"
+            ]
         ]
     }
 ]
