@@ -1809,7 +1809,7 @@
         "type": "function",
         "z": "c6e1822c71f940ee",
         "name": "Generate URLs",
-        "func": "let housemeter = global.get('housemeter');\n\nmsg.payload = [\n    `http://${housemeter}/emeter/0?reset_totals=true`,\n    `http://${housemeter}/emeter/1?reset_totals=true`,\n    `http://${housemeter}/emeter/2?reset_totals=true`\n];\n\nreturn msg;",
+        "func": "let housemeter = global.get('housemeter');\n\nmsg.payload = [\n    `${housemeter}/emeter/0?reset_totals=true`,\n    `${housemeter}/emeter/1?reset_totals=true`,\n    `${housemeter}/emeter/2?reset_totals=true`\n];\n\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
