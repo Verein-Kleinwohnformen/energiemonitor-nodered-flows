@@ -148,7 +148,7 @@
         "getstatusoncommand": true,
         "devicetype": "Measure",
         "outputs": 2,
-        "x": 490,
+        "x": 690,
         "y": 100,
         "wires": [
             [
@@ -172,7 +172,7 @@
         "getstatusoncommand": true,
         "devicetype": "Measure",
         "outputs": 1,
-        "x": 510,
+        "x": 710,
         "y": 180,
         "wires": [
             [
@@ -188,7 +188,7 @@
         "links": [
             "5ee90d3319bef9d3"
         ],
-        "x": 875,
+        "x": 1075,
         "y": 140,
         "wires": []
     },
@@ -296,7 +296,7 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 730,
+        "x": 930,
         "y": 100,
         "wires": [
             [
@@ -315,7 +315,7 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 730,
+        "x": 930,
         "y": 180,
         "wires": [
             [
@@ -979,7 +979,7 @@
         "getstatusoncommand": true,
         "devicetype": "Measure",
         "outputs": 2,
-        "x": 490,
+        "x": 690,
         "y": 340,
         "wires": [
             [
@@ -1003,7 +1003,7 @@
         "getstatusoncommand": true,
         "devicetype": "Measure",
         "outputs": 1,
-        "x": 510,
+        "x": 710,
         "y": 420,
         "wires": [
             [
@@ -1019,7 +1019,7 @@
         "links": [
             "5ee90d3319bef9d3"
         ],
-        "x": 875,
+        "x": 1075,
         "y": 380,
         "wires": []
     },
@@ -1034,7 +1034,7 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 730,
+        "x": 930,
         "y": 340,
         "wires": [
             [
@@ -1053,7 +1053,7 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 730,
+        "x": 930,
         "y": 420,
         "wires": [
             [
@@ -1370,6 +1370,11 @@
                 "p": "payload.model",
                 "v": "housemeterModel",
                 "vt": "global"
+            },
+            {
+                "p": "payload.active",
+                "v": "housemeterActive",
+                "vt": "global"
             }
         ],
         "repeat": "60",
@@ -1381,7 +1386,7 @@
         "y": 140,
         "wires": [
             [
-                "685adbdcc7f48f48"
+                "f4f943fe13484b83"
             ]
         ]
     },
@@ -1400,6 +1405,11 @@
                 "p": "payload.solarmeter.model",
                 "v": "solarmeterModel",
                 "vt": "global"
+            },
+            {
+                "p": "payload.solarmeter.active",
+                "v": "solarmeterActive",
+                "vt": "global"
             }
         ],
         "repeat": "60",
@@ -1411,7 +1421,7 @@
         "y": 380,
         "wires": [
             [
-                "965b6a6452fc9133"
+                "0c1c1524c18ff3f4"
             ]
         ]
     },
@@ -1419,40 +1429,7 @@
         "id": "965b6a6452fc9133",
         "type": "switch",
         "z": "c6e1822c71f940ee",
-        "name": "",
-        "property": "payload.solarmeter.model",
-        "propertyType": "msg",
-        "rules": [
-            {
-                "t": "eq",
-                "v": "gen1",
-                "vt": "str"
-            },
-            {
-                "t": "eq",
-                "v": "gen2",
-                "vt": "str"
-            }
-        ],
-        "checkall": "true",
-        "repair": false,
-        "outputs": 2,
-        "x": 290,
-        "y": 380,
-        "wires": [
-            [
-                "d9091e28eb107a7b"
-            ],
-            [
-                "e62d306285c22a96"
-            ]
-        ]
-    },
-    {
-        "id": "685adbdcc7f48f48",
-        "type": "switch",
-        "z": "c6e1822c71f940ee",
-        "name": "",
+        "name": "Gen?",
         "property": "payload.model",
         "propertyType": "msg",
         "rules": [
@@ -1470,7 +1447,40 @@
         "checkall": "true",
         "repair": false,
         "outputs": 2,
-        "x": 290,
+        "x": 490,
+        "y": 380,
+        "wires": [
+            [
+                "d9091e28eb107a7b"
+            ],
+            [
+                "e62d306285c22a96"
+            ]
+        ]
+    },
+    {
+        "id": "685adbdcc7f48f48",
+        "type": "switch",
+        "z": "c6e1822c71f940ee",
+        "name": "Gen?",
+        "property": "payload.model",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "gen1",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "gen2",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 490,
         "y": 140,
         "wires": [
             [
@@ -1686,5 +1696,97 @@
         "x": 510,
         "y": 480,
         "wires": []
+    },
+    {
+        "id": "0c1c1524c18ff3f4",
+        "type": "switch",
+        "z": "c6e1822c71f940ee",
+        "name": "Active?",
+        "property": "payload.active",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "true"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 320,
+        "y": 380,
+        "wires": [
+            [
+                "965b6a6452fc9133"
+            ]
+        ]
+    },
+    {
+        "id": "f4f943fe13484b83",
+        "type": "switch",
+        "z": "c6e1822c71f940ee",
+        "name": "Active?",
+        "property": "payload.active",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "true"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 320,
+        "y": 140,
+        "wires": [
+            [
+                "685adbdcc7f48f48"
+            ]
+        ]
+    },
+    {
+        "id": "ff5de37050ac4057",
+        "type": "inject",
+        "z": "d27ba1192b875173",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 150,
+        "y": 620,
+        "wires": [
+            [
+                "0786345ff220aa0e"
+            ]
+        ]
+    },
+    {
+        "id": "0786345ff220aa0e",
+        "type": "function",
+        "z": "d27ba1192b875173",
+        "name": "",
+        "func": "global.set(\"solarmeterActive\", \"false\");\nglobal.set(\"housemeterActive\", \"true\");\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 320,
+        "y": 620,
+        "wires": [
+            []
+        ]
     }
 ]
