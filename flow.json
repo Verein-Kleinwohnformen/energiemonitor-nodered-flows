@@ -1386,7 +1386,8 @@
         "y": 140,
         "wires": [
             [
-                "f4f943fe13484b83"
+                "f4f943fe13484b83",
+                "e8bc9d5a51c9db69"
             ]
         ]
     },
@@ -1799,10 +1800,11 @@
         "tosidebar": true,
         "console": false,
         "tostatus": false,
-        "complete": "false",
+        "complete": "true",
+        "targetType": "full",
         "statusVal": "",
         "statusType": "auto",
-        "x": 490,
+        "x": 470,
         "y": 220,
         "wires": []
     }
