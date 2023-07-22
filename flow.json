@@ -167,7 +167,7 @@
         "server": "",
         "outputmode": "event",
         "uploadretryinterval": 5000,
-        "pollinginterval": 5000,
+        "pollinginterval": "60000",
         "pollstatus": false,
         "getstatusoncommand": true,
         "devicetype": "Measure",
@@ -998,7 +998,7 @@
         "server": "",
         "outputmode": "event",
         "uploadretryinterval": 5000,
-        "pollinginterval": 5000,
+        "pollinginterval": "60000",
         "pollstatus": false,
         "getstatusoncommand": true,
         "devicetype": "Measure",
@@ -1187,25 +1187,8 @@
         "y": 580,
         "wires": [
             [
-                "b860a946062e0db6"
+                "b1268d9d.ee4e6"
             ]
-        ]
-    },
-    {
-        "id": "b860a946062e0db6",
-        "type": "function",
-        "z": "c6e1822c71f940ee",
-        "name": "Reset Shelly",
-        "func": "\nreturn msg;",
-        "outputs": 1,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 340,
-        "y": 580,
-        "wires": [
-            []
         ]
     },
     {
@@ -1822,58 +1805,65 @@
         "wires": []
     },
     {
-        "id": "991274296fd7f777",
+        "id": "b1268d9d.ee4e6",
+        "type": "function",
+        "z": "c6e1822c71f940ee",
+        "name": "Generate URLs",
+        "func": "const housemeter = global.get('housemeter');\n\nmsg.urls = [\n    `http://${housemeter}/emeter/0?reset_totals=true`,\n    `http://${housemeter}/emeter/1?reset_totals=true`,\n    `http://${housemeter}/emeter/2?reset_totals=true`\n];\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 340,
+        "y": 580,
+        "wires": [
+            [
+                "df8a3f7d.7336d"
+            ]
+        ]
+    },
+    {
+        "id": "df8a3f7d.7336d",
+        "type": "split",
+        "z": "c6e1822c71f940ee",
+        "name": "",
+        "splt": "\\n",
+        "spltType": "str",
+        "arraySplt": 1,
+        "arraySpltType": "len",
+        "stream": false,
+        "addname": "",
+        "x": 530,
+        "y": 580,
+        "wires": [
+            [
+                "d7e3589e.c073d8",
+                "c3a99553644be714"
+            ]
+        ]
+    },
+    {
+        "id": "d7e3589e.c073d8",
         "type": "http request",
         "z": "c6e1822c71f940ee",
         "name": "",
-        "method": "POST",
+        "method": "GET",
         "ret": "txt",
         "paytoqs": "ignore",
-        "url": "http://192.168.1.120/emeter/0/reset_totals",
+        "url": "{{payload}}",
         "tls": "",
         "persist": false,
         "proxy": "",
         "authType": "",
-        "x": 550,
-        "y": 680,
+        "x": 710,
+        "y": 580,
         "wires": [
-            [
-                "a9d67acad67354ae"
-            ]
+            []
         ]
     },
     {
-        "id": "e7c42b566f030af7",
-        "type": "inject",
-        "z": "c6e1822c71f940ee",
-        "name": "",
-        "props": [
-            {
-                "p": "payload"
-            },
-            {
-                "p": "topic",
-                "vt": "str"
-            }
-        ],
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "",
-        "payload": "",
-        "payloadType": "date",
-        "x": 350,
-        "y": 680,
-        "wires": [
-            [
-                "991274296fd7f777",
-                "a9d67acad67354ae"
-            ]
-        ]
-    },
-    {
-        "id": "a9d67acad67354ae",
+        "id": "c3a99553644be714",
         "type": "debug",
         "z": "c6e1822c71f940ee",
         "name": "",
@@ -1885,8 +1875,8 @@
         "targetType": "full",
         "statusVal": "",
         "statusType": "auto",
-        "x": 730,
-        "y": 680,
+        "x": 690,
+        "y": 640,
         "wires": []
     }
 ]
