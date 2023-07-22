@@ -1852,7 +1852,7 @@
         "method": "GET",
         "ret": "txt",
         "paytoqs": "query",
-        "url": "",
+        "url": "msg.url",
         "tls": "",
         "persist": false,
         "proxy": "",
