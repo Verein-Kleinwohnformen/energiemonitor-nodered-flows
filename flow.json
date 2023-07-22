@@ -1811,5 +1811,51 @@
                 "e7b8a20c1f3a0fec"
             ]
         ]
+    },
+    {
+        "id": "142fd4d29f01820b",
+        "type": "inject",
+        "z": "0914f028aec835b0",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 110,
+        "y": 500,
+        "wires": [
+            [
+                "d38cd4b91b30e203"
+            ]
+        ]
+    },
+    {
+        "id": "d38cd4b91b30e203",
+        "type": "function",
+        "z": "0914f028aec835b0",
+        "name": "",
+        "func": "global.set(\"uid\", undefined);\nglobal.set(\"housemeter\", undefined);\nglobal.set(\"housemeterModel\", undefined);\nglobal.set(\"housemeterActive\", undefined);\nglobal.set(\"solarmeter\", undefined);\nglobal.set(\"solarmeterModel\", undefined);\nglobal.set(\"solarmeterActive\", undefined);\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 310,
+        "y": 500,
+        "wires": [
+            []
+        ]
     }
 ]
