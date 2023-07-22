@@ -1686,51 +1686,5 @@
         "x": 510,
         "y": 480,
         "wires": []
-    },
-    {
-        "id": "f001d4c5caef2f25",
-        "type": "inject",
-        "z": "d27ba1192b875173",
-        "name": "",
-        "props": [
-            {
-                "p": "payload"
-            },
-            {
-                "p": "topic",
-                "vt": "str"
-            }
-        ],
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "",
-        "payload": "",
-        "payloadType": "date",
-        "x": 110,
-        "y": 620,
-        "wires": [
-            [
-                "b3a1967541d0d819"
-            ]
-        ]
-    },
-    {
-        "id": "b3a1967541d0d819",
-        "type": "function",
-        "z": "d27ba1192b875173",
-        "name": "",
-        "func": "global.set(\"solarmeterModel\", \"gen2\");\nreturn msg;",
-        "outputs": 1,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 300,
-        "y": 620,
-        "wires": [
-            []
-        ]
     }
 ]
