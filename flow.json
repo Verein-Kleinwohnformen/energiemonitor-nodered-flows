@@ -1543,8 +1543,10 @@
         "type": "http response",
         "z": "d27ba1192b875173",
         "name": "",
-        "statusCode": "200",
-        "headers": {},
+        "statusCode": "400",
+        "headers": {
+            "location": "/form"
+        },
         "x": 900,
         "y": 180,
         "wires": []
