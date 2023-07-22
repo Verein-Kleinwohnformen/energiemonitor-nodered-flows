@@ -1852,7 +1852,7 @@
         "method": "GET",
         "ret": "txt",
         "paytoqs": "query",
-        "url": "msg.url",
+        "url": "http://${housemeter}/emeter/0?reset_totals=true",
         "tls": "",
         "persist": false,
         "proxy": "",
