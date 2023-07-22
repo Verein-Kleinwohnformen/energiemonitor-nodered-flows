@@ -1818,48 +1818,7 @@
         "x": 340,
         "y": 580,
         "wires": [
-            [
-                "c3a99553644be714",
-                "d7e3589e.c073d8"
-            ]
+            []
         ]
-    },
-    {
-        "id": "d7e3589e.c073d8",
-        "type": "http request",
-        "z": "c6e1822c71f940ee",
-        "name": "",
-        "method": "GET",
-        "ret": "txt",
-        "paytoqs": "query",
-        "url": "http://${housemeter}/emeter/0?reset_totals=true",
-        "tls": "",
-        "persist": false,
-        "proxy": "",
-        "authType": "",
-        "x": 570,
-        "y": 580,
-        "wires": [
-            [
-                "c3a99553644be714"
-            ]
-        ]
-    },
-    {
-        "id": "c3a99553644be714",
-        "type": "debug",
-        "z": "c6e1822c71f940ee",
-        "name": "",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "true",
-        "targetType": "full",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 770,
-        "y": 720,
-        "wires": []
     }
 ]
