@@ -92,7 +92,7 @@
         "dir": "payload",
         "dirType": "msg",
         "x": 370,
-        "y": 580,
+        "y": 560,
         "wires": [
             [
                 "3"
@@ -111,7 +111,7 @@
         "finalize": "",
         "libs": [],
         "x": 570,
-        "y": 580,
+        "y": 560,
         "wires": [
             [
                 "6"
@@ -128,7 +128,7 @@
         "filename": "oldFiles",
         "filenameType": "msg",
         "x": 800,
-        "y": 580,
+        "y": 560,
         "wires": [
             []
         ]
@@ -149,7 +149,7 @@
         "devicetype": "Measure",
         "outputs": 2,
         "x": 690,
-        "y": 80,
+        "y": 60,
         "wires": [
             [
                 "b11fc78387b1abf9"
@@ -173,7 +173,7 @@
         "devicetype": "Measure",
         "outputs": 1,
         "x": 710,
-        "y": 160,
+        "y": 140,
         "wires": [
             [
                 "6326e0fe68adb662"
@@ -189,7 +189,7 @@
             "5ee90d3319bef9d3"
         ],
         "x": 1055,
-        "y": 120,
+        "y": 100,
         "wires": []
     },
     {
@@ -207,7 +207,7 @@
             "de583f77b45d9e14"
         ],
         "x": 55,
-        "y": 160,
+        "y": 140,
         "wires": [
             [
                 "f871afd17d33fea9",
@@ -222,7 +222,7 @@
         "client": "725f4c36dd3c91a4",
         "output": "output1",
         "x": 810,
-        "y": 160,
+        "y": 140,
         "wires": []
     },
     {
@@ -297,7 +297,7 @@
         "finalize": "",
         "libs": [],
         "x": 930,
-        "y": 80,
+        "y": 60,
         "wires": [
             [
                 "74e01a6004d724e8"
@@ -316,7 +316,7 @@
         "finalize": "",
         "libs": [],
         "x": 930,
-        "y": 160,
+        "y": 140,
         "wires": [
             [
                 "74e01a6004d724e8"
@@ -445,7 +445,7 @@
         "topic": "",
         "payloadType": "date",
         "x": 150,
-        "y": 340,
+        "y": 320,
         "wires": [
             [
                 "8fbf0c9e.9ea23"
@@ -459,7 +459,7 @@
         "name": "Check InfluxDB data",
         "info": "",
         "x": 130,
-        "y": 280,
+        "y": 260,
         "wires": []
     },
     {
@@ -474,7 +474,7 @@
         "finalize": "",
         "libs": [],
         "x": 210,
-        "y": 160,
+        "y": 140,
         "wires": [
             [
                 "0eba14a315e9207c"
@@ -493,7 +493,7 @@
         "retentionPolicy": "",
         "org": "Kleinwohnformen",
         "x": 570,
-        "y": 340,
+        "y": 320,
         "wires": [
             [
                 "6af2607ed7631321"
@@ -512,7 +512,7 @@
         "finalize": "",
         "libs": [],
         "x": 370,
-        "y": 340,
+        "y": 320,
         "wires": [
             [
                 "72a3ee3deb599eeb"
@@ -531,7 +531,7 @@
         "finalize": "",
         "libs": [],
         "x": 820,
-        "y": 340,
+        "y": 320,
         "wires": [
             [
                 "2b3d10fe299acc4d"
@@ -571,7 +571,7 @@
         "name": "New File all 7 days",
         "info": "",
         "x": 130,
-        "y": 400,
+        "y": 380,
         "wires": []
     },
     {
@@ -595,7 +595,7 @@
         "topic": "",
         "payloadType": "date",
         "x": 150,
-        "y": 460,
+        "y": 440,
         "wires": [
             [
                 "node_function"
@@ -614,7 +614,7 @@
         "finalize": "",
         "libs": [],
         "x": 470,
-        "y": 460,
+        "y": 440,
         "wires": [
             [
                 "node_fsops_move"
@@ -636,7 +636,7 @@
         "destFilenameType": "msg",
         "link": false,
         "x": 780,
-        "y": 460,
+        "y": 440,
         "wires": [
             []
         ]
@@ -650,7 +650,7 @@
             "62418716caaba7d7"
         ],
         "x": 100,
-        "y": 220,
+        "y": 200,
         "wires": [
             [
                 "416bf5c87ac4eee2"
@@ -677,7 +677,7 @@
         "to": "",
         "reg": false,
         "x": 320,
-        "y": 220,
+        "y": 200,
         "wires": [
             []
         ]
@@ -699,7 +699,7 @@
         "drop": false,
         "allowrate": false,
         "x": 560,
-        "y": 160,
+        "y": 140,
         "wires": [
             [
                 "62418716caaba7d7"
@@ -789,7 +789,7 @@
             "2992401daa37639a"
         ],
         "x": 995,
-        "y": 340,
+        "y": 320,
         "wires": []
     },
     {
@@ -837,7 +837,7 @@
         "name": "Delete Files older 4 Weeks",
         "info": "",
         "x": 150,
-        "y": 520,
+        "y": 500,
         "wires": []
     },
     {
@@ -861,7 +861,7 @@
         "topic": "",
         "payloadType": "date",
         "x": 150,
-        "y": 580,
+        "y": 560,
         "wires": [
             [
                 "2"
@@ -961,7 +961,7 @@
         "name": "Shelly Solarmeter",
         "info": "",
         "x": 130,
-        "y": 240,
+        "y": 200,
         "wires": []
     },
     {
@@ -980,7 +980,7 @@
         "devicetype": "Measure",
         "outputs": 2,
         "x": 690,
-        "y": 280,
+        "y": 220,
         "wires": [
             [
                 "a9a153250dc4f22c"
@@ -1004,7 +1004,7 @@
         "devicetype": "Measure",
         "outputs": 1,
         "x": 710,
-        "y": 360,
+        "y": 300,
         "wires": [
             [
                 "fb88d0245fedb952"
@@ -1020,7 +1020,7 @@
             "5ee90d3319bef9d3"
         ],
         "x": 1055,
-        "y": 320,
+        "y": 260,
         "wires": []
     },
     {
@@ -1035,7 +1035,7 @@
         "finalize": "",
         "libs": [],
         "x": 930,
-        "y": 280,
+        "y": 220,
         "wires": [
             [
                 "2bbe990a1d8abb98"
@@ -1054,7 +1054,7 @@
         "finalize": "",
         "libs": [],
         "x": 930,
-        "y": 360,
+        "y": 300,
         "wires": [
             [
                 "2bbe990a1d8abb98"
@@ -1184,7 +1184,7 @@
             }
         ],
         "x": 130,
-        "y": 500,
+        "y": 420,
         "wires": [
             [
                 "b1268d9d.ee4e6"
@@ -1198,7 +1198,7 @@
         "name": "Reset counter once per year",
         "info": "",
         "x": 160,
-        "y": 440,
+        "y": 360,
         "wires": []
     },
     {
@@ -1366,7 +1366,7 @@
         "onceDelay": "5",
         "topic": "",
         "x": 130,
-        "y": 120,
+        "y": 100,
         "wires": [
             [
                 "f4f943fe13484b83"
@@ -1401,7 +1401,7 @@
         "onceDelay": "5",
         "topic": "",
         "x": 130,
-        "y": 320,
+        "y": 260,
         "wires": [
             [
                 "0c1c1524c18ff3f4"
@@ -1431,7 +1431,7 @@
         "repair": false,
         "outputs": 2,
         "x": 490,
-        "y": 320,
+        "y": 260,
         "wires": [
             [
                 "d9091e28eb107a7b"
@@ -1464,7 +1464,7 @@
         "repair": false,
         "outputs": 2,
         "x": 490,
-        "y": 120,
+        "y": 100,
         "wires": [
             [
                 "8e2e1ca31341359b"
@@ -1565,7 +1565,7 @@
         "links": [
             "5ddaf670df87715d"
         ],
-        "x": 475,
+        "x": 455,
         "y": 480,
         "wires": []
     },
@@ -1613,7 +1613,7 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 310,
+        "x": 320,
         "y": 380,
         "wires": [
             [
@@ -1676,7 +1676,7 @@
         "name": "",
         "statusCode": "",
         "headers": {},
-        "x": 510,
+        "x": 490,
         "y": 440,
         "wires": []
     },
@@ -1698,7 +1698,7 @@
         "repair": false,
         "outputs": 1,
         "x": 320,
-        "y": 320,
+        "y": 260,
         "wires": [
             [
                 "965b6a6452fc9133"
@@ -1723,7 +1723,7 @@
         "repair": false,
         "outputs": 1,
         "x": 320,
-        "y": 120,
+        "y": 100,
         "wires": [
             [
                 "685adbdcc7f48f48"
@@ -1816,7 +1816,7 @@
         "finalize": "",
         "libs": [],
         "x": 340,
-        "y": 500,
+        "y": 420,
         "wires": [
             []
         ]
