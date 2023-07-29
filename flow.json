@@ -1104,7 +1104,7 @@
         "type": "function",
         "z": "d27ba1192b875173",
         "name": "Influx Query",
-        "func": "let measurement = \"manualInput\";\nlet tagValue = global.get('uid');\nlet tagFuel = msg.payload.fuel;\n\nlet startDate = new Date(msg.payload.start);\nlet endDate = new Date(msg.payload.end);\n\n// Setze die Zeit auf 23:59:59, um das Ende des Tages zu repräsentieren\nendDate.setHours(23, 59, 59);\n\nlet fluxQuery = `from(bucket: \"bananapi\")\n  |> range(start: ${startDate.toISOString()}, stop: ${endDate.toISOString()})\n  |> filter(fn: (r) => r[\"_measurement\"] == \"${measurement}\")\n  |> filter(fn: (r) => r[\"tags_UID\"] == \"${tagValue}\")\n  |> filter(fn: (r) => r[\"tags_fuel\"] == \"${tagFuel}\")`;\n\nmsg.query = fluxQuery;\nreturn msg;\n",
+        "func": "let measurement = \"manualInput\";\nlet tagValue = global.get('uid');\nlet tagFuel = msg.payload.fuel;\n\nlet startDate = new Date(msg.payload.start);\nlet endDate = new Date(msg.payload.end);\n\n// Setze die Zeit auf 23:59:59, um das Ende des Tages zu repräsentieren\nendDate.setHours(23, 59, 59);\n\nlet fluxQuery = `from(bucket: \"emonitor\")\n  |> range(start: ${startDate.toISOString()}, stop: ${endDate.toISOString()})\n  |> filter(fn: (r) => r[\"_measurement\"] == \"${measurement}\")\n  |> filter(fn: (r) => r[\"tags_UID\"] == \"${tagValue}\")\n  |> filter(fn: (r) => r[\"tags_fuel\"] == \"${tagFuel}\")`;\n\nmsg.query = fluxQuery;\nreturn msg;\n",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
