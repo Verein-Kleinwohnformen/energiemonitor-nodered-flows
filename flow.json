@@ -1654,7 +1654,7 @@
         "type": "function",
         "z": "d27ba1192b875173",
         "name": "Set Globals",
-        "func": "let globals = msg.payload;\n\nfor (let key in globals) {\n    global.set(key, globals[key]);\n}\n\nreturn msg;\n",
+        "func": "let globals = global.keys();\nlet payloadKeys = Object.keys(msg.payload);\n\nglobals.forEach((key) => {\n    if (!payloadKeys.includes(key)) {\n        global.set(key, undefined);  // or global.delete(key);\n    }\n});\n\nfor (let key in msg.payload) {\n    global.set(key, msg.payload[key]);\n}\n\nreturn msg;\n",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
