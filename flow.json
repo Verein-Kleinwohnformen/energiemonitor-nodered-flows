@@ -1837,5 +1837,38 @@
         "x": 490,
         "y": 200,
         "wires": []
+    },
+    {
+        "id": "d3913a8620b3b89e",
+        "type": "catch",
+        "z": "e48ca2e6e4e7cd76",
+        "name": "",
+        "scope": [
+            "72a3ee3deb599eeb"
+        ],
+        "uncaught": false,
+        "x": 90,
+        "y": 260,
+        "wires": [
+            [
+                "b85b70fcaa976ffb"
+            ]
+        ]
+    },
+    {
+        "id": "b85b70fcaa976ffb",
+        "type": "debug",
+        "z": "e48ca2e6e4e7cd76",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 280,
+        "y": 260,
+        "wires": []
     }
 ]
