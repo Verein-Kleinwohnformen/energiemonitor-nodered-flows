@@ -238,9 +238,7 @@
         "y": 100,
         "wires": [
             [
-                "a6f9c2d5c3e8bd89",
-                "b49037eb2618c7b3",
-                "d0aa98f93ed148ac"
+                "a6f9c2d5c3e8bd89"
             ]
         ]
     },
@@ -271,8 +269,7 @@
         "wires": [
             [
                 "675ba50f9893e483",
-                "e800ada14d5839d9",
-                "b49037eb2618c7b3"
+                "e800ada14d5839d9"
             ]
         ]
     },
@@ -1822,41 +1819,6 @@
         "y": 420,
         "wires": [
             []
-        ]
-    },
-    {
-        "id": "b49037eb2618c7b3",
-        "type": "debug",
-        "z": "ab257fb0cc5ba8f5",
-        "name": "",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "false",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 320,
-        "y": 200,
-        "wires": []
-    },
-    {
-        "id": "d0aa98f93ed148ac",
-        "type": "function",
-        "z": "ab257fb0cc5ba8f5",
-        "name": "",
-        "func": "let globalKeys = global.keys();\nlet globalValues = {};\n\nfor (let key of globalKeys) {\n    globalValues[key] = global.get(key);\n}\n\nmsg.payload = globalValues;\nreturn msg;\n",
-        "outputs": 1,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 110,
-        "y": 200,
-        "wires": [
-            [
-                "b49037eb2618c7b3"
-            ]
         ]
     }
 ]
