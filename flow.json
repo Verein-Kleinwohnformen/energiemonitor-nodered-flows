@@ -238,7 +238,8 @@
         "y": 100,
         "wires": [
             [
-                "a6f9c2d5c3e8bd89"
+                "a6f9c2d5c3e8bd89",
+                "b49037eb2618c7b3"
             ]
         ]
     },
@@ -568,9 +569,9 @@
         "id": "6799f87d7f864ee9",
         "type": "comment",
         "z": "e48ca2e6e4e7cd76",
-        "name": "New File all 7 days",
+        "name": "New File all 24 houres",
         "info": "",
-        "x": 130,
+        "x": 140,
         "y": 380,
         "wires": []
     },
@@ -1820,5 +1821,21 @@
         "wires": [
             []
         ]
+    },
+    {
+        "id": "b49037eb2618c7b3",
+        "type": "debug",
+        "z": "ab257fb0cc5ba8f5",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 320,
+        "y": 200,
+        "wires": []
     }
 ]
