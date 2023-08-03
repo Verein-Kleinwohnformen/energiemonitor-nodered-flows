@@ -507,7 +507,7 @@
         "type": "function",
         "z": "e48ca2e6e4e7cd76",
         "name": "Influx Query",
-        "func": "let measurement = \"sensors\";\nlet tagValue = global.get('uid');\n\n// Flux-Query-Befehl erstellen\nlet fluxQuery = `from(bucket: \"emonitor\")\n  |> range(start: -1h)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"${measurement}\")\n  |> filter(fn: (r) => r[\"tags_UID\"] == \"${tagValue}\")\n  |> filter(fn: (r) => r[\"host\"] == \"telegraf.monitor.e-mgmt.cloud\")\n  |> count()`;\n\n// Flux-Query-Befehl an den influxdb-Node übergeben\nmsg.query = fluxQuery;\nreturn msg;\n",
+        "func": "let measurement = \"sensors\";\nlet tagValue = global.get('uid');\n\n// Flux-Query-Befehl erstellen\nlet fluxQuery = `from(bucket: \"emonitor\")\n  |> range(start: -2h)\n  |> filter(fn: (r) => r[\"_measurement\"] == \"${measurement}\")\n  |> filter(fn: (r) => r[\"tags_UID\"] == \"${tagValue}\")\n  |> filter(fn: (r) => r[\"host\"] == \"telegraf.monitor.e-mgmt.cloud\")\n  |> count()`;\n\n// Flux-Query-Befehl an den influxdb-Node übergeben\nmsg.query = fluxQuery;\nreturn msg;\n",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
