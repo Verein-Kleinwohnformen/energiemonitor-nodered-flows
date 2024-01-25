@@ -1,8 +1,5 @@
-nodeRed
-=======
+KWF Energiemonitor Node-RED auf Balena
 
-### Produktinfo
+### About
 
-Dies ist die 'README.md'-Datei Ihres Projekts.
-Sie hilft den Benutzern zu verstehen, was das Projekt macht,
-wie man es verwendet und enthält alles andere Wissenwerte dazu.
+Node-RED Flow Template des KWF Energiemonitors mit Balena

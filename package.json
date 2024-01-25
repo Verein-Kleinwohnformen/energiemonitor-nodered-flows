@@ -1,12 +1,19 @@
 {
-    "name": "nodeRed",
-    "description": "Ein Node-RED-Projekt",
+    "name": "EnergieMonitorNew",
+    "description": "KWF Energiemonitor Node-RED",
     "version": "0.0.1",
-    "dependencies": {},
+    "dependencies": {
+        "node-red-contrib-aggregator": "1.5.0",
+        "node-red-contrib-balena": "1.0.1",
+        "node-red-contrib-cron-plus": "2.1.0",
+        "node-red-contrib-isonline": "1.1.15",
+        "node-red-contrib-shelly": "10.16.1",
+        "node-red-contrib-tuya-smart-device": "5.2.0"
+    },
     "node-red": {
         "settings": {
-            "flowFile": "flow.json",
-            "credentialsFile": "flow_cred.json"
+            "flowFile": "flows.json",
+            "credentialsFile": "flows_cred.json"
         }
     }
 }

@@ -1,0 +1,473 @@
+[
+    {
+        "id": "a4cd0360ff8bbb01",
+        "type": "tab",
+        "label": "Energiemonitor-Template",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "79ebf938367c3f4a",
+        "type": "shelly-gen2",
+        "z": "a4cd0360ff8bbb01",
+        "hostname": "10.42.0.17",
+        "description": "Shelly 3EM",
+        "mode": "polling",
+        "server": "",
+        "outputmode": "event",
+        "uploadretryinterval": 5000,
+        "pollinginterval": "1000",
+        "pollstatus": true,
+        "getstatusoncommand": true,
+        "devicetype": "Measure",
+        "outputs": 1,
+        "x": 110,
+        "y": 100,
+        "wires": [
+            [
+                "e20b8d27f56c75e9"
+            ]
+        ]
+    },
+    {
+        "id": "7f6218d726f0cd73",
+        "type": "http request",
+        "z": "a4cd0360ff8bbb01",
+        "name": "Thingsboard telemetry",
+        "method": "POST",
+        "ret": "txt",
+        "paytoqs": "ignore",
+        "url": "https://thingsboard.cloud/api/v1/<TOKEN>/telemetry",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 1180,
+        "y": 260,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "e20b8d27f56c75e9",
+        "type": "change",
+        "z": "a4cd0360ff8bbb01",
+        "name": "Select Power",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "payload.em0",
+                "tot": "msg"
+            },
+            {
+                "t": "delete",
+                "p": "payload.emdata0",
+                "pt": "msg"
+            },
+            {
+                "t": "delete",
+                "p": "payload.temperature0",
+                "pt": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 270,
+        "y": 100,
+        "wires": [
+            [
+                "1374492e2020971c"
+            ]
+        ]
+    },
+    {
+        "id": "a5884b040959a469",
+        "type": "aggregator",
+        "z": "a4cd0360ff8bbb01",
+        "name": "aggregate per minute",
+        "topic": "",
+        "intervalCount": "60",
+        "intervalUnits": "s",
+        "submitIncompleteInterval": true,
+        "submitPerTopic": true,
+        "aggregationType": "mean",
+        "x": 580,
+        "y": 100,
+        "wires": [
+            [
+                "cf1b14e880a4ac87"
+            ]
+        ]
+    },
+    {
+        "id": "cf1b14e880a4ac87",
+        "type": "join",
+        "z": "a4cd0360ff8bbb01",
+        "name": "Join",
+        "mode": "custom",
+        "build": "object",
+        "property": "payload",
+        "propertyType": "msg",
+        "key": "topic",
+        "joiner": "\\n",
+        "joinerType": "str",
+        "accumulate": false,
+        "timeout": "10",
+        "count": "",
+        "reduceRight": false,
+        "reduceExp": "",
+        "reduceInit": "",
+        "reduceInitType": "",
+        "reduceFixup": "",
+        "x": 750,
+        "y": 100,
+        "wires": [
+            [
+                "7f6218d726f0cd73"
+            ]
+        ]
+    },
+    {
+        "id": "1374492e2020971c",
+        "type": "split",
+        "z": "a4cd0360ff8bbb01",
+        "name": "Split",
+        "splt": "\\n",
+        "spltType": "str",
+        "arraySplt": 1,
+        "arraySpltType": "len",
+        "stream": false,
+        "addname": "topic",
+        "x": 410,
+        "y": 100,
+        "wires": [
+            [
+                "a5884b040959a469"
+            ]
+        ]
+    },
+    {
+        "id": "b410661113788f0c",
+        "type": "tuya-smart-device-generic",
+        "z": "a4cd0360ff8bbb01",
+        "name": "",
+        "eventMode": "event-both",
+        "x": 400,
+        "y": 220,
+        "wires": [
+            [
+                "be41fd6d2844363a"
+            ]
+        ]
+    },
+    {
+        "id": "ed54199a8b8823d0",
+        "type": "cronplus",
+        "z": "a4cd0360ff8bbb01",
+        "name": "Tuya innen",
+        "outputField": "payload",
+        "timeZone": "",
+        "storeName": "",
+        "commandResponseMsgOutput": "output1",
+        "defaultLocation": "",
+        "defaultLocationType": "default",
+        "outputs": 1,
+        "options": [
+            {
+                "name": "schedule1",
+                "topic": "msg",
+                "payloadType": "json",
+                "payload": "{\"deviceVirtualId\":\"bf12dc9dfb65536168voa8\",\"deviceKey\":\"yN[&q!b7zL:a|ISD\",\"deviceName\":\"innen\",\"operation\":\"GET\",\"payload\":{\"schema\":true}}",
+                "expressionType": "cron",
+                "expression": "*/6 * * * * *",
+                "location": "",
+                "offset": "0",
+                "solarType": "all",
+                "solarEvents": "sunrise,sunset"
+            }
+        ],
+        "x": 110,
+        "y": 220,
+        "wires": [
+            [
+                "b410661113788f0c"
+            ]
+        ]
+    },
+    {
+        "id": "5443c34c1d6ea790",
+        "type": "catch",
+        "z": "a4cd0360ff8bbb01",
+        "name": "Tuya Errors",
+        "scope": [
+            "b410661113788f0c",
+            "5a352d0c6704e4b3"
+        ],
+        "uncaught": false,
+        "x": 350,
+        "y": 340,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "0b117895d9f982ec",
+        "type": "comment",
+        "z": "a4cd0360ff8bbb01",
+        "name": "catch Tuya errors to ignore",
+        "info": "",
+        "x": 150,
+        "y": 340,
+        "wires": []
+    },
+    {
+        "id": "ac556768f9436e04",
+        "type": "comment",
+        "z": "a4cd0360ff8bbb01",
+        "name": "Tuya query - hacky solution but works",
+        "info": "",
+        "x": 190,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "be41fd6d2844363a",
+        "type": "function",
+        "z": "a4cd0360ff8bbb01",
+        "name": "extract sensor values",
+        "func": "if (1 in msg.payload.data.dps){\n    var t = msg.payload.data.dps[\"1\"] / 10;\n    var tKey = \"temperatur_\" + msg.payload.deviceName;\n    var tMsg = {\"payload\": {[tKey]: t}};\n    return tMsg;\n}\n\nelse if (2 in msg.payload.data.dps){\n    var h = msg.payload.data.dps[\"2\"];\n    var hKey = \"feuchtigkeit_\" + msg.payload.deviceName;\n    var hMsg = {\"payload\": {[hKey]: h}};\n    return hMsg;\n}\n\nelse {\n    var dpsKey = Object.keys(msg.payload.data.dps);\n    var otherKey = \"tuya_\" + dpsKey;\n    var otherData = msg.payload.data.dps[otherKey];\n    var oMsg = {\"payload\": {[otherKey]: otherData}};\n    return oMsg;\n}",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 660,
+        "y": 240,
+        "wires": [
+            [
+                "3938a2ae6acee187"
+            ]
+        ]
+    },
+    {
+        "id": "5ce94dfd331b5259",
+        "type": "comment",
+        "z": "a4cd0360ff8bbb01",
+        "name": "Query shelly every second",
+        "info": "",
+        "x": 150,
+        "y": 60,
+        "wires": []
+    },
+    {
+        "id": "5b7c4732171746f5",
+        "type": "comment",
+        "z": "a4cd0360ff8bbb01",
+        "name": "Internet connection health monitor",
+        "info": "",
+        "x": 180,
+        "y": 600,
+        "wires": []
+    },
+    {
+        "id": "310f0793eedc7e62",
+        "type": "is online",
+        "z": "a4cd0360ff8bbb01",
+        "name": "is not online",
+        "url": "google.com",
+        "action": "2",
+        "x": 290,
+        "y": 660,
+        "wires": [
+            [
+                "4541f95a136678b7"
+            ]
+        ]
+    },
+    {
+        "id": "c8eef2b23349a2da",
+        "type": "cronplus",
+        "z": "a4cd0360ff8bbb01",
+        "name": "",
+        "outputField": "payload",
+        "timeZone": "",
+        "storeName": "",
+        "commandResponseMsgOutput": "output1",
+        "defaultLocation": "",
+        "defaultLocationType": "default",
+        "outputs": 1,
+        "options": [
+            {
+                "name": "schedule1",
+                "topic": "topic1",
+                "payloadType": "default",
+                "payload": "",
+                "expressionType": "cron",
+                "expression": "0 */17 * * * * ",
+                "location": "",
+                "offset": "0",
+                "solarType": "all",
+                "solarEvents": "sunrise,sunset"
+            }
+        ],
+        "x": 100,
+        "y": 660,
+        "wires": [
+            [
+                "310f0793eedc7e62"
+            ]
+        ]
+    },
+    {
+        "id": "4541f95a136678b7",
+        "type": "reboot",
+        "z": "a4cd0360ff8bbb01",
+        "name": "reboot device",
+        "x": 500,
+        "y": 660,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "e51e6e4a96758918",
+        "type": "cronplus",
+        "z": "a4cd0360ff8bbb01",
+        "name": "Tuya aussen",
+        "outputField": "payload",
+        "timeZone": "",
+        "storeName": "",
+        "commandResponseMsgOutput": "output1",
+        "defaultLocation": "",
+        "defaultLocationType": "default",
+        "outputs": 1,
+        "options": [
+            {
+                "name": "schedule1",
+                "topic": "msg",
+                "payloadType": "json",
+                "payload": "{\"deviceVirtualId\":\"bf075ec74a2365bc14byug\",\"deviceKey\":\"brEpds_E=@;`xx^+\",\"deviceName\":\"aussen\",\"operation\":\"GET\",\"payload\":{\"schema\":true}}",
+                "expressionType": "cron",
+                "expression": "*/5 * * * * *",
+                "location": "",
+                "offset": "0",
+                "solarType": "all",
+                "solarEvents": "sunrise,sunset"
+            }
+        ],
+        "x": 110,
+        "y": 280,
+        "wires": [
+            [
+                "5a352d0c6704e4b3"
+            ]
+        ]
+    },
+    {
+        "id": "1b95392a3a03fee1",
+        "type": "debug",
+        "z": "a4cd0360ff8bbb01",
+        "name": "debug 1",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1140,
+        "y": 400,
+        "wires": []
+    },
+    {
+        "id": "5a352d0c6704e4b3",
+        "type": "tuya-smart-device-generic",
+        "z": "a4cd0360ff8bbb01",
+        "name": "",
+        "eventMode": "event-both",
+        "x": 400,
+        "y": 280,
+        "wires": [
+            [
+                "be41fd6d2844363a"
+            ]
+        ]
+    },
+    {
+        "id": "dbb419db7e59bdd5",
+        "type": "join",
+        "z": "a4cd0360ff8bbb01",
+        "name": "Join",
+        "mode": "custom",
+        "build": "object",
+        "property": "payload",
+        "propertyType": "msg",
+        "key": "topic",
+        "joiner": "\\n",
+        "joinerType": "str",
+        "accumulate": false,
+        "timeout": "10",
+        "count": "",
+        "reduceRight": false,
+        "reduceExp": "",
+        "reduceInit": "",
+        "reduceInitType": "",
+        "reduceFixup": "",
+        "x": 950,
+        "y": 300,
+        "wires": [
+            [
+                "1b95392a3a03fee1",
+                "7f6218d726f0cd73"
+            ]
+        ]
+    },
+    {
+        "id": "826e744b2b549ab8",
+        "type": "aggregator",
+        "z": "a4cd0360ff8bbb01",
+        "name": "aggregate per minute",
+        "topic": "",
+        "intervalCount": "60",
+        "intervalUnits": "s",
+        "submitIncompleteInterval": true,
+        "submitPerTopic": true,
+        "aggregationType": "mean",
+        "x": 780,
+        "y": 300,
+        "wires": [
+            [
+                "dbb419db7e59bdd5"
+            ]
+        ]
+    },
+    {
+        "id": "3938a2ae6acee187",
+        "type": "split",
+        "z": "a4cd0360ff8bbb01",
+        "name": "Split",
+        "splt": "\\n",
+        "spltType": "str",
+        "arraySplt": 1,
+        "arraySpltType": "len",
+        "stream": false,
+        "addname": "topic",
+        "x": 610,
+        "y": 300,
+        "wires": [
+            [
+                "826e744b2b549ab8"
+            ]
+        ]
+    }
+]
