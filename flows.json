@@ -188,7 +188,7 @@
                 "payloadType": "json",
                 "payload": "{\"deviceVirtualId\":\"bf12dc9dfb65536168voa8\",\"deviceKey\":\"yN[&q!b7zL:a|ISD\",\"deviceName\":\"innen\",\"operation\":\"GET\",\"payload\":{\"schema\":true}}",
                 "expressionType": "cron",
-                "expression": "*/6 * * * * *",
+                "expression": "*/5 * * * * *",
                 "location": "",
                 "offset": "0",
                 "solarType": "all",
@@ -244,7 +244,7 @@
         "type": "function",
         "z": "a4cd0360ff8bbb01",
         "name": "extract sensor values",
-        "func": "if (1 in msg.payload.data.dps){\n    var t = msg.payload.data.dps[\"1\"] / 10;\n    var tKey = \"temperatur_\" + msg.payload.deviceName;\n    var tMsg = {\"payload\": {[tKey]: t}};\n    return tMsg;\n}\n\nelse if (2 in msg.payload.data.dps){\n    var h = msg.payload.data.dps[\"2\"];\n    var hKey = \"feuchtigkeit_\" + msg.payload.deviceName;\n    var hMsg = {\"payload\": {[hKey]: h}};\n    return hMsg;\n}\n\nelse {\n    var dpsKey = Object.keys(msg.payload.data.dps);\n    var otherKey = \"tuya_\" + dpsKey;\n    var otherData = msg.payload.data.dps[otherKey];\n    var oMsg = {\"payload\": {[otherKey]: otherData}};\n    return oMsg;\n}",
+        "func": "if (1 in msg.payload.data.dps){\n    var t = msg.payload.data.dps[\"1\"] / 10;\n    var tKey = \"temperatur_\" + msg.payload.deviceName;\n    var tMsg = {\"payload\": {[tKey]: t}};\n    return tMsg;\n}\n\nelse if (2 in msg.payload.data.dps){\n    var h = msg.payload.data.dps[\"2\"];\n    var hKey = \"feuchtigkeit_\" + msg.payload.deviceName;\n    var hMsg = {\"payload\": {[hKey]: h}};\n    return hMsg;\n}\n\nelse {\n    var dpsKey = Object.keys(msg.payload.data.dps);\n    var otherKey = \"tuya_\" + dpsKey + \"_\" + msg.payload.deviceName;\n    var otherData = msg.payload.data.dps[otherKey];\n    var oMsg = {\"payload\": {[otherKey]: otherData}};\n    return oMsg;\n}",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
@@ -255,7 +255,8 @@
         "y": 240,
         "wires": [
             [
-                "3938a2ae6acee187"
+                "3938a2ae6acee187",
+                "1b95392a3a03fee1"
             ]
         ]
     },
@@ -358,7 +359,7 @@
                 "payloadType": "json",
                 "payload": "{\"deviceVirtualId\":\"bf075ec74a2365bc14byug\",\"deviceKey\":\"brEpds_E=@;`xx^+\",\"deviceName\":\"aussen\",\"operation\":\"GET\",\"payload\":{\"schema\":true}}",
                 "expressionType": "cron",
-                "expression": "*/5 * * * * *",
+                "expression": "*/3 * * * * *",
                 "location": "",
                 "offset": "0",
                 "solarType": "all",
@@ -385,8 +386,8 @@
         "complete": "false",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1140,
-        "y": 400,
+        "x": 940,
+        "y": 180,
         "wires": []
     },
     {
@@ -427,7 +428,6 @@
         "y": 300,
         "wires": [
             [
-                "1b95392a3a03fee1",
                 "7f6218d726f0cd73"
             ]
         ]
