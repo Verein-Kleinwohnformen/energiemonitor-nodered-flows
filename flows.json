@@ -8,10 +8,24 @@
         "env": []
     },
     {
+        "id": "cebdd8a96b479943",
+        "type": "tls-config",
+        "name": "",
+        "cert": "",
+        "key": "",
+        "ca": "",
+        "certname": "certificate.pem",
+        "keyname": "privatekey.pem",
+        "caname": "",
+        "servername": "",
+        "verifyservercert": true,
+        "alpnprotocol": ""
+    },
+    {
         "id": "79ebf938367c3f4a",
         "type": "shelly-gen2",
         "z": "a4cd0360ff8bbb01",
-        "hostname": "10.42.0.17",
+        "hostname": "${SHELLY_IP}",
         "description": "Shelly 3EM",
         "mode": "polling",
         "server": "",
@@ -38,16 +52,16 @@
         "method": "POST",
         "ret": "txt",
         "paytoqs": "ignore",
-        "url": "https://thingsboard.cloud/api/v1/<TOKEN>/telemetry",
-        "tls": "",
+        "url": "",
+        "tls": "cebdd8a96b479943",
         "persist": false,
         "proxy": "",
         "insecureHTTPParser": false,
         "authType": "",
         "senderr": false,
         "headers": [],
-        "x": 1180,
-        "y": 260,
+        "x": 1860,
+        "y": 200,
         "wires": [
             []
         ]
@@ -132,7 +146,8 @@
         "y": 100,
         "wires": [
             [
-                "7f6218d726f0cd73"
+                "0d5eb484cf2cbb30",
+                "019720f8f52cce4b"
             ]
         ]
     },
@@ -234,5 +249,149 @@
         "wires": [
             []
         ]
+    },
+    {
+        "id": "0d5eb484cf2cbb30",
+        "type": "change",
+        "z": "a4cd0360ff8bbb01",
+        "name": "Add sensorId (Shelly)",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload.sensorId",
+                "pt": "msg",
+                "to": "shelly-3em-pro",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1140,
+        "y": 240,
+        "wires": [
+            [
+                "4bdf749f6ab29211"
+            ]
+        ]
+    },
+    {
+        "id": "9f6fcfb56956645b",
+        "type": "http request",
+        "z": "a4cd0360ff8bbb01",
+        "name": "Azure Storage",
+        "method": "POST",
+        "ret": "txt",
+        "paytoqs": "ignore",
+        "url": "",
+        "tls": "cebdd8a96b479943",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 1840,
+        "y": 300,
+        "wires": [
+            [
+                "5bb31859b686b616"
+            ]
+        ]
+    },
+    {
+        "id": "5bb31859b686b616",
+        "type": "debug",
+        "z": "a4cd0360ff8bbb01",
+        "name": "debug 1",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 2040,
+        "y": 420,
+        "wires": []
+    },
+    {
+        "id": "4bdf749f6ab29211",
+        "type": "change",
+        "z": "a4cd0360ff8bbb01",
+        "name": "Add device ID",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload.deviceId",
+                "pt": "msg",
+                "to": "DEVICEID",
+                "tot": "env"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1440,
+        "y": 300,
+        "wires": [
+            [
+                "6a765bf6578c8225"
+            ]
+        ]
+    },
+    {
+        "id": "6a765bf6578c8225",
+        "type": "function",
+        "z": "a4cd0360ff8bbb01",
+        "name": "Compose URL",
+        "func": "msg.url = \"https://kwfemon1.azurewebsites.net/api/nodered_in?code=\" + env.get('AZURE_CODE') + \"&clientId=default\";\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1640,
+        "y": 300,
+        "wires": [
+            [
+                "9f6fcfb56956645b"
+            ]
+        ]
+    },
+    {
+        "id": "019720f8f52cce4b",
+        "type": "function",
+        "z": "a4cd0360ff8bbb01",
+        "name": "Compose URL",
+        "func": "msg.url = \"https://thingsboard.cloud/api/v1/\" + env.get('THINGSBOARD_KEY') + \"/telemetry\"\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1640,
+        "y": 200,
+        "wires": [
+            [
+                "7f6218d726f0cd73"
+            ]
+        ]
+    },
+    {
+        "id": "474b2f6cb90e718a",
+        "type": "comment",
+        "z": "a4cd0360ff8bbb01",
+        "name": "Get API keys from balena environment variables",
+        "info": "",
+        "x": 1740,
+        "y": 140,
+        "wires": []
     }
 ]
