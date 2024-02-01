@@ -162,7 +162,7 @@
         "name": "",
         "eventMode": "event-both",
         "x": 400,
-        "y": 220,
+        "y": 400,
         "wires": [
             [
                 "be41fd6d2844363a"
@@ -188,7 +188,7 @@
                 "payloadType": "json",
                 "payload": "{\"deviceVirtualId\":\"bf12dc9dfb65536168voa8\",\"deviceKey\":\"yN[&q!b7zL:a|ISD\",\"deviceName\":\"innen\",\"operation\":\"GET\",\"payload\":{\"schema\":true}}",
                 "expressionType": "cron",
-                "expression": "*/5 * * * * *",
+                "expression": "*/2 * * * * *",
                 "location": "",
                 "offset": "0",
                 "solarType": "all",
@@ -196,7 +196,7 @@
             }
         ],
         "x": 110,
-        "y": 220,
+        "y": 400,
         "wires": [
             [
                 "b410661113788f0c"
@@ -210,11 +210,12 @@
         "name": "Tuya Errors",
         "scope": [
             "b410661113788f0c",
-            "5a352d0c6704e4b3"
+            "5a352d0c6704e4b3",
+            "45309a60a44c9fa9"
         ],
         "uncaught": false,
         "x": 350,
-        "y": 340,
+        "y": 520,
         "wires": [
             []
         ]
@@ -226,17 +227,17 @@
         "name": "catch Tuya errors to ignore",
         "info": "",
         "x": 150,
-        "y": 340,
+        "y": 520,
         "wires": []
     },
     {
         "id": "ac556768f9436e04",
         "type": "comment",
         "z": "a4cd0360ff8bbb01",
-        "name": "Tuya query - hacky solution but works",
+        "name": "Tuya query for the WLAN sensors - deprecated",
         "info": "",
-        "x": 190,
-        "y": 180,
+        "x": 220,
+        "y": 360,
         "wires": []
     },
     {
@@ -244,19 +245,18 @@
         "type": "function",
         "z": "a4cd0360ff8bbb01",
         "name": "extract sensor values",
-        "func": "if (1 in msg.payload.data.dps){\n    var t = msg.payload.data.dps[\"1\"] / 10;\n    var tKey = \"temperatur_\" + msg.payload.deviceName;\n    var tMsg = {\"payload\": {[tKey]: t}};\n    return tMsg;\n}\n\nelse if (2 in msg.payload.data.dps){\n    var h = msg.payload.data.dps[\"2\"];\n    var hKey = \"feuchtigkeit_\" + msg.payload.deviceName;\n    var hMsg = {\"payload\": {[hKey]: h}};\n    return hMsg;\n}\n\nelse if (4 in msg.payload.data.dps){\n    var b = msg.payload.data.dps[\"4\"];\n    var bKey = \"batterie_\" + msg.payload.deviceName;\n    var bMsg = {\"payload\": {[bKey]: b}};\n    return bMsg;\n}\n\nelse {\n    var dpsKey = Object.keys(msg.payload.data.dps);\n    var otherKey = \"tuya_\" + dpsKey + \"_\" + msg.payload.deviceName;\n    var otherData = msg.payload.data.dps[otherKey];\n    var oMsg = {\"payload\": {[otherKey]: otherData}};\n    return oMsg;\n}",
+        "func": "var dpsTable = {\n    \"1\": \"temperatur\",\n    \"2\": \"feuchtigkeit\",\n    \"4\": \"batterie\",\n    \"101\": \"innentemperatur\",\n    \"102\":\"innenfeuchtigkeit\",\n    \"103\": \"aussentemperatur\",\n    \"104\": \"aussenfeuchtigkeit\",\n    \"105\": \"aussentemperatur2\",\n    \"106\": \"aussenfeuchtigkeit2\"\n}\n\nvar dpsMultiplier = {\n    \"temperatur\": 0.1,\n    \"innentemperatur\": 0.1,\n    \"innenfeuchtigkeit\": 0.1,\n    \"aussentemperatur\": 0.1,\n    \"aussenfeuchtigkeit\": 0.1,\n    \"aussentemperatur2\": 0.1,\n    \"aussenfeuchtigkeit2\": 0.1\n}\n\nvar dps = Object.keys(msg.payload.data.dps)[0];\n\nif (Object.keys(dpsTable).includes(dps)){\n    var key = dpsTable[dps];\n    var multiplier = 1;\n    if(Object.keys(dpsMultiplier).includes(key)){\n        multiplier = dpsMultiplier[key];\n    }\n    var val = msg.payload.data.dps[dps] * multiplier;\n    var sendKey = key + \"_\" + msg.payload.deviceName;\n    var sendMsg = {\"payload\": {[sendKey]: val}};\n    return sendMsg;\n}\n\nelse {\n    var dpsKey = Object.keys(msg.payload.data.dps);\n    var otherKey = \"tuya_\" + dpsKey + \"_\" + msg.payload.deviceName;\n    var otherData = msg.payload.data.dps[Number(dpsKey)];\n    var oMsg = {\"payload\": {[otherKey]: otherData}};\n    return oMsg;\n}",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 660,
-        "y": 240,
+        "x": 680,
+        "y": 420,
         "wires": [
             [
-                "3938a2ae6acee187",
-                "1b95392a3a03fee1"
+                "3938a2ae6acee187"
             ]
         ]
     },
@@ -277,7 +277,7 @@
         "name": "Internet connection health monitor",
         "info": "",
         "x": 180,
-        "y": 600,
+        "y": 700,
         "wires": []
     },
     {
@@ -288,7 +288,7 @@
         "url": "google.com",
         "action": "2",
         "x": 290,
-        "y": 660,
+        "y": 760,
         "wires": [
             [
                 "4541f95a136678b7"
@@ -322,7 +322,7 @@
             }
         ],
         "x": 100,
-        "y": 660,
+        "y": 760,
         "wires": [
             [
                 "310f0793eedc7e62"
@@ -335,7 +335,7 @@
         "z": "a4cd0360ff8bbb01",
         "name": "reboot device",
         "x": 500,
-        "y": 660,
+        "y": 760,
         "wires": [
             []
         ]
@@ -359,7 +359,7 @@
                 "payloadType": "json",
                 "payload": "{\"deviceVirtualId\":\"bf075ec74a2365bc14byug\",\"deviceKey\":\"brEpds_E=@;`xx^+\",\"deviceName\":\"aussen\",\"operation\":\"GET\",\"payload\":{\"schema\":true}}",
                 "expressionType": "cron",
-                "expression": "*/3 * * * * *",
+                "expression": "*/2 * * * * *",
                 "location": "",
                 "offset": "0",
                 "solarType": "all",
@@ -367,28 +367,12 @@
             }
         ],
         "x": 110,
-        "y": 280,
+        "y": 460,
         "wires": [
             [
                 "5a352d0c6704e4b3"
             ]
         ]
-    },
-    {
-        "id": "1b95392a3a03fee1",
-        "type": "debug",
-        "z": "a4cd0360ff8bbb01",
-        "name": "debug 1",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "false",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 940,
-        "y": 180,
-        "wires": []
     },
     {
         "id": "5a352d0c6704e4b3",
@@ -397,7 +381,7 @@
         "name": "",
         "eventMode": "event-both",
         "x": 400,
-        "y": 280,
+        "y": 460,
         "wires": [
             [
                 "be41fd6d2844363a"
@@ -425,10 +409,11 @@
         "reduceInitType": "",
         "reduceFixup": "",
         "x": 950,
-        "y": 300,
+        "y": 480,
         "wires": [
             [
-                "7f6218d726f0cd73"
+                "7f6218d726f0cd73",
+                "74ef3b6feb6762d5"
             ]
         ]
     },
@@ -444,7 +429,7 @@
         "submitPerTopic": true,
         "aggregationType": "mean",
         "x": 780,
-        "y": 300,
+        "y": 480,
         "wires": [
             [
                 "dbb419db7e59bdd5"
@@ -463,11 +448,85 @@
         "stream": false,
         "addname": "topic",
         "x": 610,
-        "y": 300,
+        "y": 480,
         "wires": [
             [
                 "826e744b2b549ab8"
             ]
         ]
+    },
+    {
+        "id": "e85bbe0514d204ae",
+        "type": "cronplus",
+        "z": "a4cd0360ff8bbb01",
+        "name": "Tuya weatherstation",
+        "outputField": "payload",
+        "timeZone": "",
+        "storeName": "",
+        "commandResponseMsgOutput": "output1",
+        "defaultLocation": "",
+        "defaultLocationType": "default",
+        "outputs": 1,
+        "options": [
+            {
+                "name": "schedule1",
+                "topic": "msg",
+                "payloadType": "json",
+                "payload": "{\"deviceVirtualId\":\"bf8912019ae1b816605otp\",\"deviceKey\":\"Ky`Sg<PFQ8Hm]B`|\",\"deviceName\":\"station\",\"operation\":\"GET\",\"payload\":{\"schema\":true}}",
+                "expressionType": "cron",
+                "expression": "*/3 * * * * *",
+                "location": "",
+                "offset": "0",
+                "solarType": "all",
+                "solarEvents": "sunrise,sunset"
+            }
+        ],
+        "x": 140,
+        "y": 240,
+        "wires": [
+            [
+                "45309a60a44c9fa9"
+            ]
+        ]
+    },
+    {
+        "id": "2a7710b30128b86d",
+        "type": "comment",
+        "z": "a4cd0360ff8bbb01",
+        "name": "Tuya weather station",
+        "info": "",
+        "x": 130,
+        "y": 200,
+        "wires": []
+    },
+    {
+        "id": "45309a60a44c9fa9",
+        "type": "tuya-smart-device-generic",
+        "z": "a4cd0360ff8bbb01",
+        "name": "",
+        "eventMode": "event-both",
+        "x": 400,
+        "y": 240,
+        "wires": [
+            [
+                "be41fd6d2844363a"
+            ]
+        ]
+    },
+    {
+        "id": "74ef3b6feb6762d5",
+        "type": "debug",
+        "z": "a4cd0360ff8bbb01",
+        "name": "debug 1",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1200,
+        "y": 360,
+        "wires": []
     }
 ]
