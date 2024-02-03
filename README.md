@@ -12,12 +12,17 @@ Node-RED Container über Balena deployen und im Node-RED History-Tab dieses Repo
 ### Status
 __Implementiert__
 - Shelly Pro 3EM Stromverbrauch 230V auf 3 Phasen
-- Tuya WLAN Temperatur und Feuchtigkeitssensor (nicht sehr zuverlässig, nicht empfohlen)
+- Netatmo Wetterstation innen und aussen
+- Daten senden an Thingsboard
+- Daten senden an Azure Table Storage (Datenbank)
 - Neustart bei Netzwerkproblemen
 
 __Nicht implementiert__
 - 12V Monitor über RS485 (Peacefair)
-- Azure Table Storage (Datenbank)
+
+__Entfernt__
+- Support für Sensoren mit Tuya. Schlechte Erfahrungen mit Qualität und Antennenleistung
 
 ### Frühere Versionen
 Die frühere Version der FH OST befindet sich auf dem Branch "BA_OST"
+Die Version mit Tuya Sensoren befindet sich auf dem Branch "tuya_deprecated"
