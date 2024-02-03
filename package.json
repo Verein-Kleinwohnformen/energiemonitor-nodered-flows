@@ -8,7 +8,7 @@
         "node-red-contrib-cron-plus": "2.1.0",
         "node-red-contrib-isonline": "1.1.15",
         "node-red-contrib-shelly": "10.16.1",
-        "node-red-contrib-tuya-smart-device": "5.2.0"
+        "node-red-contrib-netatmo-dashboard": "1.0.0"
     },
     "node-red": {
         "settings": {

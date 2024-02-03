@@ -389,7 +389,7 @@
         "type": "netatmo-dashboard",
         "z": "a4cd0360ff8bbb01",
         "creds": "1cc74618e00f7413",
-        "x": 320,
+        "x": 340,
         "y": 280,
         "wires": [
             [
@@ -401,7 +401,7 @@
         "id": "04c67a4a0a982426",
         "type": "cronplus",
         "z": "a4cd0360ff8bbb01",
-        "name": "Every minute",
+        "name": "Every 5 minutes",
         "outputField": "payload",
         "timeZone": "",
         "storeName": "",
@@ -416,14 +416,14 @@
                 "payloadType": "default",
                 "payload": "",
                 "expressionType": "cron",
-                "expression": "* * * * * ",
+                "expression": "0 */5 * * * * * ",
                 "location": "",
                 "offset": "0",
                 "solarType": "all",
                 "solarEvents": "sunrise,sunset"
             }
         ],
-        "x": 110,
+        "x": 120,
         "y": 280,
         "wires": [
             [
