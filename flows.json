@@ -739,29 +739,29 @@
                 "t": "set",
                 "p": "NetatmoClientId",
                 "pt": "global",
-                "to": "65be08b1a83110ab1a0102a7",
-                "tot": "str"
+                "to": "NETATMO_CLIENT",
+                "tot": "env"
             },
             {
                 "t": "set",
                 "p": "NetatmoClientSecret",
                 "pt": "global",
-                "to": "PLRDOpzGlVe9HX7sQkivO57qaoIQtPA7Jerwhsz",
-                "tot": "str"
+                "to": "NETATMO_SECRET",
+                "tot": "env"
             },
             {
                 "t": "set",
                 "p": "NetatmoAccessToken",
                 "pt": "global",
-                "to": "65bdffc00071e85fdd0e08b8|41357134dc8ee3167c1583406c84e99b",
-                "tot": "str"
+                "to": "NETATMO_TOKEN",
+                "tot": "env"
             },
             {
                 "t": "set",
                 "p": "NetatmoRefreshToken",
                 "pt": "global",
-                "to": "65bdffc00071e85fdd0e08b8|72a7b5583ec3969cf1c2ad8e1824248b",
-                "tot": "str"
+                "to": "NETATMO_REFRESH",
+                "tot": "env"
             }
         ],
         "action": "",
