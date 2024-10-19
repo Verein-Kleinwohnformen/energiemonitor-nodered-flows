@@ -8,6 +8,14 @@
         "env": []
     },
     {
+        "id": "72660c1c718b6a08",
+        "type": "tab",
+        "label": "Netatmo Authentication",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
         "id": "cebdd8a96b479943",
         "type": "tls-config",
         "name": "",
@@ -22,14 +30,6 @@
         "alpnprotocol": ""
     },
     {
-        "id": "1cc74618e00f7413",
-        "type": "netatmo-config-node",
-        "name": "kwf-energiemonitor",
-        "client_id": "${NETATMO_CLIENT}",
-        "client_secret": "${NETATMO_SECRET}",
-        "refresh_token": "${NETATMO_REFRESH}"
-    },
-    {
         "id": "79ebf938367c3f4a",
         "type": "shelly-gen2",
         "z": "a4cd0360ff8bbb01",
@@ -39,7 +39,7 @@
         "server": "",
         "outputmode": "event",
         "uploadretryinterval": 5000,
-        "pollinginterval": "1000",
+        "pollinginterval": "500",
         "pollstatus": true,
         "getstatusoncommand": true,
         "devicetype": "Measure",
@@ -68,7 +68,7 @@
         "authType": "",
         "senderr": false,
         "headers": [],
-        "x": 1860,
+        "x": 1500,
         "y": 200,
         "wires": [
             []
@@ -120,14 +120,14 @@
         "id": "a5884b040959a469",
         "type": "aggregator",
         "z": "a4cd0360ff8bbb01",
-        "name": "aggregate per minute",
+        "name": "aggregate per 10s",
         "topic": "",
-        "intervalCount": "60",
+        "intervalCount": "10",
         "intervalUnits": "s",
         "submitIncompleteInterval": true,
         "submitPerTopic": true,
         "aggregationType": "mean",
-        "x": 580,
+        "x": 570,
         "y": 100,
         "wires": [
             [
@@ -155,7 +155,7 @@
         "reduceInit": "",
         "reduceInitType": "",
         "reduceFixup": "",
-        "x": 750,
+        "x": 730,
         "y": 100,
         "wires": [
             [
@@ -187,9 +187,9 @@
         "id": "5ce94dfd331b5259",
         "type": "comment",
         "z": "a4cd0360ff8bbb01",
-        "name": "Query shelly every second",
+        "name": "Query shelly twice per second",
         "info": "",
-        "x": 150,
+        "x": 160,
         "y": 60,
         "wires": []
     },
@@ -200,7 +200,7 @@
         "name": "Internet connection health monitor",
         "info": "",
         "x": 180,
-        "y": 600,
+        "y": 540,
         "wires": []
     },
     {
@@ -211,7 +211,7 @@
         "url": "google.com",
         "action": "2",
         "x": 290,
-        "y": 660,
+        "y": 600,
         "wires": [
             [
                 "4541f95a136678b7"
@@ -245,7 +245,7 @@
             }
         ],
         "x": 100,
-        "y": 660,
+        "y": 600,
         "wires": [
             [
                 "310f0793eedc7e62"
@@ -258,7 +258,7 @@
         "z": "a4cd0360ff8bbb01",
         "name": "reboot device",
         "x": 500,
-        "y": 660,
+        "y": 600,
         "wires": [
             []
         ]
@@ -282,8 +282,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 1060,
-        "y": 200,
+        "x": 820,
+        "y": 160,
         "wires": [
             [
                 "4bdf749f6ab29211"
@@ -306,10 +306,12 @@
         "authType": "",
         "senderr": false,
         "headers": [],
-        "x": 1840,
-        "y": 300,
+        "x": 1480,
+        "y": 260,
         "wires": [
-            []
+            [
+                "9d8dc7021fbdada2"
+            ]
         ]
     },
     {
@@ -331,8 +333,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 1440,
-        "y": 300,
+        "x": 1080,
+        "y": 240,
         "wires": [
             [
                 "6a765bf6578c8225"
@@ -351,8 +353,8 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 1640,
-        "y": 300,
+        "x": 1280,
+        "y": 260,
         "wires": [
             [
                 "9f6fcfb56956645b"
@@ -371,7 +373,7 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 1640,
+        "x": 1280,
         "y": 200,
         "wires": [
             [
@@ -385,71 +387,24 @@
         "z": "a4cd0360ff8bbb01",
         "name": "Get API keys from balena environment variables",
         "info": "",
-        "x": 1740,
+        "x": 1380,
         "y": 140,
         "wires": []
-    },
-    {
-        "id": "0bb085a9daba2a57",
-        "type": "netatmo-dashboard",
-        "z": "a4cd0360ff8bbb01",
-        "creds": "1cc74618e00f7413",
-        "x": 340,
-        "y": 280,
-        "wires": [
-            [
-                "4dd3f12b3f48b853"
-            ]
-        ]
-    },
-    {
-        "id": "04c67a4a0a982426",
-        "type": "cronplus",
-        "z": "a4cd0360ff8bbb01",
-        "name": "Every 5 minutes",
-        "outputField": "payload",
-        "timeZone": "",
-        "storeName": "",
-        "commandResponseMsgOutput": "output1",
-        "defaultLocation": "",
-        "defaultLocationType": "default",
-        "outputs": 1,
-        "options": [
-            {
-                "name": "schedule1",
-                "topic": "topic1",
-                "payloadType": "default",
-                "payload": "",
-                "expressionType": "cron",
-                "expression": "0 */5 * * * * *",
-                "location": "",
-                "offset": "0",
-                "solarType": "all",
-                "solarEvents": "sunrise,sunset"
-            }
-        ],
-        "x": 120,
-        "y": 280,
-        "wires": [
-            [
-                "0bb085a9daba2a57"
-            ]
-        ]
     },
     {
         "id": "4dd3f12b3f48b853",
         "type": "function",
         "z": "a4cd0360ff8bbb01",
         "name": "Decode Netatmo",
-        "func": "var addr = env.get('NETATMO_ADDRESS');\nvar devices = msg.payload.detailed.body.devices;\n\nvar data = {};\n\n// Loop through all devices found\nfor (let i = 0; i < devices.length; i++) {\n    if (devices[i]._id == addr){\n        data[\"netatmo_indoor_id\"] = devices[i]._id;\n        var indoor_data = devices[i].dashboard_data;\n\n        // Parse indoor data\n        data[\"indoor_signal\"] = devices[i].wifi_status;\n        data[\"indoor_reachable\"] = devices[i].reachable;\n        // TODO: Throw an error when either indoor or outdoor module is not reachable\n        data[\"indoor_temperature\"] = indoor_data.Temperature;\n        data[\"indoor_humidity\"] = indoor_data.Humidity;\n        data[\"indoor_co2\"] = indoor_data.CO2;\n        data[\"indoor_noise\"] = indoor_data.Noise;\n        data[\"indoor_pressure\"] = indoor_data.Pressure;\n\n        // Loop through outdoor modules\n        var modules = devices[i].modules;\n        for (let j = 0; j < modules.length; j++) {\n            // Read data of the first module only\n            if (j==0) {\n                data[\"netatmo_outdoor_id\"] = modules[j]._id;\n                var outdoor_data = modules[j].dashboard_data;\n                data[\"outdoor_temperature\"] = outdoor_data.Temperature;\n                data[\"outdoor_humidity\"] = outdoor_data.Humidity;\n                data[\"outdoor_battery\"] = modules[j].battery_percent;\n                data[\"outdoor_signal\"] = modules[j].rf_status;\n                data[\"outdoor_reachable\"] = modules[j].reachable;\n            }\n            if (j>0){\n                data[\"warning\"] = \"Multiple outdoor stations found\";\n            }\n        }\n\n        // Calculate temperature difference signal\n        data[\"temperature_difference\"] = indoor_data.Temperature - outdoor_data.Temperature;\n    }\n}\n\nmsg.payload = data\nreturn msg;",
+        "func": "var addr = env.get('NETATMO_ADDRESS');\nvar devices = msg.payload.body.devices;\n\nvar data = {};\n\n// Loop through all devices found\nfor (let i = 0; i < devices.length; i++) {\n    if (devices[i]._id == addr){\n        data[\"netatmo_indoor_id\"] = devices[i]._id;\n        var indoor_data = devices[i].dashboard_data;\n\n        data[\"indoor_reachable\"] = devices[i].reachable;\n\n        if (devices[i].reachable) {\n            // Parse indoor data\n            data[\"indoor_signal\"] = devices[i].wifi_status;\n            data[\"indoor_temperature\"] = indoor_data.Temperature;\n            data[\"indoor_humidity\"] = indoor_data.Humidity;\n            data[\"indoor_co2\"] = indoor_data.CO2;\n            data[\"indoor_pressure\"] = indoor_data.Pressure;\n\n            // Loop through outdoor modules\n            var modules = devices[i].modules;\n            for (let j = 0; j < modules.length; j++) {\n                // Read data of the first module only\n                if (j==0) {\n                    data[\"outdoor_reachable\"] = modules[j].reachable;\n\n                    if (modules[j].reachable) { \n                    data[\"netatmo_outdoor_id\"] = modules[j]._id;\n                    var outdoor_data = modules[j].dashboard_data;\n                    data[\"outdoor_temperature\"] = outdoor_data.Temperature;\n                    data[\"outdoor_humidity\"] = outdoor_data.Humidity;\n                    data[\"outdoor_battery\"] = modules[j].battery_percent;\n                    data[\"outdoor_signal\"] = modules[j].rf_status;\n                    \n                    // Calculate temperature difference signal\n                    data[\"temperature_difference\"] = indoor_data.Temperature - outdoor_data.Temperature;\n                    }\n                }\n                if (j>0){\n                    data[\"warning\"] = \"Multiple outdoor stations found\";\n                }\n            }\n        }\n      }\n    }\n\nmsg.payload = data;\nreturn msg;",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 570,
-        "y": 280,
+        "x": 530,
+        "y": 220,
         "wires": [
             [
                 "019720f8f52cce4b",
@@ -476,12 +431,666 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 1070,
-        "y": 300,
+        "x": 830,
+        "y": 260,
         "wires": [
             [
                 "4bdf749f6ab29211"
             ]
         ]
+    },
+    {
+        "id": "21d01caf5cb69745",
+        "type": "comment",
+        "z": "a4cd0360ff8bbb01",
+        "name": "Query Netatmo data from dashboard",
+        "info": "",
+        "x": 180,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "eeeff04eaab166d1",
+        "type": "comment",
+        "z": "a4cd0360ff8bbb01",
+        "name": "Add more sensors here",
+        "info": "",
+        "x": 140,
+        "y": 400,
+        "wires": []
+    },
+    {
+        "id": "abeffb5c3bfe8abc",
+        "type": "cronplus",
+        "z": "a4cd0360ff8bbb01",
+        "name": "Every 3 minutes",
+        "outputField": "payload",
+        "timeZone": "",
+        "storeName": "",
+        "commandResponseMsgOutput": "output1",
+        "defaultLocation": "",
+        "defaultLocationType": "default",
+        "outputs": 1,
+        "options": [
+            {
+                "name": "schedule1",
+                "topic": "topic1",
+                "payloadType": "default",
+                "payload": "",
+                "expressionType": "cron",
+                "expression": "0 */3 * * * * *",
+                "location": "",
+                "offset": "0",
+                "solarType": "all",
+                "solarEvents": "sunrise,sunset"
+            }
+        ],
+        "x": 120,
+        "y": 240,
+        "wires": [
+            [
+                "81167aa30e83cced"
+            ]
+        ]
+    },
+    {
+        "id": "81167aa30e83cced",
+        "type": "change",
+        "z": "a4cd0360ff8bbb01",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "token",
+                "pt": "msg",
+                "to": "\"Bearer \" & $globalContext(\"NetatmoAccessToken\")\t",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 280,
+        "y": 300,
+        "wires": [
+            [
+                "9fca675d973e9c1d"
+            ]
+        ]
+    },
+    {
+        "id": "9fca675d973e9c1d",
+        "type": "http request",
+        "z": "a4cd0360ff8bbb01",
+        "name": "Netatmo Https",
+        "method": "GET",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "https://api.netatmo.com/api/getstationsdata",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": true,
+        "headers": [
+            {
+                "keyType": "other",
+                "keyValue": "Authorization",
+                "valueType": "msg",
+                "valueValue": "token"
+            }
+        ],
+        "x": 500,
+        "y": 340,
+        "wires": [
+            [
+                "4dd3f12b3f48b853",
+                "6ccb7111e164b4e6"
+            ]
+        ]
+    },
+    {
+        "id": "6ccb7111e164b4e6",
+        "type": "debug",
+        "z": "a4cd0360ff8bbb01",
+        "name": "Netatmo Data",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 780,
+        "y": 400,
+        "wires": []
+    },
+    {
+        "id": "9d8dc7021fbdada2",
+        "type": "debug",
+        "z": "a4cd0360ff8bbb01",
+        "name": "Azure Storage Response",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1730,
+        "y": 320,
+        "wires": []
+    },
+    {
+        "id": "48c9ba7a4d6a5359",
+        "type": "http request",
+        "z": "72660c1c718b6a08",
+        "name": "Send refresh request",
+        "method": "POST",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "https://api.netatmo.com/oauth2/token",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [
+            {
+                "keyType": "Content-Type",
+                "keyValue": "",
+                "valueType": "other",
+                "valueValue": "application/x-www-form-urlencoded"
+            }
+        ],
+        "x": 900,
+        "y": 200,
+        "wires": [
+            [
+                "1d54981a5bd62dc8"
+            ]
+        ]
+    },
+    {
+        "id": "493b859e5318d28d",
+        "type": "inject",
+        "z": "72660c1c718b6a08",
+        "name": "Start",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "1",
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 130,
+        "y": 160,
+        "wires": [
+            [
+                "fef4ac6631a48776"
+            ]
+        ]
+    },
+    {
+        "id": "fef4ac6631a48776",
+        "type": "change",
+        "z": "72660c1c718b6a08",
+        "name": "Set param request refresh",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "{\"grant_type\":\"refresh_token\",\"refresh_token\":$globalContext(\"NetatmoRefreshToken\"),\"client_id\":$globalContext(\"NetatmoClientId\"),\"client_secret\":$globalContext(\"NetatmoClientSecret\")}",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 650,
+        "y": 200,
+        "wires": [
+            [
+                "48c9ba7a4d6a5359"
+            ]
+        ]
+    },
+    {
+        "id": "65f4b6541bc97008",
+        "type": "change",
+        "z": "72660c1c718b6a08",
+        "name": "Store tokens & delay",
+        "rules": [
+            {
+                "t": "set",
+                "p": "NetatmoAccessToken",
+                "pt": "global",
+                "to": "payload.access_token",
+                "tot": "msg"
+            },
+            {
+                "t": "set",
+                "p": "NetatmoRefreshToken",
+                "pt": "global",
+                "to": "payload.refresh_token",
+                "tot": "msg"
+            },
+            {
+                "t": "set",
+                "p": "delay",
+                "pt": "msg",
+                "to": "payload.expires_in*1000-300000",
+                "tot": "jsonata"
+            },
+            {
+                "t": "set",
+                "p": "status",
+                "pt": "msg",
+                "to": "OK",
+                "tot": "str"
+            },
+            {
+                "t": "set",
+                "p": "NetatmoLastUpdateTime",
+                "pt": "global",
+                "to": "",
+                "tot": "date"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1320,
+        "y": 140,
+        "wires": [
+            [
+                "55d78fcc3650ef5c",
+                "97c519fc69b9b6e9"
+            ]
+        ]
+    },
+    {
+        "id": "371e46c1b4744f71",
+        "type": "change",
+        "z": "72660c1c718b6a08",
+        "name": "Set Netatmo Creds & Tokens",
+        "rules": [
+            {
+                "t": "set",
+                "p": "NetatmoClientId",
+                "pt": "global",
+                "to": "65be08b1a83110ab1a0102a7",
+                "tot": "str"
+            },
+            {
+                "t": "set",
+                "p": "NetatmoClientSecret",
+                "pt": "global",
+                "to": "PLRDOpzGlVe9HX7sQkivO57qaoIQtPA7Jerwhsz",
+                "tot": "str"
+            },
+            {
+                "t": "set",
+                "p": "NetatmoAccessToken",
+                "pt": "global",
+                "to": "65bdffc00071e85fdd0e08b8|41357134dc8ee3167c1583406c84e99b",
+                "tot": "str"
+            },
+            {
+                "t": "set",
+                "p": "NetatmoRefreshToken",
+                "pt": "global",
+                "to": "65bdffc00071e85fdd0e08b8|72a7b5583ec3969cf1c2ad8e1824248b",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 500,
+        "y": 80,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "acb161c2964a5538",
+        "type": "inject",
+        "z": "72660c1c718b6a08",
+        "name": "Set first info",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 150,
+        "y": 100,
+        "wires": [
+            [
+                "371e46c1b4744f71"
+            ]
+        ]
+    },
+    {
+        "id": "5dd80c83a73ef692",
+        "type": "inject",
+        "z": "72660c1c718b6a08",
+        "name": "Stop",
+        "props": [
+            {
+                "p": "reset",
+                "v": "1",
+                "vt": "num"
+            },
+            {
+                "p": "status",
+                "v": "STOP",
+                "vt": "str"
+            },
+            {
+                "p": "delay",
+                "v": "1",
+                "vt": "num"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "x": 130,
+        "y": 240,
+        "wires": [
+            [
+                "55d78fcc3650ef5c",
+                "97c519fc69b9b6e9",
+                "586be2751752f395"
+            ]
+        ]
+    },
+    {
+        "id": "1d54981a5bd62dc8",
+        "type": "switch",
+        "z": "72660c1c718b6a08",
+        "name": "All ok ?",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "hask",
+                "v": "access_token",
+                "vt": "str"
+            },
+            {
+                "t": "else"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 1100,
+        "y": 200,
+        "wires": [
+            [
+                "65f4b6541bc97008"
+            ],
+            [
+                "ffd6c9bccc7f0c84"
+            ]
+        ],
+        "outputLabels": [
+            "Response OK",
+            "Error"
+        ]
+    },
+    {
+        "id": "ffd6c9bccc7f0c84",
+        "type": "change",
+        "z": "72660c1c718b6a08",
+        "name": "Delay 1 hour on error",
+        "rules": [
+            {
+                "t": "set",
+                "p": "delay",
+                "pt": "msg",
+                "to": "3600000",
+                "tot": "num"
+            },
+            {
+                "t": "set",
+                "p": "status",
+                "pt": "msg",
+                "to": "KO",
+                "tot": "str"
+            },
+            {
+                "t": "set",
+                "p": "NetatmoLastUpdateTime",
+                "pt": "global",
+                "to": "",
+                "tot": "date"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1320,
+        "y": 260,
+        "wires": [
+            [
+                "55d78fcc3650ef5c",
+                "97c519fc69b9b6e9"
+            ]
+        ]
+    },
+    {
+        "id": "55d78fcc3650ef5c",
+        "type": "delay",
+        "z": "72660c1c718b6a08",
+        "name": "Refresh",
+        "pauseType": "delayv",
+        "timeout": "5",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "allowrate": false,
+        "outputs": 1,
+        "x": 440,
+        "y": 200,
+        "wires": [
+            [
+                "fef4ac6631a48776"
+            ]
+        ]
+    },
+    {
+        "id": "97c519fc69b9b6e9",
+        "type": "delay",
+        "z": "72660c1c718b6a08",
+        "name": "",
+        "pauseType": "delay",
+        "timeout": "1",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": true,
+        "allowrate": false,
+        "outputs": 1,
+        "x": 440,
+        "y": 260,
+        "wires": [
+            [
+                "586be2751752f395"
+            ]
+        ]
+    },
+    {
+        "id": "586be2751752f395",
+        "type": "function",
+        "z": "72660c1c718b6a08",
+        "name": "Next refresh in...",
+        "func": "var d = new Date();\nvar n = d.getTime();\nvar start_time = global.get('NetatmoLastUpdateTime')||0;\nvar duration = msg.delay/1000;\nvar elapsed_time = Math.round((n - start_time)/1000);\n\nvar remains = new Date(null);\nremains.setSeconds(duration - elapsed_time); // specify value for SECONDS here\nvar remains_h = remains.toISOString().substr(11, 8);\nif (msg.status == \"STOP\") {\n    node.status({});\n    msg.remains = \"00:00:00\";\n    msg.payload = 0;\n    return [null, msg];\n}\nif (elapsed_time < duration) {\n    node.status({fill:msg.status == \"OK\" ? \"blue\" : \"red\",shape:\"dot\", text:remains_h});\n    msg.remains = remains_h;\n    return [ msg, null ];\n}\n\n",
+        "outputs": 2,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 460,
+        "y": 320,
+        "wires": [
+            [
+                "97c519fc69b9b6e9"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "944f8def659f9d52",
+        "type": "change",
+        "z": "72660c1c718b6a08",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "token",
+                "pt": "msg",
+                "to": "\"Bearer \" & $globalContext(\"NetatmoAccessToken\")\t",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 460,
+        "y": 400,
+        "wires": [
+            [
+                "b96f28348953dfca"
+            ]
+        ]
+    },
+    {
+        "id": "b96f28348953dfca",
+        "type": "http request",
+        "z": "72660c1c718b6a08",
+        "name": "Netatmo Https",
+        "method": "GET",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "https://api.netatmo.com/api/getstationsdata",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [
+            {
+                "keyType": "other",
+                "keyValue": "Authorization",
+                "valueType": "msg",
+                "valueValue": "token"
+            }
+        ],
+        "x": 660,
+        "y": 400,
+        "wires": [
+            [
+                "7df73f6e51fbc4a5"
+            ]
+        ]
+    },
+    {
+        "id": "7f8ab2a7eb362ac8",
+        "type": "inject",
+        "z": "72660c1c718b6a08",
+        "name": "Get Netatmo Data",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 110,
+        "y": 400,
+        "wires": [
+            [
+                "944f8def659f9d52"
+            ]
+        ]
+    },
+    {
+        "id": "7df73f6e51fbc4a5",
+        "type": "debug",
+        "z": "72660c1c718b6a08",
+        "name": "Netatmo Data",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 880,
+        "y": 400,
+        "wires": []
     }
 ]
