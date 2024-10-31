@@ -30,12 +30,38 @@
         "alpnprotocol": ""
     },
     {
+        "id": "9c8655a2e4b17a71",
+        "type": "serial-port",
+        "name": "GPIO RS485",
+        "serialport": "/dev/ttyUSB0",
+        "serialbaud": "9600",
+        "databits": "8",
+        "parity": "none",
+        "stopbits": "2",
+        "waitfor": "",
+        "dtr": "none",
+        "rts": "none",
+        "cts": "none",
+        "dsr": "none",
+        "newline": "\\n",
+        "bin": "false",
+        "out": "char",
+        "addchar": "",
+        "responsetimeout": "10000"
+    },
+    {
+        "id": "fcb30480c7e677cf",
+        "type": "google-cloud-credentials",
+        "name": "kwf_energiemonitor"
+    },
+    {
         "id": "79ebf938367c3f4a",
         "type": "shelly-gen2",
         "z": "a4cd0360ff8bbb01",
         "hostname": "${SHELLY_IP}",
         "description": "Shelly 3EM",
         "mode": "polling",
+        "verbose": false,
         "server": "",
         "outputmode": "event",
         "uploadretryinterval": 5000,
@@ -43,6 +69,8 @@
         "pollstatus": true,
         "getstatusoncommand": true,
         "devicetype": "Measure",
+        "devicetypemustmatchexactly": false,
+        "captureblutooth": false,
         "outputs": 1,
         "x": 110,
         "y": 100,
@@ -68,7 +96,7 @@
         "authType": "",
         "senderr": false,
         "headers": [],
-        "x": 1500,
+        "x": 1740,
         "y": 200,
         "wires": [
             []
@@ -282,8 +310,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 820,
-        "y": 160,
+        "x": 1000,
+        "y": 180,
         "wires": [
             [
                 "4bdf749f6ab29211"
@@ -306,12 +334,10 @@
         "authType": "",
         "senderr": false,
         "headers": [],
-        "x": 1480,
+        "x": 1720,
         "y": 260,
         "wires": [
-            [
-                "9d8dc7021fbdada2"
-            ]
+            []
         ]
     },
     {
@@ -333,8 +359,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 1080,
-        "y": 240,
+        "x": 1320,
+        "y": 260,
         "wires": [
             [
                 "6a765bf6578c8225"
@@ -353,11 +379,12 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 1280,
+        "x": 1520,
         "y": 260,
         "wires": [
             [
-                "9f6fcfb56956645b"
+                "9f6fcfb56956645b",
+                "5e88edd51f09b4d8"
             ]
         ]
     },
@@ -373,7 +400,7 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 1280,
+        "x": 1520,
         "y": 200,
         "wires": [
             [
@@ -387,7 +414,7 @@
         "z": "a4cd0360ff8bbb01",
         "name": "Get API keys from balena environment variables",
         "info": "",
-        "x": 1380,
+        "x": 1620,
         "y": 140,
         "wires": []
     },
@@ -403,8 +430,8 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 530,
-        "y": 220,
+        "x": 710,
+        "y": 240,
         "wires": [
             [
                 "019720f8f52cce4b",
@@ -431,7 +458,7 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 830,
+        "x": 1010,
         "y": 260,
         "wires": [
             [
@@ -453,10 +480,10 @@
         "id": "eeeff04eaab166d1",
         "type": "comment",
         "z": "a4cd0360ff8bbb01",
-        "name": "Add more sensors here",
+        "name": "Read 12V sensor",
         "info": "",
-        "x": 140,
-        "y": 400,
+        "x": 120,
+        "y": 360,
         "wires": []
     },
     {
@@ -512,8 +539,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 280,
-        "y": 300,
+        "x": 300,
+        "y": 240,
         "wires": [
             [
                 "9fca675d973e9c1d"
@@ -534,7 +561,7 @@
         "proxy": "",
         "insecureHTTPParser": false,
         "authType": "",
-        "senderr": true,
+        "senderr": false,
         "headers": [
             {
                 "keyType": "other",
@@ -544,36 +571,18 @@
             }
         ],
         "x": 500,
-        "y": 340,
+        "y": 240,
         "wires": [
             [
-                "4dd3f12b3f48b853",
-                "6ccb7111e164b4e6"
+                "4dd3f12b3f48b853"
             ]
         ]
     },
     {
-        "id": "6ccb7111e164b4e6",
+        "id": "5e88edd51f09b4d8",
         "type": "debug",
         "z": "a4cd0360ff8bbb01",
-        "name": "Netatmo Data",
-        "active": false,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "true",
-        "targetType": "full",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 780,
-        "y": 400,
-        "wires": []
-    },
-    {
-        "id": "9d8dc7021fbdada2",
-        "type": "debug",
-        "z": "a4cd0360ff8bbb01",
-        "name": "Azure Storage Response",
+        "name": "Telemetry debug",
         "active": false,
         "tosidebar": true,
         "console": false,
@@ -583,7 +592,101 @@
         "statusVal": "",
         "statusType": "auto",
         "x": 1730,
-        "y": 320,
+        "y": 380,
+        "wires": []
+    },
+    {
+        "id": "b720e96708e93b0d",
+        "type": "serial in",
+        "z": "a4cd0360ff8bbb01",
+        "name": "Read GPIO",
+        "serial": "9c8655a2e4b17a71",
+        "x": 110,
+        "y": 420,
+        "wires": [
+            [
+                "4c346de5de55c9fe"
+            ]
+        ]
+    },
+    {
+        "id": "4c346de5de55c9fe",
+        "type": "debug",
+        "z": "a4cd0360ff8bbb01",
+        "name": "GPIO",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 310,
+        "y": 420,
+        "wires": []
+    },
+    {
+        "id": "e794c2cde56dbd41",
+        "type": "google-cloud-firestore",
+        "z": "a4cd0360ff8bbb01",
+        "account": "fcb30480c7e677cf",
+        "keyFilename": "",
+        "name": "Google Cloud Test",
+        "projectId": "kwf_energiemonitor",
+        "mode": "set",
+        "x": 1690,
+        "y": 580,
+        "wires": [
+            [
+                "7c0012221604ef06"
+            ]
+        ]
+    },
+    {
+        "id": "8541ce403936a4c7",
+        "type": "inject",
+        "z": "a4cd0360ff8bbb01",
+        "name": "",
+        "props": [
+            {
+                "p": "payload.path",
+                "v": "young-tent/test",
+                "vt": "str"
+            },
+            {
+                "p": "payload.content",
+                "v": "{\"message\": \"test\"}",
+                "vt": "json"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "x": 1410,
+        "y": 580,
+        "wires": [
+            [
+                "e794c2cde56dbd41"
+            ]
+        ]
+    },
+    {
+        "id": "7c0012221604ef06",
+        "type": "debug",
+        "z": "a4cd0360ff8bbb01",
+        "name": "debug 1",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1940,
+        "y": 580,
         "wires": []
     },
     {
@@ -609,8 +712,8 @@
                 "valueValue": "application/x-www-form-urlencoded"
             }
         ],
-        "x": 900,
-        "y": 200,
+        "x": 920,
+        "y": 320,
         "wires": [
             [
                 "1d54981a5bd62dc8"
@@ -638,8 +741,8 @@
         "topic": "",
         "payload": "",
         "payloadType": "date",
-        "x": 130,
-        "y": 160,
+        "x": 150,
+        "y": 280,
         "wires": [
             [
                 "fef4ac6631a48776"
@@ -665,8 +768,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 650,
-        "y": 200,
+        "x": 670,
+        "y": 320,
         "wires": [
             [
                 "48c9ba7a4d6a5359"
@@ -720,8 +823,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 1320,
-        "y": 140,
+        "x": 1340,
+        "y": 260,
         "wires": [
             [
                 "55d78fcc3650ef5c",
@@ -733,7 +836,7 @@
         "id": "371e46c1b4744f71",
         "type": "change",
         "z": "72660c1c718b6a08",
-        "name": "Set Netatmo Creds & Tokens",
+        "name": "Set Netatmo Tokens",
         "rules": [
             {
                 "t": "set",
@@ -751,17 +854,10 @@
             },
             {
                 "t": "set",
-                "p": "NetatmoAccessToken",
-                "pt": "global",
-                "to": "NETATMO_TOKEN",
-                "tot": "env"
-            },
-            {
-                "t": "set",
                 "p": "NetatmoRefreshToken",
                 "pt": "global",
-                "to": "NETATMO_REFRESH",
-                "tot": "env"
+                "to": "",
+                "tot": "str"
             }
         ],
         "action": "",
@@ -769,8 +865,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 500,
-        "y": 80,
+        "x": 480,
+        "y": 200,
         "wires": [
             []
         ]
@@ -779,7 +875,7 @@
         "id": "acb161c2964a5538",
         "type": "inject",
         "z": "72660c1c718b6a08",
-        "name": "Set first info",
+        "name": "Set Refresh token at setup",
         "props": [
             {
                 "p": "payload"
@@ -796,8 +892,8 @@
         "topic": "",
         "payload": "",
         "payloadType": "date",
-        "x": 150,
-        "y": 100,
+        "x": 190,
+        "y": 200,
         "wires": [
             [
                 "371e46c1b4744f71"
@@ -831,8 +927,8 @@
         "once": false,
         "onceDelay": 0.1,
         "topic": "",
-        "x": 130,
-        "y": 240,
+        "x": 150,
+        "y": 360,
         "wires": [
             [
                 "55d78fcc3650ef5c",
@@ -861,8 +957,8 @@
         "checkall": "true",
         "repair": false,
         "outputs": 2,
-        "x": 1100,
-        "y": 200,
+        "x": 1120,
+        "y": 320,
         "wires": [
             [
                 "65f4b6541bc97008"
@@ -909,8 +1005,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 1320,
-        "y": 260,
+        "x": 1340,
+        "y": 380,
         "wires": [
             [
                 "55d78fcc3650ef5c",
@@ -935,8 +1031,8 @@
         "drop": false,
         "allowrate": false,
         "outputs": 1,
-        "x": 440,
-        "y": 200,
+        "x": 460,
+        "y": 320,
         "wires": [
             [
                 "fef4ac6631a48776"
@@ -960,8 +1056,8 @@
         "drop": true,
         "allowrate": false,
         "outputs": 1,
-        "x": 440,
-        "y": 260,
+        "x": 460,
+        "y": 380,
         "wires": [
             [
                 "586be2751752f395"
@@ -980,8 +1076,8 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 460,
-        "y": 320,
+        "x": 480,
+        "y": 440,
         "wires": [
             [
                 "97c519fc69b9b6e9"
@@ -1008,8 +1104,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 460,
-        "y": 400,
+        "x": 480,
+        "y": 520,
         "wires": [
             [
                 "b96f28348953dfca"
@@ -1039,8 +1135,8 @@
                 "valueValue": "token"
             }
         ],
-        "x": 660,
-        "y": 400,
+        "x": 680,
+        "y": 520,
         "wires": [
             [
                 "7df73f6e51fbc4a5"
@@ -1068,8 +1164,8 @@
         "topic": "",
         "payload": "",
         "payloadType": "date",
-        "x": 110,
-        "y": 400,
+        "x": 130,
+        "y": 520,
         "wires": [
             [
                 "944f8def659f9d52"
@@ -1089,8 +1185,18 @@
         "targetType": "full",
         "statusVal": "",
         "statusType": "auto",
-        "x": 880,
-        "y": 400,
+        "x": 900,
+        "y": 520,
+        "wires": []
+    },
+    {
+        "id": "d0f462d64e752555",
+        "type": "comment",
+        "z": "72660c1c718b6a08",
+        "name": "This page stores the OAUTH2 refresh token as a global variable and refreshes it regularly. At setup, the initial refresh token has to be given.",
+        "info": "",
+        "x": 500,
+        "y": 80,
         "wires": []
     }
 ]
