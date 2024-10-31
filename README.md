@@ -45,7 +45,7 @@ Auf [dem Netatmo Developer-Portal](https://dev.netatmo.com) mit dem Token-Genera
 Jede Wetterstation hat eine eigene MAC-Adresse. Diese als Device-Variabel speichern und die Abfrage bei Netatmo so ändern, dass nur Daten der "eigenen" Wetterstation weitergegeben werden (in der Datenbank speichern wir bereits die MAC-Adresse der Wetterstation, aber es braucht ja nicht jeder Energiemonitor die Daten aller Monitore weiterzuleiten)
 
 ## DC-Messung mit Shunt und Peacefair Gerät
-
+Todo
 
 ### Frühere Versionen
 Die frühere Version der FH OST befindet sich auf dem Branch "BA_OST"
