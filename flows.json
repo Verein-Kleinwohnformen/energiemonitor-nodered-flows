@@ -724,7 +724,7 @@
         "id": "493b859e5318d28d",
         "type": "inject",
         "z": "72660c1c718b6a08",
-        "name": "Start",
+        "name": "Refresh token",
         "props": [
             {
                 "p": "payload"
@@ -734,18 +734,18 @@
                 "vt": "str"
             }
         ],
-        "repeat": "",
+        "repeat": "3600",
         "crontab": "",
         "once": true,
         "onceDelay": "1",
         "topic": "",
         "payload": "",
         "payloadType": "date",
-        "x": 150,
+        "x": 120,
         "y": 280,
         "wires": [
             [
-                "fef4ac6631a48776"
+                "55d78fcc3650ef5c"
             ]
         ]
     },
@@ -780,7 +780,7 @@
         "id": "65f4b6541bc97008",
         "type": "change",
         "z": "72660c1c718b6a08",
-        "name": "Store tokens & delay",
+        "name": "Store tokens",
         "rules": [
             {
                 "t": "set",
@@ -795,27 +795,6 @@
                 "pt": "global",
                 "to": "payload.refresh_token",
                 "tot": "msg"
-            },
-            {
-                "t": "set",
-                "p": "delay",
-                "pt": "msg",
-                "to": "payload.expires_in*1000-300000",
-                "tot": "jsonata"
-            },
-            {
-                "t": "set",
-                "p": "status",
-                "pt": "msg",
-                "to": "OK",
-                "tot": "str"
-            },
-            {
-                "t": "set",
-                "p": "NetatmoLastUpdateTime",
-                "pt": "global",
-                "to": "",
-                "tot": "date"
             }
         ],
         "action": "",
@@ -823,12 +802,11 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 1340,
-        "y": 260,
+        "x": 1330,
+        "y": 320,
         "wires": [
             [
-                "55d78fcc3650ef5c",
-                "97c519fc69b9b6e9"
+                "bb46936c315c2039"
             ]
         ]
     },
@@ -856,8 +834,8 @@
                 "t": "set",
                 "p": "NetatmoRefreshToken",
                 "pt": "global",
-                "to": "",
-                "tot": "str"
+                "to": "payload.refresh_token",
+                "tot": "msg"
             }
         ],
         "action": "",
@@ -865,76 +843,10 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 480,
-        "y": 200,
+        "x": 960,
+        "y": 120,
         "wires": [
             []
-        ]
-    },
-    {
-        "id": "acb161c2964a5538",
-        "type": "inject",
-        "z": "72660c1c718b6a08",
-        "name": "Set Refresh token at setup",
-        "props": [
-            {
-                "p": "payload"
-            },
-            {
-                "p": "topic",
-                "vt": "str"
-            }
-        ],
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "",
-        "payload": "",
-        "payloadType": "date",
-        "x": 190,
-        "y": 200,
-        "wires": [
-            [
-                "371e46c1b4744f71"
-            ]
-        ]
-    },
-    {
-        "id": "5dd80c83a73ef692",
-        "type": "inject",
-        "z": "72660c1c718b6a08",
-        "name": "Stop",
-        "props": [
-            {
-                "p": "reset",
-                "v": "1",
-                "vt": "num"
-            },
-            {
-                "p": "status",
-                "v": "STOP",
-                "vt": "str"
-            },
-            {
-                "p": "delay",
-                "v": "1",
-                "vt": "num"
-            }
-        ],
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "",
-        "x": 150,
-        "y": 360,
-        "wires": [
-            [
-                "55d78fcc3650ef5c",
-                "97c519fc69b9b6e9",
-                "586be2751752f395"
-            ]
         ]
     },
     {
@@ -964,7 +876,8 @@
                 "65f4b6541bc97008"
             ],
             [
-                "ffd6c9bccc7f0c84"
+                "41eb9e64fb9e01b6",
+                "55d78fcc3650ef5c"
             ]
         ],
         "outputLabels": [
@@ -973,53 +886,11 @@
         ]
     },
     {
-        "id": "ffd6c9bccc7f0c84",
-        "type": "change",
-        "z": "72660c1c718b6a08",
-        "name": "Delay 1 hour on error",
-        "rules": [
-            {
-                "t": "set",
-                "p": "delay",
-                "pt": "msg",
-                "to": "3600000",
-                "tot": "num"
-            },
-            {
-                "t": "set",
-                "p": "status",
-                "pt": "msg",
-                "to": "KO",
-                "tot": "str"
-            },
-            {
-                "t": "set",
-                "p": "NetatmoLastUpdateTime",
-                "pt": "global",
-                "to": "",
-                "tot": "date"
-            }
-        ],
-        "action": "",
-        "property": "",
-        "from": "",
-        "to": "",
-        "reg": false,
-        "x": 1340,
-        "y": 380,
-        "wires": [
-            [
-                "55d78fcc3650ef5c",
-                "97c519fc69b9b6e9"
-            ]
-        ]
-    },
-    {
         "id": "55d78fcc3650ef5c",
         "type": "delay",
         "z": "72660c1c718b6a08",
-        "name": "Refresh",
-        "pauseType": "delayv",
+        "name": "Delay",
+        "pauseType": "delay",
         "timeout": "5",
         "timeoutUnits": "seconds",
         "rate": "1",
@@ -1031,58 +902,12 @@
         "drop": false,
         "allowrate": false,
         "outputs": 1,
-        "x": 460,
+        "x": 450,
         "y": 320,
         "wires": [
             [
                 "fef4ac6631a48776"
             ]
-        ]
-    },
-    {
-        "id": "97c519fc69b9b6e9",
-        "type": "delay",
-        "z": "72660c1c718b6a08",
-        "name": "",
-        "pauseType": "delay",
-        "timeout": "1",
-        "timeoutUnits": "seconds",
-        "rate": "1",
-        "nbRateUnits": "1",
-        "rateUnits": "second",
-        "randomFirst": "1",
-        "randomLast": "5",
-        "randomUnits": "seconds",
-        "drop": true,
-        "allowrate": false,
-        "outputs": 1,
-        "x": 460,
-        "y": 380,
-        "wires": [
-            [
-                "586be2751752f395"
-            ]
-        ]
-    },
-    {
-        "id": "586be2751752f395",
-        "type": "function",
-        "z": "72660c1c718b6a08",
-        "name": "Next refresh in...",
-        "func": "var d = new Date();\nvar n = d.getTime();\nvar start_time = global.get('NetatmoLastUpdateTime')||0;\nvar duration = msg.delay/1000;\nvar elapsed_time = Math.round((n - start_time)/1000);\n\nvar remains = new Date(null);\nremains.setSeconds(duration - elapsed_time); // specify value for SECONDS here\nvar remains_h = remains.toISOString().substr(11, 8);\nif (msg.status == \"STOP\") {\n    node.status({});\n    msg.remains = \"00:00:00\";\n    msg.payload = 0;\n    return [null, msg];\n}\nif (elapsed_time < duration) {\n    node.status({fill:msg.status == \"OK\" ? \"blue\" : \"red\",shape:\"dot\", text:remains_h});\n    msg.remains = remains_h;\n    return [ msg, null ];\n}\n\n",
-        "outputs": 2,
-        "timeout": "",
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 480,
-        "y": 440,
-        "wires": [
-            [
-                "97c519fc69b9b6e9"
-            ],
-            []
         ]
     },
     {
@@ -1104,8 +929,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 480,
-        "y": 520,
+        "x": 460,
+        "y": 480,
         "wires": [
             [
                 "b96f28348953dfca"
@@ -1136,7 +961,7 @@
             }
         ],
         "x": 680,
-        "y": 520,
+        "y": 480,
         "wires": [
             [
                 "7df73f6e51fbc4a5"
@@ -1147,7 +972,7 @@
         "id": "7f8ab2a7eb362ac8",
         "type": "inject",
         "z": "72660c1c718b6a08",
-        "name": "Get Netatmo Data",
+        "name": "Test getting Netatmo data",
         "props": [
             {
                 "p": "payload"
@@ -1164,8 +989,8 @@
         "topic": "",
         "payload": "",
         "payloadType": "date",
-        "x": 130,
-        "y": 520,
+        "x": 150,
+        "y": 480,
         "wires": [
             [
                 "944f8def659f9d52"
@@ -1185,18 +1010,161 @@
         "targetType": "full",
         "statusVal": "",
         "statusType": "auto",
-        "x": 900,
-        "y": 520,
+        "x": 920,
+        "y": 480,
         "wires": []
     },
     {
         "id": "d0f462d64e752555",
         "type": "comment",
         "z": "72660c1c718b6a08",
-        "name": "This page stores the OAUTH2 refresh token as a global variable and refreshes it regularly. At setup, the initial refresh token has to be given.",
+        "name": "This page stores the OAUTH2 refresh token in a file, from where it will be retrieved after each refresh.",
         "info": "",
-        "x": 500,
-        "y": 80,
+        "x": 380,
+        "y": 60,
         "wires": []
+    },
+    {
+        "id": "c52f8759ac4cc259",
+        "type": "file in",
+        "z": "72660c1c718b6a08",
+        "name": "Read credentials",
+        "filename": "/data/node-red/creds.json",
+        "filenameType": "str",
+        "format": "utf8",
+        "chunk": false,
+        "sendError": false,
+        "encoding": "utf8",
+        "allProps": false,
+        "x": 470,
+        "y": 200,
+        "wires": [
+            [
+                "264c71d012ff24dd"
+            ]
+        ]
+    },
+    {
+        "id": "76a515f7faab1273",
+        "type": "file",
+        "z": "72660c1c718b6a08",
+        "name": "Write credentials",
+        "filename": "/data/node-red/creds.json",
+        "filenameType": "str",
+        "appendNewline": false,
+        "createDir": true,
+        "overwriteFile": "true",
+        "encoding": "utf8",
+        "x": 470,
+        "y": 120,
+        "wires": [
+            [
+                "371e46c1b4744f71"
+            ]
+        ]
+    },
+    {
+        "id": "64b7adfe42bb1d5b",
+        "type": "inject",
+        "z": "72660c1c718b6a08",
+        "name": "Define refresh token for the first time",
+        "props": [
+            {
+                "p": "payload.refresh_token",
+                "v": "",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "x": 180,
+        "y": 120,
+        "wires": [
+            [
+                "76a515f7faab1273"
+            ]
+        ]
+    },
+    {
+        "id": "e4b345e24960f687",
+        "type": "inject",
+        "z": "72660c1c718b6a08",
+        "name": "Read from file at startup",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 150,
+        "y": 200,
+        "wires": [
+            [
+                "c52f8759ac4cc259"
+            ]
+        ]
+    },
+    {
+        "id": "264c71d012ff24dd",
+        "type": "json",
+        "z": "72660c1c718b6a08",
+        "name": "Parse file",
+        "property": "payload",
+        "action": "",
+        "pretty": false,
+        "x": 660,
+        "y": 200,
+        "wires": [
+            [
+                "371e46c1b4744f71"
+            ]
+        ]
+    },
+    {
+        "id": "41eb9e64fb9e01b6",
+        "type": "debug",
+        "z": "72660c1c718b6a08",
+        "name": "OAUTH2 errors",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1340,
+        "y": 380,
+        "wires": []
+    },
+    {
+        "id": "bb46936c315c2039",
+        "type": "file",
+        "z": "72660c1c718b6a08",
+        "name": "Write credentials",
+        "filename": "/data/node-red/creds.json",
+        "filenameType": "str",
+        "appendNewline": false,
+        "createDir": true,
+        "overwriteFile": "true",
+        "encoding": "utf8",
+        "x": 1550,
+        "y": 320,
+        "wires": [
+            []
+        ]
     }
 ]
