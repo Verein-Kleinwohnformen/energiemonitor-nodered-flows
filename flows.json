@@ -30,29 +30,34 @@
         "alpnprotocol": ""
     },
     {
-        "id": "9c8655a2e4b17a71",
-        "type": "serial-port",
-        "name": "GPIO RS485",
-        "serialport": "/dev/ttyUSB0",
-        "serialbaud": "9600",
-        "databits": "8",
-        "parity": "none",
-        "stopbits": "2",
-        "waitfor": "",
-        "dtr": "none",
-        "rts": "none",
-        "cts": "none",
-        "dsr": "none",
-        "newline": "\\n",
-        "bin": "false",
-        "out": "char",
-        "addchar": "",
-        "responsetimeout": "10000"
-    },
-    {
         "id": "fcb30480c7e677cf",
         "type": "google-cloud-credentials",
         "name": "kwf_energiemonitor"
+    },
+    {
+        "id": "581fc103df9a0d36",
+        "type": "bp-modbus-client",
+        "name": "Modbus on USB0",
+        "clienttype": "simpleser",
+        "bufferCommands": true,
+        "tcpHost": "127.0.0.1",
+        "tcpPort": "502",
+        "tcpType": "DEFAULT",
+        "serialPort": "/dev/ttyUSB0",
+        "serialType": "RTU",
+        "serialBaudrate": "9600",
+        "serialDatabits": "8",
+        "serialStopbits": "1",
+        "serialParity": "none",
+        "serialConnectionDelay": "100",
+        "serialAsciiResponseStartDelimiter": "0x3A",
+        "unit_id": "1",
+        "commandDelay": "1",
+        "clientTimeout": "1000",
+        "reconnectOnTimeout": true,
+        "reconnectTimeout": "2000",
+        "parallelUnitIdsAllowed": true,
+        "bpChkShowDebugWarnings": false
     },
     {
         "id": "79ebf938367c3f4a",
@@ -96,7 +101,7 @@
         "authType": "",
         "senderr": false,
         "headers": [],
-        "x": 1740,
+        "x": 2040,
         "y": 200,
         "wires": [
             []
@@ -175,6 +180,7 @@
         "key": "topic",
         "joiner": "\\n",
         "joinerType": "str",
+        "useparts": true,
         "accumulate": false,
         "timeout": "10",
         "count": "",
@@ -215,7 +221,7 @@
         "id": "5ce94dfd331b5259",
         "type": "comment",
         "z": "a4cd0360ff8bbb01",
-        "name": "Query shelly twice per second",
+        "name": "Read 230V data (Shelly 3EM)",
         "info": "",
         "x": 160,
         "y": 60,
@@ -310,7 +316,7 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 1000,
+        "x": 1300,
         "y": 180,
         "wires": [
             [
@@ -334,7 +340,7 @@
         "authType": "",
         "senderr": false,
         "headers": [],
-        "x": 1720,
+        "x": 2020,
         "y": 260,
         "wires": [
             []
@@ -359,7 +365,7 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 1320,
+        "x": 1620,
         "y": 260,
         "wires": [
             [
@@ -379,7 +385,7 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 1520,
+        "x": 1820,
         "y": 260,
         "wires": [
             [
@@ -400,7 +406,7 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 1520,
+        "x": 1820,
         "y": 200,
         "wires": [
             [
@@ -414,7 +420,7 @@
         "z": "a4cd0360ff8bbb01",
         "name": "Get API keys from balena environment variables",
         "info": "",
-        "x": 1620,
+        "x": 1920,
         "y": 140,
         "wires": []
     },
@@ -458,7 +464,7 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 1010,
+        "x": 1310,
         "y": 260,
         "wires": [
             [
@@ -470,9 +476,9 @@
         "id": "21d01caf5cb69745",
         "type": "comment",
         "z": "a4cd0360ff8bbb01",
-        "name": "Query Netatmo data from dashboard",
+        "name": "Read weather station (from Netatmo cloud)",
         "info": "",
-        "x": 180,
+        "x": 200,
         "y": 180,
         "wires": []
     },
@@ -480,9 +486,9 @@
         "id": "eeeff04eaab166d1",
         "type": "comment",
         "z": "a4cd0360ff8bbb01",
-        "name": "Read 12V sensor",
+        "name": "Read DC sensor (PZEM-017)",
         "info": "",
-        "x": 120,
+        "x": 160,
         "y": 360,
         "wires": []
     },
@@ -583,7 +589,7 @@
         "type": "debug",
         "z": "a4cd0360ff8bbb01",
         "name": "Telemetry debug",
-        "active": false,
+        "active": true,
         "tosidebar": true,
         "console": false,
         "tostatus": false,
@@ -591,39 +597,8 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1730,
+        "x": 2030,
         "y": 380,
-        "wires": []
-    },
-    {
-        "id": "b720e96708e93b0d",
-        "type": "serial in",
-        "z": "a4cd0360ff8bbb01",
-        "name": "Read GPIO",
-        "serial": "9c8655a2e4b17a71",
-        "x": 110,
-        "y": 420,
-        "wires": [
-            [
-                "4c346de5de55c9fe"
-            ]
-        ]
-    },
-    {
-        "id": "4c346de5de55c9fe",
-        "type": "debug",
-        "z": "a4cd0360ff8bbb01",
-        "name": "GPIO",
-        "active": false,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "payload",
-        "targetType": "msg",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 310,
-        "y": 420,
         "wires": []
     },
     {
@@ -688,6 +663,246 @@
         "x": 1940,
         "y": 580,
         "wires": []
+    },
+    {
+        "id": "d7488d76357d7ebe",
+        "type": "inject",
+        "z": "a4cd0360ff8bbb01",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 100,
+        "y": 420,
+        "wires": [
+            [
+                "79eafe721cb1f48f"
+            ]
+        ]
+    },
+    {
+        "id": "57b8d28a0696e5f5",
+        "type": "bp-reader",
+        "z": "a4cd0360ff8bbb01",
+        "name": "Modbus read",
+        "showStatusActivities": true,
+        "showErrors": true,
+        "showWarnings": true,
+        "logIOActivities": false,
+        "server": "581fc103df9a0d36",
+        "useIOFile": false,
+        "ioFile": "",
+        "useIOForPayload": false,
+        "emptyMsgOnFail": false,
+        "keepMsgProperties": true,
+        "delayOnStart": false,
+        "startDelayTime": "",
+        "x": 450,
+        "y": 420,
+        "wires": [
+            [
+                "d7b7fea97dd82967"
+            ]
+        ]
+    },
+    {
+        "id": "79eafe721cb1f48f",
+        "type": "bp-device",
+        "z": "a4cd0360ff8bbb01",
+        "bpUnitName": "PZEM-017",
+        "bpModbusId": "1",
+        "bpRegisters": [
+            {
+                "name": "voltage",
+                "address": "0",
+                "fnCode": "F4_INPUT_REGS",
+                "multiplier": "0.01",
+                "format": "16BIT_INT_HI_FIRST",
+                "uom": "VOLTAGE_V",
+                "scale": "NONE",
+                "size": "2"
+            },
+            {
+                "name": "current",
+                "address": "1",
+                "fnCode": "F4_INPUT_REGS",
+                "multiplier": "0.01",
+                "format": "16BIT_INT_HI_FIRST",
+                "uom": "CURRENT_A",
+                "scale": "NONE",
+                "size": "2"
+            },
+            {
+                "name": "power_low",
+                "address": "2",
+                "fnCode": "F4_INPUT_REGS",
+                "multiplier": "0.1",
+                "format": "16BIT_INT_HI_FIRST",
+                "uom": "POWER_ACTIVE_P",
+                "scale": "NONE",
+                "size": "2"
+            },
+            {
+                "name": "power_high",
+                "address": "3",
+                "fnCode": "F4_INPUT_REGS",
+                "multiplier": "0.1",
+                "format": "16BIT_INT_HI_FIRST",
+                "uom": "POWER_ACTIVE_P",
+                "scale": "NONE",
+                "size": "2"
+            },
+            {
+                "name": "energy_low",
+                "address": "4",
+                "fnCode": "F4_INPUT_REGS",
+                "multiplier": "1",
+                "format": "16BIT_INT_HI_FIRST",
+                "uom": "ENERGY_ACTIVE_P",
+                "scale": "NONE",
+                "size": "2"
+            },
+            {
+                "name": "energy_high",
+                "address": "5",
+                "fnCode": "F4_INPUT_REGS",
+                "multiplier": "1",
+                "format": "16BIT_INT_HI_FIRST",
+                "uom": "ENERGY_ACTIVE_P",
+                "scale": "NONE",
+                "size": "2"
+            }
+        ],
+        "bpChkShowDateOnLabel": true,
+        "bpChkShowDebugWarnings": true,
+        "bpChkEnableTurboMode": true,
+        "bpDeviceDataSize": 2,
+        "bpSelectedTemplate": "DEVICE_UNKNOWN",
+        "bpSourceTemplatesFromWeb": false,
+        "x": 270,
+        "y": 420,
+        "wires": [
+            [
+                "57b8d28a0696e5f5"
+            ]
+        ]
+    },
+    {
+        "id": "d7b7fea97dd82967",
+        "type": "bp-decoder",
+        "z": "a4cd0360ff8bbb01",
+        "bpDeviceDecoderName": "Modbus decode",
+        "bpChkShowDateOnLabel": true,
+        "bpChkShowDebugWarnings": true,
+        "bpChkConvertPFactor": true,
+        "bpChkSetRealTo3Dp": true,
+        "x": 640,
+        "y": 420,
+        "wires": [
+            [
+                "aeb483aceace2a0e"
+            ]
+        ]
+    },
+    {
+        "id": "aeb483aceace2a0e",
+        "type": "join",
+        "z": "a4cd0360ff8bbb01",
+        "name": "Join fields",
+        "mode": "custom",
+        "build": "object",
+        "property": "payload",
+        "propertyType": "msg",
+        "key": "topic",
+        "joiner": "\\n",
+        "joinerType": "str",
+        "useparts": false,
+        "accumulate": false,
+        "timeout": "10",
+        "count": "6",
+        "reduceRight": false,
+        "reduceExp": "",
+        "reduceInit": "",
+        "reduceInitType": "",
+        "reduceFixup": "",
+        "x": 830,
+        "y": 420,
+        "wires": [
+            [
+                "f53d48df6c84f842"
+            ]
+        ]
+    },
+    {
+        "id": "f53d48df6c84f842",
+        "type": "function",
+        "z": "a4cd0360ff8bbb01",
+        "name": "Decode DC readings",
+        "func": "var modbus = msg.payload\n\nvar dc = {};\n\ndc[\"dc_voltage\"] = modbus[\"PZEM017/VOLTAGE\"];\ndc[\"dc_current\"] = modbus[\"PZEM017/CURRENT\"];\n// Bitshift with a 0.1 multiplier\ndc[\"dc_power\"] = modbus[\"PZEM017/POWER_HIGH\"] * 6553.6 + modbus[\"PZEM017/POWER_LOW\"];\n// Bitshift with a 1 multiplier\ndc[\"dc_energy_counter\"] = modbus[\"PZEM017/ENERGY_HIGH\"] * 65536 + modbus[\"PZEM017/ENERGY_LOW\"];\n\n\nmsg.payload = dc;\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1040,
+        "y": 420,
+        "wires": [
+            [
+                "a9eae7c452d85a8b",
+                "019720f8f52cce4b"
+            ]
+        ]
+    },
+    {
+        "id": "c5130b7220cc1d67",
+        "type": "comment",
+        "z": "a4cd0360ff8bbb01",
+        "name": "Todo: Read more often and aggregate",
+        "info": "",
+        "x": 770,
+        "y": 360,
+        "wires": []
+    },
+    {
+        "id": "a9eae7c452d85a8b",
+        "type": "change",
+        "z": "a4cd0360ff8bbb01",
+        "name": "Add sensorId (PZEM-017)",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload.sensorId",
+                "pt": "msg",
+                "to": "pzem_017",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1310,
+        "y": 420,
+        "wires": [
+            [
+                "4bdf749f6ab29211"
+            ]
+        ]
     },
     {
         "id": "48c9ba7a4d6a5359",

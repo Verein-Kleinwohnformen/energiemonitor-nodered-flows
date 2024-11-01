@@ -8,7 +8,11 @@
         "node-red-contrib-cron-plus": "2.1.0",
         "node-red-contrib-isonline": "1.1.15",
         "node-red-contrib-shelly": "10.16.1",
-        "node-red-contrib-netatmo-dashboard": "1.0.0"
+        "node-red-contrib-netatmo-dashboard": "1.0.0",
+        "@bitpoolos/edge-modbus": "1.5.8",
+        "node-red-contrib-google-cloud": "0.0.26",
+        "node-red-node-serialport": "2.0.3",
+        "node-red-contrib-modbus": "5.42.0"
     },
     "node-red": {
         "settings": {
