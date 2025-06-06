@@ -1,5 +1,13 @@
 [
     {
+        "id": "3e07724de1527d10",
+        "type": "tab",
+        "label": "Example",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
         "id": "a4cd0360ff8bbb01",
         "type": "tab",
         "label": "Energiemonitor-Template",
@@ -30,11 +38,6 @@
         "alpnprotocol": ""
     },
     {
-        "id": "fcb30480c7e677cf",
-        "type": "google-cloud-credentials",
-        "name": "kwf_energiemonitor"
-    },
-    {
         "id": "581fc103df9a0d36",
         "type": "bp-modbus-client",
         "name": "Modbus on USB0",
@@ -58,6 +61,368 @@
         "reconnectTimeout": "2000",
         "parallelUnitIdsAllowed": true,
         "bpChkShowDebugWarnings": false
+    },
+    {
+        "id": "88c835032a852602",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "192.168.1.207 ",
+        "port": "1883",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "autoUnsubscribe": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthRetain": "false",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closeRetain": "false",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willRetain": "false",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "78dea314d74e558e",
+        "type": "kwf-energiemonitor",
+        "z": "3e07724de1527d10",
+        "name": "KWF Datenbank Connector",
+        "sqlitePath": "/data/node-red/",
+        "sendInterval": "3600000",
+        "apiURL": "${KWF_URL}",
+        "apiKey": "${KWF_KEY}",
+        "x": 1040,
+        "y": 420,
+        "wires": []
+    },
+    {
+        "id": "626b7da903f41492",
+        "type": "function",
+        "z": "3e07724de1527d10",
+        "name": "Decode Netatmo",
+        "func": "var addr = env.get('NETATMO_ADDRESS');\nvar devices = msg.payload.body.devices;\n\nvar data = {};\n\n// Loop through all devices found\nfor (let i = 0; i < devices.length; i++) {\n    if (devices[i]._id == addr){\n        data[\"netatmo_indoor_id\"] = devices[i]._id;\n        var indoor_data = devices[i].dashboard_data;\n\n        data[\"indoor_reachable\"] = devices[i].reachable;\n\n        if (devices[i].reachable) {\n            // Parse indoor data\n            data[\"indoor_signal\"] = devices[i].wifi_status;\n            data[\"indoor_temperature\"] = indoor_data.Temperature;\n            data[\"indoor_humidity\"] = indoor_data.Humidity;\n            data[\"indoor_co2\"] = indoor_data.CO2;\n            data[\"indoor_pressure\"] = indoor_data.Pressure;\n\n            // Loop through outdoor modules\n            var modules = devices[i].modules;\n            for (let j = 0; j < modules.length; j++) {\n                // Read data of the first module only\n                if (j==0) {\n                    data[\"outdoor_reachable\"] = modules[j].reachable;\n\n                    if (modules[j].reachable) { \n                    data[\"netatmo_outdoor_id\"] = modules[j]._id;\n                    var outdoor_data = modules[j].dashboard_data;\n                    data[\"outdoor_temperature\"] = outdoor_data.Temperature;\n                    data[\"outdoor_humidity\"] = outdoor_data.Humidity;\n                    data[\"outdoor_battery\"] = modules[j].battery_percent;\n                    data[\"outdoor_signal\"] = modules[j].rf_status;\n                    \n                    // Calculate temperature difference signal\n                    data[\"temperature_difference\"] = indoor_data.Temperature - outdoor_data.Temperature;\n                    }\n                }\n                if (j>0){\n                    data[\"warning\"] = \"Multiple outdoor stations found\";\n                }\n            }\n        }\n      }\n    }\n\nmsg.payload = data;\nmsg.topic = 'netatmo';\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 710,
+        "y": 280,
+        "wires": [
+            [
+                "78dea314d74e558e",
+                "ec657adab09717c5"
+            ]
+        ]
+    },
+    {
+        "id": "4196392789519927",
+        "type": "cronplus",
+        "z": "3e07724de1527d10",
+        "name": "Every 3 minutes",
+        "outputField": "payload",
+        "timeZone": "",
+        "storeName": "",
+        "commandResponseMsgOutput": "output1",
+        "defaultLocation": "",
+        "defaultLocationType": "default",
+        "outputs": 1,
+        "options": [
+            {
+                "name": "schedule1",
+                "topic": "topic1",
+                "payloadType": "default",
+                "payload": "",
+                "expressionType": "cron",
+                "expression": "0 */3 * * * * *",
+                "location": "",
+                "offset": "0",
+                "solarType": "all",
+                "solarEvents": "sunrise,sunset"
+            }
+        ],
+        "x": 120,
+        "y": 280,
+        "wires": [
+            [
+                "16f31075ae49070b"
+            ]
+        ]
+    },
+    {
+        "id": "16f31075ae49070b",
+        "type": "change",
+        "z": "3e07724de1527d10",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "token",
+                "pt": "msg",
+                "to": "\"Bearer \" & $globalContext(\"NetatmoAccessToken\")\t",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 300,
+        "y": 280,
+        "wires": [
+            [
+                "c112df27fd587c88"
+            ]
+        ]
+    },
+    {
+        "id": "c112df27fd587c88",
+        "type": "http request",
+        "z": "3e07724de1527d10",
+        "name": "Netatmo Https",
+        "method": "GET",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "https://api.netatmo.com/api/getstationsdata",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [
+            {
+                "keyType": "other",
+                "keyValue": "Authorization",
+                "valueType": "msg",
+                "valueValue": "token"
+            }
+        ],
+        "x": 500,
+        "y": 280,
+        "wires": [
+            [
+                "626b7da903f41492"
+            ]
+        ]
+    },
+    {
+        "id": "355604e14e4f2dd9",
+        "type": "comment",
+        "z": "3e07724de1527d10",
+        "name": "Query the netatmo weather station",
+        "info": "",
+        "x": 180,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "ec657adab09717c5",
+        "type": "debug",
+        "z": "3e07724de1527d10",
+        "name": "Input Debug",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 990,
+        "y": 500,
+        "wires": []
+    },
+    {
+        "id": "118569a59fe209b0",
+        "type": "inject",
+        "z": "3e07724de1527d10",
+        "name": "Temperature test",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "temperature_indoor",
+        "payload": "24.1",
+        "payloadType": "num",
+        "x": 620,
+        "y": 420,
+        "wires": [
+            [
+                "78dea314d74e558e",
+                "ec657adab09717c5"
+            ]
+        ]
+    },
+    {
+        "id": "45e0417a16262264",
+        "type": "mqtt in",
+        "z": "3e07724de1527d10",
+        "name": "Victron L1 P",
+        "topic": "N/+/system/0/Ac/Consumption/L1/Power",
+        "qos": "2",
+        "datatype": "json",
+        "broker": "88c835032a852602",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 90,
+        "y": 540,
+        "wires": [
+            [
+                "60769bdf09e58d8e"
+            ]
+        ]
+    },
+    {
+        "id": "df81260f04213b46",
+        "type": "aggregator",
+        "z": "3e07724de1527d10",
+        "name": "",
+        "topic": "victron_ac_l1_p",
+        "intervalCount": "10",
+        "intervalUnits": "s",
+        "submitIncompleteInterval": true,
+        "submitPerTopic": false,
+        "aggregationType": "mean",
+        "x": 490,
+        "y": 560,
+        "wires": [
+            [
+                "78dea314d74e558e",
+                "ec657adab09717c5"
+            ]
+        ]
+    },
+    {
+        "id": "bfe813ede868d803",
+        "type": "comment",
+        "z": "3e07724de1527d10",
+        "name": "AC 230V Verbrauch über Victron gemessen",
+        "info": "",
+        "x": 190,
+        "y": 480,
+        "wires": []
+    },
+    {
+        "id": "60769bdf09e58d8e",
+        "type": "change",
+        "z": "3e07724de1527d10",
+        "name": "get value",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "payload.value",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 300,
+        "y": 560,
+        "wires": [
+            [
+                "df81260f04213b46"
+            ]
+        ]
+    },
+    {
+        "id": "5b7c4732171746f5",
+        "type": "comment",
+        "z": "3e07724de1527d10",
+        "name": "Internet connection health monitor",
+        "info": "",
+        "x": 180,
+        "y": 760,
+        "wires": []
+    },
+    {
+        "id": "310f0793eedc7e62",
+        "type": "is online",
+        "z": "3e07724de1527d10",
+        "name": "is not online",
+        "url": "google.com",
+        "action": "2",
+        "x": 290,
+        "y": 820,
+        "wires": [
+            [
+                "4541f95a136678b7"
+            ]
+        ]
+    },
+    {
+        "id": "c8eef2b23349a2da",
+        "type": "cronplus",
+        "z": "3e07724de1527d10",
+        "name": "",
+        "outputField": "payload",
+        "timeZone": "",
+        "storeName": "",
+        "commandResponseMsgOutput": "output1",
+        "defaultLocation": "",
+        "defaultLocationType": "default",
+        "outputs": 1,
+        "options": [
+            {
+                "name": "schedule1",
+                "topic": "topic1",
+                "payloadType": "default",
+                "payload": "",
+                "expressionType": "cron",
+                "expression": "0 */17 * * * * ",
+                "location": "",
+                "offset": "0",
+                "solarType": "all",
+                "solarEvents": "sunrise,sunset"
+            }
+        ],
+        "x": 100,
+        "y": 820,
+        "wires": [
+            [
+                "310f0793eedc7e62"
+            ]
+        ]
+    },
+    {
+        "id": "4541f95a136678b7",
+        "type": "reboot",
+        "z": "3e07724de1527d10",
+        "name": "reboot device",
+        "x": 500,
+        "y": 820,
+        "wires": [
+            []
+        ]
     },
     {
         "id": "79ebf938367c3f4a",
@@ -228,76 +593,6 @@
         "wires": []
     },
     {
-        "id": "5b7c4732171746f5",
-        "type": "comment",
-        "z": "a4cd0360ff8bbb01",
-        "name": "Internet connection health monitor",
-        "info": "",
-        "x": 180,
-        "y": 540,
-        "wires": []
-    },
-    {
-        "id": "310f0793eedc7e62",
-        "type": "is online",
-        "z": "a4cd0360ff8bbb01",
-        "name": "is not online",
-        "url": "google.com",
-        "action": "2",
-        "x": 290,
-        "y": 600,
-        "wires": [
-            [
-                "4541f95a136678b7"
-            ]
-        ]
-    },
-    {
-        "id": "c8eef2b23349a2da",
-        "type": "cronplus",
-        "z": "a4cd0360ff8bbb01",
-        "name": "",
-        "outputField": "payload",
-        "timeZone": "",
-        "storeName": "",
-        "commandResponseMsgOutput": "output1",
-        "defaultLocation": "",
-        "defaultLocationType": "default",
-        "outputs": 1,
-        "options": [
-            {
-                "name": "schedule1",
-                "topic": "topic1",
-                "payloadType": "default",
-                "payload": "",
-                "expressionType": "cron",
-                "expression": "0 */17 * * * * ",
-                "location": "",
-                "offset": "0",
-                "solarType": "all",
-                "solarEvents": "sunrise,sunset"
-            }
-        ],
-        "x": 100,
-        "y": 600,
-        "wires": [
-            [
-                "310f0793eedc7e62"
-            ]
-        ]
-    },
-    {
-        "id": "4541f95a136678b7",
-        "type": "reboot",
-        "z": "a4cd0360ff8bbb01",
-        "name": "reboot device",
-        "x": 500,
-        "y": 600,
-        "wires": [
-            []
-        ]
-    },
-    {
         "id": "0d5eb484cf2cbb30",
         "type": "change",
         "z": "a4cd0360ff8bbb01",
@@ -316,8 +611,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 1300,
-        "y": 180,
+        "x": 980,
+        "y": 160,
         "wires": [
             [
                 "4bdf749f6ab29211"
@@ -425,64 +720,6 @@
         "wires": []
     },
     {
-        "id": "4dd3f12b3f48b853",
-        "type": "function",
-        "z": "a4cd0360ff8bbb01",
-        "name": "Decode Netatmo",
-        "func": "var addr = env.get('NETATMO_ADDRESS');\nvar devices = msg.payload.body.devices;\n\nvar data = {};\n\n// Loop through all devices found\nfor (let i = 0; i < devices.length; i++) {\n    if (devices[i]._id == addr){\n        data[\"netatmo_indoor_id\"] = devices[i]._id;\n        var indoor_data = devices[i].dashboard_data;\n\n        data[\"indoor_reachable\"] = devices[i].reachable;\n\n        if (devices[i].reachable) {\n            // Parse indoor data\n            data[\"indoor_signal\"] = devices[i].wifi_status;\n            data[\"indoor_temperature\"] = indoor_data.Temperature;\n            data[\"indoor_humidity\"] = indoor_data.Humidity;\n            data[\"indoor_co2\"] = indoor_data.CO2;\n            data[\"indoor_pressure\"] = indoor_data.Pressure;\n\n            // Loop through outdoor modules\n            var modules = devices[i].modules;\n            for (let j = 0; j < modules.length; j++) {\n                // Read data of the first module only\n                if (j==0) {\n                    data[\"outdoor_reachable\"] = modules[j].reachable;\n\n                    if (modules[j].reachable) { \n                    data[\"netatmo_outdoor_id\"] = modules[j]._id;\n                    var outdoor_data = modules[j].dashboard_data;\n                    data[\"outdoor_temperature\"] = outdoor_data.Temperature;\n                    data[\"outdoor_humidity\"] = outdoor_data.Humidity;\n                    data[\"outdoor_battery\"] = modules[j].battery_percent;\n                    data[\"outdoor_signal\"] = modules[j].rf_status;\n                    \n                    // Calculate temperature difference signal\n                    data[\"temperature_difference\"] = indoor_data.Temperature - outdoor_data.Temperature;\n                    }\n                }\n                if (j>0){\n                    data[\"warning\"] = \"Multiple outdoor stations found\";\n                }\n            }\n        }\n      }\n    }\n\nmsg.payload = data;\nreturn msg;",
-        "outputs": 1,
-        "timeout": 0,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 710,
-        "y": 240,
-        "wires": [
-            [
-                "019720f8f52cce4b",
-                "241afe19d6898a64"
-            ]
-        ]
-    },
-    {
-        "id": "241afe19d6898a64",
-        "type": "change",
-        "z": "a4cd0360ff8bbb01",
-        "name": "Add sensorId (Netatmo)",
-        "rules": [
-            {
-                "t": "set",
-                "p": "payload.sensorId",
-                "pt": "msg",
-                "to": "netatmo_station",
-                "tot": "str"
-            }
-        ],
-        "action": "",
-        "property": "",
-        "from": "",
-        "to": "",
-        "reg": false,
-        "x": 1310,
-        "y": 260,
-        "wires": [
-            [
-                "4bdf749f6ab29211"
-            ]
-        ]
-    },
-    {
-        "id": "21d01caf5cb69745",
-        "type": "comment",
-        "z": "a4cd0360ff8bbb01",
-        "name": "Read weather station (from Netatmo cloud)",
-        "info": "",
-        "x": 200,
-        "y": 180,
-        "wires": []
-    },
-    {
         "id": "eeeff04eaab166d1",
         "type": "comment",
         "z": "a4cd0360ff8bbb01",
@@ -493,103 +730,11 @@
         "wires": []
     },
     {
-        "id": "abeffb5c3bfe8abc",
-        "type": "cronplus",
-        "z": "a4cd0360ff8bbb01",
-        "name": "Every 3 minutes",
-        "outputField": "payload",
-        "timeZone": "",
-        "storeName": "",
-        "commandResponseMsgOutput": "output1",
-        "defaultLocation": "",
-        "defaultLocationType": "default",
-        "outputs": 1,
-        "options": [
-            {
-                "name": "schedule1",
-                "topic": "topic1",
-                "payloadType": "default",
-                "payload": "",
-                "expressionType": "cron",
-                "expression": "0 */3 * * * * *",
-                "location": "",
-                "offset": "0",
-                "solarType": "all",
-                "solarEvents": "sunrise,sunset"
-            }
-        ],
-        "x": 120,
-        "y": 240,
-        "wires": [
-            [
-                "81167aa30e83cced"
-            ]
-        ]
-    },
-    {
-        "id": "81167aa30e83cced",
-        "type": "change",
-        "z": "a4cd0360ff8bbb01",
-        "name": "",
-        "rules": [
-            {
-                "t": "set",
-                "p": "token",
-                "pt": "msg",
-                "to": "\"Bearer \" & $globalContext(\"NetatmoAccessToken\")\t",
-                "tot": "jsonata"
-            }
-        ],
-        "action": "",
-        "property": "",
-        "from": "",
-        "to": "",
-        "reg": false,
-        "x": 300,
-        "y": 240,
-        "wires": [
-            [
-                "9fca675d973e9c1d"
-            ]
-        ]
-    },
-    {
-        "id": "9fca675d973e9c1d",
-        "type": "http request",
-        "z": "a4cd0360ff8bbb01",
-        "name": "Netatmo Https",
-        "method": "GET",
-        "ret": "obj",
-        "paytoqs": "ignore",
-        "url": "https://api.netatmo.com/api/getstationsdata",
-        "tls": "",
-        "persist": false,
-        "proxy": "",
-        "insecureHTTPParser": false,
-        "authType": "",
-        "senderr": false,
-        "headers": [
-            {
-                "keyType": "other",
-                "keyValue": "Authorization",
-                "valueType": "msg",
-                "valueValue": "token"
-            }
-        ],
-        "x": 500,
-        "y": 240,
-        "wires": [
-            [
-                "4dd3f12b3f48b853"
-            ]
-        ]
-    },
-    {
         "id": "5e88edd51f09b4d8",
         "type": "debug",
         "z": "a4cd0360ff8bbb01",
         "name": "Telemetry debug",
-        "active": true,
+        "active": false,
         "tosidebar": true,
         "console": false,
         "tostatus": false,
@@ -599,69 +744,6 @@
         "statusType": "auto",
         "x": 2030,
         "y": 380,
-        "wires": []
-    },
-    {
-        "id": "e794c2cde56dbd41",
-        "type": "google-cloud-firestore",
-        "z": "a4cd0360ff8bbb01",
-        "account": "fcb30480c7e677cf",
-        "keyFilename": "",
-        "name": "Google Cloud Test",
-        "projectId": "kwf_energiemonitor",
-        "mode": "set",
-        "x": 1690,
-        "y": 580,
-        "wires": [
-            [
-                "7c0012221604ef06"
-            ]
-        ]
-    },
-    {
-        "id": "8541ce403936a4c7",
-        "type": "inject",
-        "z": "a4cd0360ff8bbb01",
-        "name": "",
-        "props": [
-            {
-                "p": "payload.path",
-                "v": "young-tent/test",
-                "vt": "str"
-            },
-            {
-                "p": "payload.content",
-                "v": "{\"message\": \"test\"}",
-                "vt": "json"
-            }
-        ],
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "",
-        "x": 1410,
-        "y": 580,
-        "wires": [
-            [
-                "e794c2cde56dbd41"
-            ]
-        ]
-    },
-    {
-        "id": "7c0012221604ef06",
-        "type": "debug",
-        "z": "a4cd0360ff8bbb01",
-        "name": "debug 1",
-        "active": false,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "false",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 1940,
-        "y": 580,
         "wires": []
     },
     {
@@ -813,7 +895,8 @@
         "y": 420,
         "wires": [
             [
-                "aeb483aceace2a0e"
+                "aeb483aceace2a0e",
+                "96f0d62272a2f18d"
             ]
         ]
     },
@@ -903,6 +986,22 @@
                 "4bdf749f6ab29211"
             ]
         ]
+    },
+    {
+        "id": "96f0d62272a2f18d",
+        "type": "debug",
+        "z": "a4cd0360ff8bbb01",
+        "name": "debug 2",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 840,
+        "y": 480,
+        "wires": []
     },
     {
         "id": "48c9ba7a4d6a5359",
@@ -1298,9 +1397,7 @@
         "x": 180,
         "y": 120,
         "wires": [
-            [
-                "76a515f7faab1273"
-            ]
+            []
         ]
     },
     {
