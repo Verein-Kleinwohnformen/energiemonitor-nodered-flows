@@ -1,4 +1,22 @@
-# KWF Energiemonitor Node-RED auf Balena
+# Das Projekt Energiemonitor
+Dieses Projekt soll es dir ermöglichen, deinen Energieverbrauch zu messen, in Echtzeit zu analysieren, zu verstehen und zu optimieren - mit dem Ziel dass du mit den einfachen aber richtigen Aktionen im Alltag 20% deines Energieverbrauchs einsparen kannst. Dieses Projekt wird vom [Verein Kleinwohnformen](https://kleinwohnformen.ch) getragen und ist in erster Linie auf kleine, unabhängige Wohnformen zugeschnitten. Es ist aber nicht ausgeschlossen, dass du unseren Monitor auch für deine Wohnung bauen und nutzen kannst - wir sind Open Source und Mitmachen im Projekt ist erwünscht! Einfach melden beim [Energiemonitor-Team](mailto:energiemonitor@kleinwohnformen.ch).
+
+## Projekt-Repos
+- [Referenz-HW und Provisionierung mit BalenaOS](https://github.com/Verein-Kleinwohnformen/energiemonitor-balena-nodered)
+- [NodeRED-Connector neu](https://github.com/Verein-Kleinwohnformen/kwf-energiemonitor-db)
+- [NodeRED Beispiel-Flows (depr.)](https://github.com/Verein-Kleinwohnformen/energiemonitor-nodered-flows)
+- [Energiemonitor-App (Repo)](https://github.com/Verein-Kleinwohnformen/energiemonitor-app)
+- [Energiemonitor-App (Demo)](https://energiemonitor-kwf.web.app/)
+
+## Angestrebte Architektur
+Wir befinden uns noch in der Designphase, viele der eingezeichneten Komponenten existieren noch nicht. Wir streben aber das folgende System an:
+
+![Hardware-Architektur](img/arch1.png)
+
+![Software-Architektur](img/arch2.png)
+
+# Achtung: deprecated
+Dies ist die alte Version der NodeRED-Flows, mit dem Ziel dass alle diese Beispiele in den folgenden neuen Konnektor integriert werden: [NodeRED-Connector neu](https://github.com/Verein-Kleinwohnformen/kwf-energiemonitor-db)
 
 ## Info
 Dieses Repository beinhaltet das Template für Node-RED auf der Balena-Umgebung. Dieser Teil läuft auf der Energiemonitor-Hardware, fragt alle benötigten Daten ab und schickt sie an ein Dashboard sowie an eine Datenbank
@@ -13,18 +31,21 @@ Node-RED Container über Balena deployen und im Node-RED History-Tab dieses Repo
 __Implementiert__
 - Shelly Pro 3EM Stromverbrauch 230V auf 3 Phasen
 - Netatmo Wetterstation innen und aussen
+- OAUTH2-Flow für die Authentifizierung bei Netatmo
 - Daten senden an Thingsboard
 - Daten senden an Azure Table Storage (Datenbank)
+- PZEM-017 für DC-Messung
 - Neustart bei Netzwerkproblemen
 
 __Nicht implementiert__
-- 12V Monitor über RS485 (Peacefair)
+- Dashboard direkt auf Node-RED
 
 __Entfernt__
 - Support für Sensoren mit Tuya. Schlechte Erfahrungen mit Qualität und Antennenleistung
+- Offizieller Netatmo-Block wird nicht mehr maintained. Im Tab "Netatmo Authentication" ist jetzt ein manueller Flow für OAUTH2.
 
 # Konfiguration des Energiemonitors
-Zum Bau eines neuen Energiemonitors müssen auch gewisse Keys vorhanden sein. Wir handhaben dies als Environment-Variablen über die gesamte Balena-Flotte und versuchen, möglichst die gleichen Keys für die ganze Flotte zu verwenden. Variablen, die nur für ein Gerät gültig sind (z.B. Shelly IP-Adresse) können als Device-Variable konfiguriert werden.
+Zum Bau eines neuen Energiemonitors müssen gewisse Keys vorhanden sein. Wir handhaben dies als Environment-Variablen über die gesamte Balena-Flotte und versuchen, möglichst die gleichen Keys für die ganze Flotte zu verwenden. Variablen, die nur für ein Gerät gültig sind (z.B. Shelly IP-Adresse) können als Device-Variable konfiguriert werden.
 
 ![keys](./img/balena_variables.jpg)
 
@@ -42,13 +63,33 @@ Die Wetterstation verbindet sich übers Energiemonitor-Wifi mit dem Internet und
 Auf [dem Netatmo Developer-Portal](https://dev.netatmo.com) mit dem Token-Generator ein initiales Token erstellen und im OAUTH2-Block eintragen (nur das Refresh-Token). Dieses ändert sich dann bei jeder Abfrage, deshalb kann das einfach so im Node-RED eingetragen werden. Client-ID und Client-Secret werden über Environment-Variablen gehandhabt. Todo: Sollte man für jeden Energiemonitor eine separate App erstellen, damit die Token nicht durcheinandergeraten, wenn verschiedene Monitoren zu verschiedenen Zeiten ein Token-Refresh machen?
 
 ### Todo beim Bau des nächsten Energiemonitors:
-Jede Wetterstation hat eine eigene MAC-Adresse. Diese als Device-Variabel speichern und die Abfrage bei Netatmo so ändern, dass nur Daten der "eigenen" Wetterstation weitergegeben werden (in der Datenbank speichern wir bereits die MAC-Adresse der Wetterstation, aber es braucht ja nicht jeder Energiemonitor die Daten aller Monitore weiterzuleiten)
+Jede Wetterstation hat eine eigene MAC-Adresse. Diese als Device-Variabel speichern und die Abfrage bei Netatmo so ändern, dass nur Daten der "eigenen" Wetterstation weitergegeben werden.
 
 ### Refresh-Token und Access-Token nicht verlieren beim Neustart
 Im Moment werden die aktuellen Token in ein File auf dem persistenten Speicher (/data) geschrieben und beim Neustart von dort gelesen.
 
 ## DC-Messung mit Shunt und Peacefair Gerät
-Todo
+
+### Gerät einrichten
+Ich kann dieses [Python-Projekt](https://github.com/croutonso/PZEM017modbus/tree/main) empfehlen, damit kann das Peacefair zur Einrichtung über den USB-Port am PC getestet und konfiguriert werden, und alle möglichen Modbus-Adressen nachgeschaut werden.
+
+Wichtig bei diesem Schritt: 
+- Adresse auf Default (0x01) einstellen
+- Current Range anpassen, je nachdem welcher Shunt installiert ist.
+
+#### Verkabelung mit GPIO
+Danach das Peacefair verkabeln: Pin A -> 3, B -> 5 und GND -> 7 nach folgendem Schema (für RS485):
+![RS485-Verkabelung](./img/rs485.png)
+- Funktioniert so nicht. Wird ein TTL-Converter benötigt?
+
+#### Verkabelung über RS485-USB Converter
+Das Peacefair mit dem RS485-to-USB Converter verkabeln und am USB-Port verbinden. Testen, ob Daten abgefragt werden, sonst im Node-RED Block den USB-Port für Modbus konfigurieren (Standard: dev/ttyUSB0)
+
+Todo: Verkabelung mit Batterie und Shunt (siehe Bild hinten auf dem PZEM). Test, ob 5V wirklich angeschlossen werden muss, oder ob das Modul durch die 12V-Leitung genügend versorgt ist.
+
+Für das Auslesen über Modbus verwende ich die [Bitpool-Library](https://wiki.bitpool.com/bitpool-edge/connectors/bitpool-edge-modbus), da diese etwas einfacher ist und mit weniger Blocks auskommt.
+
+
 
 # Frühere Versionen
 Die frühere Version der FH OST befindet sich auf dem Branch "BA_OST"
