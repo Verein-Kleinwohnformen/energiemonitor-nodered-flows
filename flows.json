@@ -8,14 +8,6 @@
         "env": []
     },
     {
-        "id": "a4cd0360ff8bbb01",
-        "type": "tab",
-        "label": "Energiemonitor-Template",
-        "disabled": false,
-        "info": "",
-        "env": []
-    },
-    {
         "id": "72660c1c718b6a08",
         "type": "tab",
         "label": "Netatmo Authentication",
@@ -24,18 +16,35 @@
         "env": []
     },
     {
-        "id": "cebdd8a96b479943",
-        "type": "tls-config",
-        "name": "",
-        "cert": "",
-        "key": "",
-        "ca": "",
-        "certname": "certificate.pem",
-        "keyname": "privatekey.pem",
-        "caname": "",
-        "servername": "",
-        "verifyservercert": true,
-        "alpnprotocol": ""
+        "id": "88c835032a852602",
+        "type": "mqtt-broker",
+        "name": "Victron MQTT Broker",
+        "broker": "${VICTRON_IP}",
+        "port": "1883",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "55",
+        "cleansession": true,
+        "autoUnsubscribe": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthRetain": "false",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closeRetain": "false",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willRetain": "false",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
     },
     {
         "id": "581fc103df9a0d36",
@@ -63,47 +72,16 @@
         "bpChkShowDebugWarnings": false
     },
     {
-        "id": "88c835032a852602",
-        "type": "mqtt-broker",
-        "name": "",
-        "broker": "192.168.1.207 ",
-        "port": "1883",
-        "clientid": "",
-        "autoConnect": true,
-        "usetls": false,
-        "protocolVersion": "4",
-        "keepalive": "60",
-        "cleansession": true,
-        "autoUnsubscribe": true,
-        "birthTopic": "",
-        "birthQos": "0",
-        "birthRetain": "false",
-        "birthPayload": "",
-        "birthMsg": {},
-        "closeTopic": "",
-        "closeQos": "0",
-        "closeRetain": "false",
-        "closePayload": "",
-        "closeMsg": {},
-        "willTopic": "",
-        "willQos": "0",
-        "willRetain": "false",
-        "willPayload": "",
-        "willMsg": {},
-        "userProps": "",
-        "sessionExpiry": ""
-    },
-    {
         "id": "78dea314d74e558e",
         "type": "kwf-energiemonitor",
         "z": "3e07724de1527d10",
         "name": "KWF Datenbank Connector",
-        "sqlitePath": "/data/node-red/",
+        "sqlitePath": "/data/node-red/kwfemon/",
         "sendInterval": "3600000",
         "apiURL": "${KWF_URL}",
         "apiKey": "${KWF_KEY}",
-        "x": 1040,
-        "y": 420,
+        "x": 1440,
+        "y": 340,
         "wires": []
     },
     {
@@ -111,53 +89,18 @@
         "type": "function",
         "z": "3e07724de1527d10",
         "name": "Decode Netatmo",
-        "func": "var addr = env.get('NETATMO_ADDRESS');\nvar devices = msg.payload.body.devices;\n\nvar data = {};\n\n// Loop through all devices found\nfor (let i = 0; i < devices.length; i++) {\n    if (devices[i]._id == addr){\n        data[\"netatmo_indoor_id\"] = devices[i]._id;\n        var indoor_data = devices[i].dashboard_data;\n\n        data[\"indoor_reachable\"] = devices[i].reachable;\n\n        if (devices[i].reachable) {\n            // Parse indoor data\n            data[\"indoor_signal\"] = devices[i].wifi_status;\n            data[\"indoor_temperature\"] = indoor_data.Temperature;\n            data[\"indoor_humidity\"] = indoor_data.Humidity;\n            data[\"indoor_co2\"] = indoor_data.CO2;\n            data[\"indoor_pressure\"] = indoor_data.Pressure;\n\n            // Loop through outdoor modules\n            var modules = devices[i].modules;\n            for (let j = 0; j < modules.length; j++) {\n                // Read data of the first module only\n                if (j==0) {\n                    data[\"outdoor_reachable\"] = modules[j].reachable;\n\n                    if (modules[j].reachable) { \n                    data[\"netatmo_outdoor_id\"] = modules[j]._id;\n                    var outdoor_data = modules[j].dashboard_data;\n                    data[\"outdoor_temperature\"] = outdoor_data.Temperature;\n                    data[\"outdoor_humidity\"] = outdoor_data.Humidity;\n                    data[\"outdoor_battery\"] = modules[j].battery_percent;\n                    data[\"outdoor_signal\"] = modules[j].rf_status;\n                    \n                    // Calculate temperature difference signal\n                    data[\"temperature_difference\"] = indoor_data.Temperature - outdoor_data.Temperature;\n                    }\n                }\n                if (j>0){\n                    data[\"warning\"] = \"Multiple outdoor stations found\";\n                }\n            }\n        }\n      }\n    }\n\nmsg.payload = data;\nmsg.topic = 'netatmo';\nreturn msg;",
+        "func": "var addr = env.get('NETATMO_ADDRESS');\nvar devices = msg.payload.body.devices;\n\n// Initialize the new data format structure\nvar data = {\n    sensor_id: \"netatmo\",\n    timestamp: Date.now(), // Current timestamp in milliseconds\n    metering_point: \"K0\", // Placeholder measurement point\n    values: {}\n};\n\n// Loop through all devices found\nfor (let i = 0; i < devices.length; i++) {\n    if (devices[i]._id == addr) {\n        // Store device identifiers\n        data.values[\"device_id\"] = devices[i]._id;\n\n        var indoor_data = devices[i].dashboard_data;\n        data.values[\"device_reachable\"] = devices[i].reachable;\n\n        // Use the timestamp from the device data if available\n        if (indoor_data.time_utc) {\n            data.timestamp = indoor_data.time_utc * 1000; // Convert to milliseconds\n        }\n\n        if (devices[i].reachable) {\n            // Indoor sensor data (from devices[i].dashboard_data)\n            data.values[\"wifi_signal_strength\"] = devices[i].wifi_status;\n            data.values[\"temperature_indoor\"] = indoor_data.Temperature;\n            data.values[\"humidity_indoor\"] = indoor_data.Humidity;\n            data.values[\"co2_indoor\"] = indoor_data.CO2;\n            data.values[\"pressure\"] = indoor_data.Pressure;\n            data.values[\"noise_level\"] = indoor_data.Noise;\n            data.values[\"pressure_absolute\"] = indoor_data.AbsolutePressure;\n\n            // Outdoor modules data (from devices[i].modules[j])\n            var modules = devices[i].modules;\n            if (modules && modules.length > 0) {\n                for (let j = 0; j < modules.length; j++) {\n                    // Read data of the first module only (outdoor sensor)\n                    if (j == 0) {\n                        data.values[\"outdoor_module_reachable\"] = modules[j].reachable;\n                        data.values[\"outdoor_module_id\"] = modules[j]._id;\n\n                        if (modules[j].reachable) {\n                            var outdoor_data = modules[j].dashboard_data;\n                            // Outdoor sensor data (from devices[i].modules[0].dashboard_data)\n                            data.values[\"temperature_outdoor\"] = outdoor_data.Temperature;\n                            data.values[\"humidity_outdoor\"] = outdoor_data.Humidity;\n\n                            // Module status data (from devices[i].modules[0])\n                            data.values[\"battery_level\"] = modules[j].battery_percent;\n                            data.values[\"rf_signal_strength\"] = modules[j].rf_status;\n                            data.values[\"battery_voltage\"] = modules[j].battery_vp;\n\n                            // Calculate temperature difference\n                            data.values[\"temperature_difference\"] = indoor_data.Temperature - outdoor_data.Temperature;\n                        }\n                    }\n                    if (j > 0) {\n                        data.values[\"warning\"] = \"Multiple outdoor modules detected\";\n                    }\n                }\n            }\n        }\n    }\n}\n\nmsg.payload = data;\nreturn msg;",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 710,
-        "y": 280,
+        "x": 670,
+        "y": 320,
         "wires": [
             [
-                "78dea314d74e558e",
-                "ec657adab09717c5"
-            ]
-        ]
-    },
-    {
-        "id": "4196392789519927",
-        "type": "cronplus",
-        "z": "3e07724de1527d10",
-        "name": "Every 3 minutes",
-        "outputField": "payload",
-        "timeZone": "",
-        "storeName": "",
-        "commandResponseMsgOutput": "output1",
-        "defaultLocation": "",
-        "defaultLocationType": "default",
-        "outputs": 1,
-        "options": [
-            {
-                "name": "schedule1",
-                "topic": "topic1",
-                "payloadType": "default",
-                "payload": "",
-                "expressionType": "cron",
-                "expression": "0 */3 * * * * *",
-                "location": "",
-                "offset": "0",
-                "solarType": "all",
-                "solarEvents": "sunrise,sunset"
-            }
-        ],
-        "x": 120,
-        "y": 280,
-        "wires": [
-            [
-                "16f31075ae49070b"
+                "78dea314d74e558e"
             ]
         ]
     },
@@ -180,8 +123,8 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 300,
-        "y": 280,
+        "x": 260,
+        "y": 320,
         "wires": [
             [
                 "c112df27fd587c88"
@@ -211,8 +154,8 @@
                 "valueValue": "token"
             }
         ],
-        "x": 500,
-        "y": 280,
+        "x": 460,
+        "y": 320,
         "wires": [
             [
                 "626b7da903f41492"
@@ -223,97 +166,30 @@
         "id": "355604e14e4f2dd9",
         "type": "comment",
         "z": "3e07724de1527d10",
-        "name": "Query the netatmo weather station",
+        "name": "Netatmo Wetterstation",
         "info": "",
-        "x": 180,
-        "y": 220,
+        "x": 140,
+        "y": 280,
         "wires": []
-    },
-    {
-        "id": "ec657adab09717c5",
-        "type": "debug",
-        "z": "3e07724de1527d10",
-        "name": "Input Debug",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "payload",
-        "targetType": "msg",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 990,
-        "y": 500,
-        "wires": []
-    },
-    {
-        "id": "118569a59fe209b0",
-        "type": "inject",
-        "z": "3e07724de1527d10",
-        "name": "Temperature test",
-        "props": [
-            {
-                "p": "payload"
-            },
-            {
-                "p": "topic",
-                "vt": "str"
-            }
-        ],
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "temperature_indoor",
-        "payload": "24.1",
-        "payloadType": "num",
-        "x": 620,
-        "y": 420,
-        "wires": [
-            [
-                "78dea314d74e558e",
-                "ec657adab09717c5"
-            ]
-        ]
     },
     {
         "id": "45e0417a16262264",
         "type": "mqtt in",
         "z": "3e07724de1527d10",
-        "name": "Victron L1 P",
-        "topic": "N/+/system/0/Ac/Consumption/L1/Power",
-        "qos": "2",
+        "name": "Victron Grid Power",
+        "topic": "N/+/system/#",
+        "qos": "0",
         "datatype": "json",
         "broker": "88c835032a852602",
         "nl": false,
         "rap": true,
         "rh": 0,
         "inputs": 0,
-        "x": 90,
-        "y": 540,
+        "x": 110,
+        "y": 520,
         "wires": [
             [
-                "60769bdf09e58d8e"
-            ]
-        ]
-    },
-    {
-        "id": "df81260f04213b46",
-        "type": "aggregator",
-        "z": "3e07724de1527d10",
-        "name": "",
-        "topic": "victron_ac_l1_p",
-        "intervalCount": "10",
-        "intervalUnits": "s",
-        "submitIncompleteInterval": true,
-        "submitPerTopic": false,
-        "aggregationType": "mean",
-        "x": 490,
-        "y": 560,
-        "wires": [
-            [
-                "78dea314d74e558e",
-                "ec657adab09717c5"
+                "96631ccb0aef5c8f"
             ]
         ]
     },
@@ -321,38 +197,11 @@
         "id": "bfe813ede868d803",
         "type": "comment",
         "z": "3e07724de1527d10",
-        "name": "AC 230V Verbrauch über Victron gemessen",
-        "info": "",
-        "x": 190,
-        "y": 480,
+        "name": "Victron Solarsysteme",
+        "info": "https://github.com/victronenergy/dbus-flashmq",
+        "x": 120,
+        "y": 440,
         "wires": []
-    },
-    {
-        "id": "60769bdf09e58d8e",
-        "type": "change",
-        "z": "3e07724de1527d10",
-        "name": "get value",
-        "rules": [
-            {
-                "t": "set",
-                "p": "payload",
-                "pt": "msg",
-                "to": "payload.value",
-                "tot": "msg"
-            }
-        ],
-        "action": "",
-        "property": "",
-        "from": "",
-        "to": "",
-        "reg": false,
-        "x": 300,
-        "y": 560,
-        "wires": [
-            [
-                "df81260f04213b46"
-            ]
-        ]
     },
     {
         "id": "5b7c4732171746f5",
@@ -361,7 +210,7 @@
         "name": "Internet connection health monitor",
         "info": "",
         "x": 180,
-        "y": 760,
+        "y": 880,
         "wires": []
     },
     {
@@ -372,7 +221,7 @@
         "url": "google.com",
         "action": "2",
         "x": 290,
-        "y": 820,
+        "y": 940,
         "wires": [
             [
                 "4541f95a136678b7"
@@ -406,7 +255,7 @@
             }
         ],
         "x": 100,
-        "y": 820,
+        "y": 940,
         "wires": [
             [
                 "310f0793eedc7e62"
@@ -419,63 +268,38 @@
         "z": "3e07724de1527d10",
         "name": "reboot device",
         "x": 500,
-        "y": 820,
+        "y": 940,
         "wires": [
             []
         ]
     },
     {
-        "id": "79ebf938367c3f4a",
+        "id": "8d5f654a461d34c7",
         "type": "shelly-gen2",
-        "z": "a4cd0360ff8bbb01",
+        "z": "3e07724de1527d10",
         "hostname": "${SHELLY_IP}",
         "description": "Shelly 3EM",
         "mode": "polling",
-        "verbose": false,
         "server": "",
         "outputmode": "event",
         "uploadretryinterval": 5000,
-        "pollinginterval": "500",
+        "pollinginterval": "1000",
         "pollstatus": true,
         "getstatusoncommand": true,
         "devicetype": "Measure",
-        "devicetypemustmatchexactly": false,
-        "captureblutooth": false,
         "outputs": 1,
         "x": 110,
-        "y": 100,
+        "y": 160,
         "wires": [
             [
-                "e20b8d27f56c75e9"
+                "62c75febc3a4d4c0"
             ]
         ]
     },
     {
-        "id": "7f6218d726f0cd73",
-        "type": "http request",
-        "z": "a4cd0360ff8bbb01",
-        "name": "Thingsboard telemetry",
-        "method": "POST",
-        "ret": "txt",
-        "paytoqs": "ignore",
-        "url": "",
-        "tls": "cebdd8a96b479943",
-        "persist": false,
-        "proxy": "",
-        "insecureHTTPParser": false,
-        "authType": "",
-        "senderr": false,
-        "headers": [],
-        "x": 2040,
-        "y": 200,
-        "wires": [
-            []
-        ]
-    },
-    {
-        "id": "e20b8d27f56c75e9",
+        "id": "62c75febc3a4d4c0",
         "type": "change",
-        "z": "a4cd0360ff8bbb01",
+        "z": "3e07724de1527d10",
         "name": "Select Power",
         "rules": [
             {
@@ -484,21 +308,6 @@
                 "pt": "msg",
                 "to": "payload.em0",
                 "tot": "msg"
-            },
-            {
-                "t": "delete",
-                "p": "payload.id",
-                "pt": "msg"
-            },
-            {
-                "t": "delete",
-                "p": "payload.emdata0",
-                "pt": "msg"
-            },
-            {
-                "t": "delete",
-                "p": "payload.temperature0",
-                "pt": "msg"
             }
         ],
         "action": "",
@@ -507,17 +316,27 @@
         "to": "",
         "reg": false,
         "x": 270,
-        "y": 100,
+        "y": 160,
         "wires": [
             [
-                "1374492e2020971c"
+                "9543872cda6cc7d1"
             ]
         ]
     },
     {
-        "id": "a5884b040959a469",
+        "id": "006d8fc27464d2ac",
+        "type": "comment",
+        "z": "3e07724de1527d10",
+        "name": "Shelly 230V",
+        "info": "",
+        "x": 110,
+        "y": 120,
+        "wires": []
+    },
+    {
+        "id": "996df0d17aac3549",
         "type": "aggregator",
-        "z": "a4cd0360ff8bbb01",
+        "z": "3e07724de1527d10",
         "name": "aggregate per 10s",
         "topic": "",
         "intervalCount": "10",
@@ -526,17 +345,17 @@
         "submitPerTopic": true,
         "aggregationType": "mean",
         "x": 570,
-        "y": 100,
+        "y": 160,
         "wires": [
             [
-                "cf1b14e880a4ac87"
+                "8f7e9a22a99ec7e9"
             ]
         ]
     },
     {
-        "id": "cf1b14e880a4ac87",
+        "id": "8f7e9a22a99ec7e9",
         "type": "join",
-        "z": "a4cd0360ff8bbb01",
+        "z": "3e07724de1527d10",
         "name": "Join",
         "mode": "custom",
         "build": "object",
@@ -555,18 +374,19 @@
         "reduceInitType": "",
         "reduceFixup": "",
         "x": 730,
-        "y": 100,
+        "y": 160,
         "wires": [
             [
-                "0d5eb484cf2cbb30",
-                "019720f8f52cce4b"
+                "a3f3b65567a84a57",
+                "2232d45ef2abf23d",
+                "5c9cb631fe3d6fc6"
             ]
         ]
     },
     {
-        "id": "1374492e2020971c",
+        "id": "9543872cda6cc7d1",
         "type": "split",
-        "z": "a4cd0360ff8bbb01",
+        "z": "3e07724de1527d10",
         "name": "Split",
         "splt": "\\n",
         "spltType": "str",
@@ -574,35 +394,96 @@
         "arraySpltType": "len",
         "stream": false,
         "addname": "topic",
+        "property": "payload",
         "x": 410,
-        "y": 100,
+        "y": 160,
         "wires": [
             [
-                "a5884b040959a469"
+                "996df0d17aac3549"
             ]
         ]
     },
     {
-        "id": "5ce94dfd331b5259",
-        "type": "comment",
-        "z": "a4cd0360ff8bbb01",
-        "name": "Read 230V data (Shelly 3EM)",
-        "info": "",
-        "x": 160,
-        "y": 60,
-        "wires": []
-    },
-    {
-        "id": "0d5eb484cf2cbb30",
+        "id": "a3f3b65567a84a57",
         "type": "change",
-        "z": "a4cd0360ff8bbb01",
-        "name": "Add sensorId (Shelly)",
+        "z": "3e07724de1527d10",
+        "name": "Clamp A",
         "rules": [
             {
                 "t": "set",
-                "p": "payload.sensorId",
+                "p": "a",
+                "pt": "msg",
+                "to": "{}",
+                "tot": "json"
+            },
+            {
+                "t": "set",
+                "p": "a.current",
+                "pt": "msg",
+                "to": "a_current",
+                "tot": "msg"
+            },
+            {
+                "t": "set",
+                "p": "a.voltage",
+                "pt": "msg",
+                "to": "payload.a_voltage",
+                "tot": "msg"
+            },
+            {
+                "t": "set",
+                "p": "a.act_power",
+                "pt": "msg",
+                "to": "payload.a_act_power",
+                "tot": "msg"
+            },
+            {
+                "t": "set",
+                "p": "a.pf",
+                "pt": "msg",
+                "to": "payload.a_pf",
+                "tot": "msg"
+            },
+            {
+                "t": "set",
+                "p": "a.aprt_power",
+                "pt": "msg",
+                "to": "payload.a_aprt_power",
+                "tot": "msg"
+            },
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "{}",
+                "tot": "json"
+            },
+            {
+                "t": "set",
+                "p": "payload.values",
+                "pt": "msg",
+                "to": "a",
+                "tot": "msg"
+            },
+            {
+                "t": "set",
+                "p": "payload.sensor_id",
                 "pt": "msg",
                 "to": "shelly-3em-pro",
+                "tot": "str"
+            },
+            {
+                "t": "set",
+                "p": "payload.timestamp",
+                "pt": "msg",
+                "to": "",
+                "tot": "date"
+            },
+            {
+                "t": "set",
+                "p": "payload.metering_point",
+                "pt": "msg",
+                "to": "NA",
                 "tot": "str"
             }
         ],
@@ -611,48 +492,106 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 980,
-        "y": 160,
+        "x": 900,
+        "y": 100,
         "wires": [
             [
-                "4bdf749f6ab29211"
+                "ef49b28ccab5e2aa"
             ]
         ]
     },
     {
-        "id": "9f6fcfb56956645b",
-        "type": "http request",
-        "z": "a4cd0360ff8bbb01",
-        "name": "Azure Storage",
-        "method": "POST",
-        "ret": "txt",
-        "paytoqs": "ignore",
-        "url": "",
-        "tls": "cebdd8a96b479943",
-        "persist": false,
-        "proxy": "",
-        "insecureHTTPParser": false,
-        "authType": "",
-        "senderr": false,
-        "headers": [],
-        "x": 2020,
-        "y": 260,
-        "wires": [
-            []
-        ]
+        "id": "5586861769789616",
+        "type": "comment",
+        "z": "3e07724de1527d10",
+        "name": "Hier Messpunkte konfigurieren 230V",
+        "info": "",
+        "x": 1100,
+        "y": 40,
+        "wires": []
     },
     {
-        "id": "4bdf749f6ab29211",
+        "id": "2232d45ef2abf23d",
         "type": "change",
-        "z": "a4cd0360ff8bbb01",
-        "name": "Add device ID",
+        "z": "3e07724de1527d10",
+        "name": "Clamp B",
         "rules": [
             {
                 "t": "set",
-                "p": "payload.deviceId",
+                "p": "b",
                 "pt": "msg",
-                "to": "DEVICEID",
-                "tot": "env"
+                "to": "{}",
+                "tot": "json"
+            },
+            {
+                "t": "set",
+                "p": "b.current",
+                "pt": "msg",
+                "to": "b_current",
+                "tot": "msg"
+            },
+            {
+                "t": "set",
+                "p": "b.voltage",
+                "pt": "msg",
+                "to": "payload.b_voltage",
+                "tot": "msg"
+            },
+            {
+                "t": "set",
+                "p": "b.act_power",
+                "pt": "msg",
+                "to": "payload.b_act_power",
+                "tot": "msg"
+            },
+            {
+                "t": "set",
+                "p": "b.pf",
+                "pt": "msg",
+                "to": "payload.b_pf",
+                "tot": "msg"
+            },
+            {
+                "t": "set",
+                "p": "b.aprt_power",
+                "pt": "msg",
+                "to": "payload.b_aprt_power",
+                "tot": "msg"
+            },
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "{}",
+                "tot": "json"
+            },
+            {
+                "t": "set",
+                "p": "payload.values",
+                "pt": "msg",
+                "to": "b",
+                "tot": "msg"
+            },
+            {
+                "t": "set",
+                "p": "payload.sensor_id",
+                "pt": "msg",
+                "to": "shelly-3em-pro",
+                "tot": "str"
+            },
+            {
+                "t": "set",
+                "p": "payload.timestamp",
+                "pt": "msg",
+                "to": "",
+                "tot": "date"
+            },
+            {
+                "t": "set",
+                "p": "payload.metering_point",
+                "pt": "msg",
+                "to": "NA",
+                "tot": "str"
             }
         ],
         "action": "",
@@ -660,125 +599,230 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 1620,
-        "y": 260,
-        "wires": [
-            [
-                "6a765bf6578c8225"
-            ]
-        ]
-    },
-    {
-        "id": "6a765bf6578c8225",
-        "type": "function",
-        "z": "a4cd0360ff8bbb01",
-        "name": "Compose URL",
-        "func": "msg.url = \"https://kwfemon1.azurewebsites.net/api/nodered_in?code=\" + env.get('AZURE_CODE') + \"&clientId=default\";\nreturn msg;",
-        "outputs": 1,
-        "timeout": 0,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 1820,
-        "y": 260,
-        "wires": [
-            [
-                "9f6fcfb56956645b",
-                "5e88edd51f09b4d8"
-            ]
-        ]
-    },
-    {
-        "id": "019720f8f52cce4b",
-        "type": "function",
-        "z": "a4cd0360ff8bbb01",
-        "name": "Compose URL",
-        "func": "msg.url = \"https://thingsboard.cloud/api/v1/\" + env.get('THINGSBOARD_KEY') + \"/telemetry\"\nreturn msg;",
-        "outputs": 1,
-        "timeout": 0,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 1820,
-        "y": 200,
-        "wires": [
-            [
-                "7f6218d726f0cd73"
-            ]
-        ]
-    },
-    {
-        "id": "474b2f6cb90e718a",
-        "type": "comment",
-        "z": "a4cd0360ff8bbb01",
-        "name": "Get API keys from balena environment variables",
-        "info": "",
-        "x": 1920,
+        "x": 900,
         "y": 140,
-        "wires": []
+        "wires": [
+            [
+                "87dca59412c72a56"
+            ]
+        ]
     },
     {
-        "id": "eeeff04eaab166d1",
+        "id": "5c9cb631fe3d6fc6",
+        "type": "change",
+        "z": "3e07724de1527d10",
+        "name": "Clamp C",
+        "rules": [
+            {
+                "t": "set",
+                "p": "c",
+                "pt": "msg",
+                "to": "{}",
+                "tot": "json"
+            },
+            {
+                "t": "set",
+                "p": "c.current",
+                "pt": "msg",
+                "to": "c_current",
+                "tot": "msg"
+            },
+            {
+                "t": "set",
+                "p": "c.voltage",
+                "pt": "msg",
+                "to": "payload.c_voltage",
+                "tot": "msg"
+            },
+            {
+                "t": "set",
+                "p": "c.act_power",
+                "pt": "msg",
+                "to": "payload.c_act_power",
+                "tot": "msg"
+            },
+            {
+                "t": "set",
+                "p": "c.pf",
+                "pt": "msg",
+                "to": "payload.c_pf",
+                "tot": "msg"
+            },
+            {
+                "t": "set",
+                "p": "c.aprt_power",
+                "pt": "msg",
+                "to": "payload.c_aprt_power",
+                "tot": "msg"
+            },
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "{}",
+                "tot": "json"
+            },
+            {
+                "t": "set",
+                "p": "payload.values",
+                "pt": "msg",
+                "to": "c",
+                "tot": "msg"
+            },
+            {
+                "t": "set",
+                "p": "payload.sensor_id",
+                "pt": "msg",
+                "to": "shelly-3em-pro",
+                "tot": "str"
+            },
+            {
+                "t": "set",
+                "p": "payload.timestamp",
+                "pt": "msg",
+                "to": "",
+                "tot": "date"
+            },
+            {
+                "t": "set",
+                "p": "payload.metering_point",
+                "pt": "msg",
+                "to": "NA",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 900,
+        "y": 180,
+        "wires": [
+            [
+                "81eca74c1d9b1351"
+            ]
+        ]
+    },
+    {
+        "id": "ef49b28ccab5e2aa",
+        "type": "change",
+        "z": "3e07724de1527d10",
+        "name": "Messpunkt A",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload.metering_point",
+                "pt": "msg",
+                "to": "I2",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1070,
+        "y": 100,
+        "wires": [
+            [
+                "78dea314d74e558e"
+            ]
+        ]
+    },
+    {
+        "id": "87dca59412c72a56",
+        "type": "change",
+        "z": "3e07724de1527d10",
+        "name": "Messpunkt B",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload.metering_point",
+                "pt": "msg",
+                "to": "E1",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1070,
+        "y": 140,
+        "wires": [
+            [
+                "78dea314d74e558e"
+            ]
+        ]
+    },
+    {
+        "id": "81eca74c1d9b1351",
+        "type": "change",
+        "z": "3e07724de1527d10",
+        "name": "Messpunkt C",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload.metering_point",
+                "pt": "msg",
+                "to": "A1",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1070,
+        "y": 180,
+        "wires": [
+            [
+                "78dea314d74e558e"
+            ]
+        ]
+    },
+    {
+        "id": "b2319d6d76239947",
         "type": "comment",
-        "z": "a4cd0360ff8bbb01",
+        "z": "3e07724de1527d10",
         "name": "Read DC sensor (PZEM-017)",
         "info": "",
         "x": 160,
-        "y": 360,
+        "y": 620,
         "wires": []
     },
     {
-        "id": "5e88edd51f09b4d8",
-        "type": "debug",
-        "z": "a4cd0360ff8bbb01",
-        "name": "Telemetry debug",
-        "active": false,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "payload",
-        "targetType": "msg",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 2030,
-        "y": 380,
-        "wires": []
-    },
-    {
-        "id": "d7488d76357d7ebe",
+        "id": "f690d1ccc2f25757",
         "type": "inject",
-        "z": "a4cd0360ff8bbb01",
-        "name": "",
+        "z": "3e07724de1527d10",
+        "name": "1s",
         "props": [
-            {
-                "p": "payload"
-            },
             {
                 "p": "topic",
                 "vt": "str"
             }
         ],
-        "repeat": "",
+        "repeat": "1",
         "crontab": "",
-        "once": false,
+        "once": true,
         "onceDelay": 0.1,
         "topic": "",
-        "payload": "",
-        "payloadType": "date",
-        "x": 100,
-        "y": 420,
+        "x": 90,
+        "y": 680,
         "wires": [
             [
-                "79eafe721cb1f48f"
+                "a51deb7897732d9c"
             ]
         ]
     },
     {
-        "id": "57b8d28a0696e5f5",
+        "id": "61eab257930a2ec4",
         "type": "bp-reader",
-        "z": "a4cd0360ff8bbb01",
+        "z": "3e07724de1527d10",
         "name": "Modbus read",
         "showStatusActivities": true,
         "showErrors": true,
@@ -792,18 +836,18 @@
         "keepMsgProperties": true,
         "delayOnStart": false,
         "startDelayTime": "",
-        "x": 450,
-        "y": 420,
+        "x": 410,
+        "y": 680,
         "wires": [
             [
-                "d7b7fea97dd82967"
+                "b7de6b053734d44f"
             ]
         ]
     },
     {
-        "id": "79eafe721cb1f48f",
+        "id": "a51deb7897732d9c",
         "type": "bp-device",
-        "z": "a4cd0360ff8bbb01",
+        "z": "3e07724de1527d10",
         "bpUnitName": "PZEM-017",
         "bpModbusId": "1",
         "bpRegisters": [
@@ -874,37 +918,36 @@
         "bpDeviceDataSize": 2,
         "bpSelectedTemplate": "DEVICE_UNKNOWN",
         "bpSourceTemplatesFromWeb": false,
-        "x": 270,
-        "y": 420,
+        "x": 250,
+        "y": 680,
         "wires": [
             [
-                "57b8d28a0696e5f5"
+                "61eab257930a2ec4"
             ]
         ]
     },
     {
-        "id": "d7b7fea97dd82967",
+        "id": "b7de6b053734d44f",
         "type": "bp-decoder",
-        "z": "a4cd0360ff8bbb01",
+        "z": "3e07724de1527d10",
         "bpDeviceDecoderName": "Modbus decode",
         "bpChkShowDateOnLabel": true,
         "bpChkShowDebugWarnings": true,
         "bpChkConvertPFactor": true,
         "bpChkSetRealTo3Dp": true,
-        "x": 640,
-        "y": 420,
+        "x": 580,
+        "y": 680,
         "wires": [
             [
-                "aeb483aceace2a0e",
-                "96f0d62272a2f18d"
+                "13ed1a25b6350050"
             ]
         ]
     },
     {
-        "id": "aeb483aceace2a0e",
+        "id": "13ed1a25b6350050",
         "type": "join",
-        "z": "a4cd0360ff8bbb01",
-        "name": "Join fields",
+        "z": "3e07724de1527d10",
+        "name": "Join",
         "mode": "custom",
         "build": "object",
         "property": "payload",
@@ -921,56 +964,322 @@
         "reduceInit": "",
         "reduceInitType": "",
         "reduceFixup": "",
-        "x": 830,
-        "y": 420,
+        "x": 230,
+        "y": 760,
         "wires": [
             [
-                "f53d48df6c84f842"
+                "e81cfc346de986bd"
             ]
         ]
     },
     {
-        "id": "f53d48df6c84f842",
+        "id": "e81cfc346de986bd",
         "type": "function",
-        "z": "a4cd0360ff8bbb01",
-        "name": "Decode DC readings",
-        "func": "var modbus = msg.payload\n\nvar dc = {};\n\ndc[\"dc_voltage\"] = modbus[\"PZEM017/VOLTAGE\"];\ndc[\"dc_current\"] = modbus[\"PZEM017/CURRENT\"];\n// Bitshift with a 0.1 multiplier\ndc[\"dc_power\"] = modbus[\"PZEM017/POWER_HIGH\"] * 6553.6 + modbus[\"PZEM017/POWER_LOW\"];\n// Bitshift with a 1 multiplier\ndc[\"dc_energy_counter\"] = modbus[\"PZEM017/ENERGY_HIGH\"] * 65536 + modbus[\"PZEM017/ENERGY_LOW\"];\n\n\nmsg.payload = dc;\nreturn msg;",
+        "z": "3e07724de1527d10",
+        "name": "Decode",
+        "func": "var modbus = msg.payload\n\nvar dc = {};\n\ndc[\"voltage\"] = modbus[\"PZEM017/VOLTAGE\"];\ndc[\"current\"] = modbus[\"PZEM017/CURRENT\"];\n// Bitshift with a 0.1 multiplier\ndc[\"power\"] = modbus[\"PZEM017/POWER_HIGH\"] * 6553.6 + modbus[\"PZEM017/POWER_LOW\"];\n// Bitshift with a 1 multiplier\ndc[\"energy_counter\"] = modbus[\"PZEM017/ENERGY_HIGH\"] * 65536 + modbus[\"PZEM017/ENERGY_LOW\"];\n\nmsg.payload = dc;\nreturn msg;",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 1040,
-        "y": 420,
+        "x": 360,
+        "y": 760,
         "wires": [
             [
-                "a9eae7c452d85a8b",
-                "019720f8f52cce4b"
+                "131f421765a82da0"
             ]
         ]
     },
     {
-        "id": "c5130b7220cc1d67",
-        "type": "comment",
-        "z": "a4cd0360ff8bbb01",
-        "name": "Todo: Read more often and aggregate",
-        "info": "",
-        "x": 770,
-        "y": 360,
-        "wires": []
-    },
-    {
-        "id": "a9eae7c452d85a8b",
+        "id": "264b9d8d64759505",
         "type": "change",
-        "z": "a4cd0360ff8bbb01",
-        "name": "Add sensorId (PZEM-017)",
+        "z": "3e07724de1527d10",
+        "name": "Messpunkt E1",
         "rules": [
             {
                 "t": "set",
-                "p": "payload.sensorId",
+                "p": "payload.metering_point",
                 "pt": "msg",
-                "to": "pzem_017",
+                "to": "E1",
+                "tot": "str"
+            },
+            {
+                "t": "set",
+                "p": "payload.sensor_id",
+                "pt": "msg",
+                "to": "victron",
+                "tot": "str"
+            },
+            {
+                "t": "set",
+                "p": "payload.values.power",
+                "pt": "msg",
+                "to": "payload.value",
+                "tot": "msg"
+            },
+            {
+                "t": "set",
+                "p": "payload.timestamp",
+                "pt": "msg",
+                "to": "",
+                "tot": "date"
+            },
+            {
+                "t": "delete",
+                "p": "topic",
+                "pt": "msg"
+            },
+            {
+                "t": "delete",
+                "p": "payload.value",
+                "pt": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 940,
+        "y": 520,
+        "wires": [
+            [
+                "78dea314d74e558e"
+            ]
+        ]
+    },
+    {
+        "id": "5bea7e555e4add65",
+        "type": "mqtt out",
+        "z": "3e07724de1527d10",
+        "name": "Poll Grid Input",
+        "topic": "",
+        "qos": "0",
+        "retain": "false",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "88c835032a852602",
+        "x": 240,
+        "y": 480,
+        "wires": []
+    },
+    {
+        "id": "1d71b1b8c188069f",
+        "type": "inject",
+        "z": "3e07724de1527d10",
+        "name": "1s",
+        "props": [
+            {
+                "p": "topic",
+                "v": "R/${VICTRON_SERIAL}/system/0/Ac/Grid/L1/Power",
+                "vt": "env"
+            },
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "1",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "str",
+        "x": 70,
+        "y": 480,
+        "wires": [
+            [
+                "5bea7e555e4add65"
+            ]
+        ]
+    },
+    {
+        "id": "94a00636dd9f7d21",
+        "type": "aggregator",
+        "z": "3e07724de1527d10",
+        "name": "aggregate per 10s",
+        "topic": "",
+        "intervalCount": "10",
+        "intervalUnits": "s",
+        "submitIncompleteInterval": true,
+        "submitPerTopic": true,
+        "aggregationType": "mean",
+        "x": 430,
+        "y": 520,
+        "wires": [
+            [
+                "800a7605cef2908c"
+            ]
+        ]
+    },
+    {
+        "id": "96631ccb0aef5c8f",
+        "type": "split",
+        "z": "3e07724de1527d10",
+        "name": "Split",
+        "splt": "\\n",
+        "spltType": "str",
+        "arraySplt": 1,
+        "arraySpltType": "len",
+        "stream": false,
+        "addname": "topic",
+        "property": "payload",
+        "x": 270,
+        "y": 520,
+        "wires": [
+            [
+                "94a00636dd9f7d21"
+            ]
+        ]
+    },
+    {
+        "id": "800a7605cef2908c",
+        "type": "join",
+        "z": "3e07724de1527d10",
+        "name": "Join",
+        "mode": "custom",
+        "build": "object",
+        "property": "payload",
+        "propertyType": "msg",
+        "key": "topic",
+        "joiner": "\\n",
+        "joinerType": "str",
+        "useparts": true,
+        "accumulate": false,
+        "timeout": "10",
+        "count": "",
+        "reduceRight": false,
+        "reduceExp": "",
+        "reduceInit": "",
+        "reduceInitType": "",
+        "reduceFixup": "",
+        "x": 590,
+        "y": 520,
+        "wires": [
+            [
+                "264b9d8d64759505"
+            ]
+        ]
+    },
+    {
+        "id": "262f13f77c039bed",
+        "type": "comment",
+        "z": "3e07724de1527d10",
+        "name": "Hier Messpunkte konfigurieren Victron",
+        "info": "",
+        "x": 1010,
+        "y": 480,
+        "wires": []
+    },
+    {
+        "id": "2ae6e75391e6d30a",
+        "type": "inject",
+        "z": "3e07724de1527d10",
+        "name": "1min",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "60",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "str",
+        "x": 90,
+        "y": 320,
+        "wires": [
+            [
+                "16f31075ae49070b"
+            ]
+        ]
+    },
+    {
+        "id": "131f421765a82da0",
+        "type": "split",
+        "z": "3e07724de1527d10",
+        "name": "Split",
+        "splt": "\\n",
+        "spltType": "str",
+        "arraySplt": 1,
+        "arraySpltType": "len",
+        "stream": false,
+        "addname": "topic",
+        "property": "payload",
+        "x": 510,
+        "y": 760,
+        "wires": [
+            [
+                "3ae3114dd9ce656b"
+            ]
+        ]
+    },
+    {
+        "id": "3ae3114dd9ce656b",
+        "type": "aggregator",
+        "z": "3e07724de1527d10",
+        "name": "aggregate per 10s",
+        "topic": "",
+        "intervalCount": "10",
+        "intervalUnits": "s",
+        "submitIncompleteInterval": true,
+        "submitPerTopic": true,
+        "aggregationType": "mean",
+        "x": 550,
+        "y": 800,
+        "wires": [
+            [
+                "11acfc28dde9a229"
+            ]
+        ]
+    },
+    {
+        "id": "11acfc28dde9a229",
+        "type": "join",
+        "z": "3e07724de1527d10",
+        "name": "Join",
+        "mode": "custom",
+        "build": "object",
+        "property": "payload",
+        "propertyType": "msg",
+        "key": "topic",
+        "joiner": "\\n",
+        "joinerType": "str",
+        "useparts": true,
+        "accumulate": false,
+        "timeout": "10",
+        "count": "",
+        "reduceRight": false,
+        "reduceExp": "",
+        "reduceInit": "",
+        "reduceInitType": "",
+        "reduceFixup": "",
+        "x": 510,
+        "y": 840,
+        "wires": [
+            [
+                "a7c1cf25a7d26ef0"
+            ]
+        ]
+    },
+    {
+        "id": "3a1d10b21a371be0",
+        "type": "change",
+        "z": "3e07724de1527d10",
+        "name": "Messpunkt A1",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload.metering_point",
+                "pt": "msg",
+                "to": "A1",
                 "tot": "str"
             }
         ],
@@ -979,29 +1288,88 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 1310,
-        "y": 420,
+        "x": 940,
+        "y": 680,
         "wires": [
             [
-                "4bdf749f6ab29211"
+                "78dea314d74e558e"
             ]
         ]
     },
     {
-        "id": "96f0d62272a2f18d",
-        "type": "debug",
-        "z": "a4cd0360ff8bbb01",
-        "name": "debug 2",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "false",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 840,
-        "y": 480,
+        "id": "fc58687f63d80146",
+        "type": "comment",
+        "z": "3e07724de1527d10",
+        "name": "Hier Messpunkte konfigurieren DC",
+        "info": "",
+        "x": 1000,
+        "y": 620,
         "wires": []
+    },
+    {
+        "id": "a7c1cf25a7d26ef0",
+        "type": "change",
+        "z": "3e07724de1527d10",
+        "name": "Format",
+        "rules": [
+            {
+                "t": "delete",
+                "p": "payload.energy_counter",
+                "pt": "msg"
+            },
+            {
+                "t": "set",
+                "p": "dc",
+                "pt": "msg",
+                "to": "payload",
+                "tot": "msg"
+            },
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "{}",
+                "tot": "json"
+            },
+            {
+                "t": "set",
+                "p": "payload.sensor_id",
+                "pt": "msg",
+                "to": "pzem-017",
+                "tot": "str"
+            },
+            {
+                "t": "set",
+                "p": "payload.timestamp",
+                "pt": "msg",
+                "to": "",
+                "tot": "date"
+            },
+            {
+                "t": "set",
+                "p": "payload.values",
+                "pt": "msg",
+                "to": "dc",
+                "tot": "msg"
+            },
+            {
+                "t": "delete",
+                "p": "dc",
+                "pt": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 640,
+        "y": 840,
+        "wires": [
+            [
+                "3a1d10b21a371be0"
+            ]
+        ]
     },
     {
         "id": "48c9ba7a4d6a5359",
@@ -1385,7 +1753,7 @@
         "props": [
             {
                 "p": "payload.refresh_token",
-                "v": "",
+                "v": "65bdffc00071e85fdd0e08b8|030aa7a67aff2e9d6705e535b14e99f1",
                 "vt": "str"
             }
         ],

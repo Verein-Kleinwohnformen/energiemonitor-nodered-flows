@@ -12,7 +12,9 @@
         "@bitpoolos/edge-modbus": "1.5.8",
         "node-red-contrib-google-cloud": "0.0.26",
         "node-red-node-serialport": "2.0.3",
-        "node-red-contrib-modbus": "5.42.0"
+        "node-red-contrib-modbus": "5.42.0",
+        "@vereinkleinwohnformen/node-red-energiemonitor": "0.3.1",
+        "node-red-contrib-noble": "0.3.0"
     },
     "node-red": {
         "settings": {
