@@ -16,6 +16,14 @@
         "env": []
     },
     {
+        "id": "1c0e9aecdf5ec591",
+        "type": "tab",
+        "label": "Weidenbaum",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
         "id": "88c835032a852602",
         "type": "mqtt-broker",
         "name": "Victron MQTT Broker",
@@ -77,10 +85,10 @@
         "z": "3e07724de1527d10",
         "name": "KWF Datenbank Connector",
         "sqlitePath": "/data/node-red/kwfemon/",
-        "sendInterval": "3600000",
+        "sendInterval": "60000",
         "apiURL": "${KWF_URL}",
         "apiKey": "${KWF_KEY}",
-        "x": 1440,
+        "x": 1480,
         "y": 340,
         "wires": []
     },
@@ -100,7 +108,7 @@
         "y": 320,
         "wires": [
             [
-                "78dea314d74e558e"
+                "22cfa0e395a3be0e"
             ]
         ]
     },
@@ -202,76 +210,6 @@
         "x": 120,
         "y": 440,
         "wires": []
-    },
-    {
-        "id": "5b7c4732171746f5",
-        "type": "comment",
-        "z": "3e07724de1527d10",
-        "name": "Internet connection health monitor",
-        "info": "",
-        "x": 180,
-        "y": 880,
-        "wires": []
-    },
-    {
-        "id": "310f0793eedc7e62",
-        "type": "is online",
-        "z": "3e07724de1527d10",
-        "name": "is not online",
-        "url": "google.com",
-        "action": "2",
-        "x": 290,
-        "y": 940,
-        "wires": [
-            [
-                "4541f95a136678b7"
-            ]
-        ]
-    },
-    {
-        "id": "c8eef2b23349a2da",
-        "type": "cronplus",
-        "z": "3e07724de1527d10",
-        "name": "",
-        "outputField": "payload",
-        "timeZone": "",
-        "storeName": "",
-        "commandResponseMsgOutput": "output1",
-        "defaultLocation": "",
-        "defaultLocationType": "default",
-        "outputs": 1,
-        "options": [
-            {
-                "name": "schedule1",
-                "topic": "topic1",
-                "payloadType": "default",
-                "payload": "",
-                "expressionType": "cron",
-                "expression": "0 */17 * * * * ",
-                "location": "",
-                "offset": "0",
-                "solarType": "all",
-                "solarEvents": "sunrise,sunset"
-            }
-        ],
-        "x": 100,
-        "y": 940,
-        "wires": [
-            [
-                "310f0793eedc7e62"
-            ]
-        ]
-    },
-    {
-        "id": "4541f95a136678b7",
-        "type": "reboot",
-        "z": "3e07724de1527d10",
-        "name": "reboot device",
-        "x": 500,
-        "y": 940,
-        "wires": [
-            []
-        ]
     },
     {
         "id": "8d5f654a461d34c7",
@@ -726,9 +664,7 @@
         "x": 1070,
         "y": 100,
         "wires": [
-            [
-                "78dea314d74e558e"
-            ]
+            []
         ]
     },
     {
@@ -753,9 +689,7 @@
         "x": 1070,
         "y": 140,
         "wires": [
-            [
-                "78dea314d74e558e"
-            ]
+            []
         ]
     },
     {
@@ -780,9 +714,7 @@
         "x": 1070,
         "y": 180,
         "wires": [
-            [
-                "78dea314d74e558e"
-            ]
+            []
         ]
     },
     {
@@ -809,7 +741,7 @@
         "repeat": "1",
         "crontab": "",
         "once": true,
-        "onceDelay": 0.1,
+        "onceDelay": "5",
         "topic": "",
         "x": 90,
         "y": 680,
@@ -1045,9 +977,7 @@
         "x": 940,
         "y": 520,
         "wires": [
-            [
-                "78dea314d74e558e"
-            ]
+            []
         ]
     },
     {
@@ -1291,9 +1221,7 @@
         "x": 940,
         "y": 680,
         "wires": [
-            [
-                "78dea314d74e558e"
-            ]
+            []
         ]
     },
     {
@@ -1370,6 +1298,19 @@
                 "3a1d10b21a371be0"
             ]
         ]
+    },
+    {
+        "id": "22cfa0e395a3be0e",
+        "type": "link out",
+        "z": "3e07724de1527d10",
+        "name": "Netatmo",
+        "mode": "link",
+        "links": [
+            "512fba66eee528b8"
+        ],
+        "x": 825,
+        "y": 400,
+        "wires": []
     },
     {
         "id": "48c9ba7a4d6a5359",
@@ -1843,6 +1784,435 @@
         "encoding": "utf8",
         "x": 1550,
         "y": 320,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "512fba66eee528b8",
+        "type": "link in",
+        "z": "1c0e9aecdf5ec591",
+        "name": "Netatmo Data",
+        "links": [
+            "22cfa0e395a3be0e"
+        ],
+        "x": 55,
+        "y": 80,
+        "wires": [
+            [
+                "90da0918d26c46e9"
+            ]
+        ]
+    },
+    {
+        "id": "237faa6dc3ab832e",
+        "type": "shelly-gen1",
+        "z": "1c0e9aecdf5ec591",
+        "hostname": "192.168.1.241",
+        "description": "Shelly Bewegung Bad",
+        "mode": "polling",
+        "server": "",
+        "outputmode": "event",
+        "uploadretryinterval": 5000,
+        "pollinginterval": 5000,
+        "pollstatus": false,
+        "getstatusoncommand": true,
+        "devicetype": "Sensor",
+        "outputs": 1,
+        "x": 300,
+        "y": 320,
+        "wires": [
+            [
+                "ad5c587a1c03195b"
+            ]
+        ]
+    },
+    {
+        "id": "5811929322a66e02",
+        "type": "inject",
+        "z": "1c0e9aecdf5ec591",
+        "name": "1min",
+        "props": [],
+        "repeat": "60",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 0.1,
+        "topic": "",
+        "x": 90,
+        "y": 320,
+        "wires": [
+            [
+                "237faa6dc3ab832e",
+                "4dd7f4b16043269a"
+            ]
+        ]
+    },
+    {
+        "id": "08a096bf5c3b82e9",
+        "type": "shelly-gen1",
+        "z": "1c0e9aecdf5ec591",
+        "hostname": "192.168.1.111",
+        "description": "Shelly Dimmer Küche",
+        "mode": "polling",
+        "server": "",
+        "outputmode": "event",
+        "uploadretryinterval": 5000,
+        "pollinginterval": 5000,
+        "pollstatus": false,
+        "getstatusoncommand": true,
+        "devicetype": "Dimmer",
+        "outputs": 1,
+        "x": 1180,
+        "y": 400,
+        "wires": [
+            [
+                "b6043c4c535544e1"
+            ]
+        ]
+    },
+    {
+        "id": "08f366d4e239347b",
+        "type": "shelly-gen1",
+        "z": "1c0e9aecdf5ec591",
+        "hostname": "192.168.1.158",
+        "description": "Shelly Dimmer Treppe",
+        "mode": "polling",
+        "server": "",
+        "outputmode": "event",
+        "uploadretryinterval": 5000,
+        "pollinginterval": 5000,
+        "pollstatus": false,
+        "getstatusoncommand": true,
+        "devicetype": "Dimmer",
+        "outputs": 1,
+        "x": 1180,
+        "y": 460,
+        "wires": [
+            [
+                "57102868525cfb20"
+            ]
+        ]
+    },
+    {
+        "id": "4a0f8d8fcd5bab62",
+        "type": "shelly-gen1",
+        "z": "1c0e9aecdf5ec591",
+        "hostname": "192.168.1.191",
+        "description": "Shelly Bodenheizung",
+        "mode": "polling",
+        "server": "",
+        "outputmode": "event",
+        "uploadretryinterval": 5000,
+        "pollinginterval": 5000,
+        "pollstatus": false,
+        "getstatusoncommand": true,
+        "devicetype": "Relay",
+        "outputs": 1,
+        "x": 1180,
+        "y": 180,
+        "wires": [
+            [
+                "b104e5114c0b964d"
+            ]
+        ]
+    },
+    {
+        "id": "5e15b2b37b5f9c7c",
+        "type": "shelly-gen1",
+        "z": "1c0e9aecdf5ec591",
+        "hostname": "192.168.1.175",
+        "description": "Shelly WC Lüfter",
+        "mode": "polling",
+        "server": "",
+        "outputmode": "event",
+        "uploadretryinterval": 5000,
+        "pollinginterval": 5000,
+        "pollstatus": false,
+        "getstatusoncommand": true,
+        "devicetype": "Relay",
+        "outputs": 1,
+        "x": 1170,
+        "y": 320,
+        "wires": [
+            [
+                "d02b62b0884e3168"
+            ]
+        ]
+    },
+    {
+        "id": "333859a95e219148",
+        "type": "shelly-gen1",
+        "z": "1c0e9aecdf5ec591",
+        "hostname": "192.168.1.108",
+        "description": "Shelly Bayernlüfter",
+        "mode": "polling",
+        "server": "",
+        "outputmode": "event",
+        "uploadretryinterval": 5000,
+        "pollinginterval": 5000,
+        "pollstatus": false,
+        "getstatusoncommand": true,
+        "devicetype": "Relay",
+        "outputs": 1,
+        "x": 1170,
+        "y": 80,
+        "wires": [
+            [
+                "b11b0a9007089902"
+            ]
+        ]
+    },
+    {
+        "id": "4dd7f4b16043269a",
+        "type": "shelly-gen1",
+        "z": "1c0e9aecdf5ec591",
+        "hostname": "192.168.1.183",
+        "description": "Shelly Bewegung Wohnzimmer",
+        "mode": "polling",
+        "server": "",
+        "outputmode": "event",
+        "uploadretryinterval": 5000,
+        "pollinginterval": 5000,
+        "pollstatus": false,
+        "getstatusoncommand": true,
+        "devicetype": "Sensor",
+        "outputs": 1,
+        "x": 330,
+        "y": 380,
+        "wires": [
+            [
+                "dc8146cd772481da"
+            ]
+        ]
+    },
+    {
+        "id": "90da0918d26c46e9",
+        "type": "function",
+        "z": "1c0e9aecdf5ec591",
+        "name": "Store Netatmo values",
+        "func": "// Extract the values object\nlet values = msg.payload.values;\n\n// Check if the values object exists\nif (!values) {\n    node.warn(\"No 'values' object found in payload\");\n    return null;\n}\n\n// Helper function to determine trend\nfunction getTrend(current, previous, threshold) {\n    if (previous === undefined) return \"stable\"; // first value\n    if (current - previous > threshold) return \"up\";\n    if (previous - current > threshold) return \"down\";\n    return \"stable\";\n}\n\n// Extract desired fields\nlet temperature_indoor = values.temperature_indoor;\nlet co2_indoor = values.co2_indoor;\nlet temperature_outdoor = values.temperature_outdoor;\n\n// Compute trends based on last stored values\nlet tempIndoorPrev = flow.get(\"temperature_indoor\");\nlet co2IndoorPrev = flow.get(\"co2_indoor\");\nlet tempOutdoorPrev = flow.get(\"temperature_outdoor\");\n\nlet temperature_indoor_trend = getTrend(temperature_indoor, tempIndoorPrev, 0.1);\nlet indoor_co2_trend = getTrend(co2_indoor, co2IndoorPrev, 5);\nlet temperature_outdoor_trend = getTrend(temperature_outdoor, tempOutdoorPrev, 0.1);\n\n// Store current values in flow context\nflow.set(\"temperature_indoor\", temperature_indoor);\nflow.set(\"temperature_indoor_trend\", temperature_indoor_trend);\n\nflow.set(\"co2_indoor\", co2_indoor);\nflow.set(\"indoor_co2_trend\", indoor_co2_trend);\n\nflow.set(\"temperature_outdoor\", temperature_outdoor);\nflow.set(\"temperature_outdoor_trend\", temperature_outdoor_trend);\n\n// Optionally store humidity as before\nflow.set(\"humidity_indoor\", values.humidity_indoor);\nflow.set(\"humidity_outdoor\", values.humidity_outdoor);\n\n// Pass through the message\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 600,
+        "y": 80,
+        "wires": [
+            [
+                "49392064099d3cf5",
+                "2f49a823642bb6e2"
+            ]
+        ]
+    },
+    {
+        "id": "b11b0a9007089902",
+        "type": "function",
+        "z": "1c0e9aecdf5ec591",
+        "name": "Store Bayernluft variable",
+        "func": "// Check if there is at least one relay\nif (msg.payload.relays && msg.payload.relays.length > 0) {\n    // Read the \"ison\" state of the first relay\n    let isOn = msg.payload.relays[0].ison;\n\n    // Store in flow context variable\n    flow.set(\"bayernluft_on\", isOn);\n}\n\n// Pass the message through unchanged\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1450,
+        "y": 80,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "ad5c587a1c03195b",
+        "type": "function",
+        "z": "1c0e9aecdf5ec591",
+        "name": "Store Bewegung Bad",
+        "func": "// Check if sensor object exists\nif (msg.payload.sensor) {\n    // Store motion state (true/false)\n    let motionDetected = msg.payload.sensor.motion;\n    flow.set(\"motion_bad\", motionDetected);\n\n    // If motion is detected, store current timestamp\n    if (motionDetected === true) {\n        let currentTimestamp = msg.payload.sensor.timestamp || Math.floor(Date.now() / 1000);\n        flow.set(\"last_motion_bad\", currentTimestamp);\n    }\n}\n\n// Check if lux object exists\nif (msg.payload.lux) {\n    // Store numeric lux value\n    let luxValue = msg.payload.lux.value;\n    flow.set(\"lux_bad\", luxValue);\n}\n\n// Pass the message through unchanged\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 600,
+        "y": 320,
+        "wires": [
+            [
+                "3a3a8f0d2fd7067f"
+            ]
+        ]
+    },
+    {
+        "id": "dc8146cd772481da",
+        "type": "function",
+        "z": "1c0e9aecdf5ec591",
+        "name": "Store Bewegung Wohnzimmer",
+        "func": "// Check if sensor object exists\nif (msg.payload.sensor) {\n    // Store motion state (true/false)\n    let motionDetected = msg.payload.sensor.motion;\n    flow.set(\"motion\", motionDetected);\n\n    // If motion is detected, store current timestamp\n    if (motionDetected === true) {\n        let currentTimestamp = msg.payload.sensor.timestamp || Math.floor(Date.now() / 1000);\n        flow.set(\"last_motion\", currentTimestamp);\n    }\n}\n\n// Check if lux object exists\nif (msg.payload.lux) {\n    // Store numeric lux value\n    let luxValue = msg.payload.lux.value;\n    flow.set(\"lux\", luxValue);\n}\n\n// Pass the message through unchanged\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 630,
+        "y": 380,
+        "wires": [
+            [
+                "0696a385d007a9c6"
+            ]
+        ]
+    },
+    {
+        "id": "49392064099d3cf5",
+        "type": "function",
+        "z": "1c0e9aecdf5ec591",
+        "name": "Ventilator logics",
+        "func": "// --- Extract current CO2 and trend ---\nlet values = msg.payload.values;\nif (!values || values.co2_indoor === undefined) {\n    node.warn(\"No CO2 data found\");\n    return {};\n}\n\nlet co2 = values.co2_indoor;\n\n// Retrieve trend from flow context (must be stored previously)\nlet co2Trend = flow.get(\"indoor_co2_trend\") || \"stable\";\n\n// Retrieve current ventilator state\nlet ventilatorOn = flow.get(\"bayernluft_on\");\nif (ventilatorOn === undefined) ventilatorOn = false;\n\n// --- Decision logic ---\nlet output = {};\n\n// Always turn ON above 800ppm\nif (co2 > 600 && !ventilatorOn) {\n    output.on = true;\n}\n// Always turn OFF below 600ppm\nelse if (co2 < 600 && ventilatorOn) {\n    output.on = false;\n}\n// Above 700ppm, turn ON if trend is rising\nelse if (co2 > 700 && co2Trend === \"up\" && !ventilatorOn) {\n    output.on = true;\n}\n\nmsg.payload = output;\n\n// If no action required, output stays empty\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 880,
+        "y": 80,
+        "wires": [
+            [
+                "333859a95e219148"
+            ]
+        ]
+    },
+    {
+        "id": "3a3a8f0d2fd7067f",
+        "type": "function",
+        "z": "1c0e9aecdf5ec591",
+        "name": "Ventilator logics",
+        "func": "// Get current motion and last motion timestamp\nlet motionDetected = flow.get(\"motion_bad\");\nlet lastMotion = flow.get(\"last_motion_bad\");\n\n// Current time in seconds\nlet now = Math.floor(Date.now() / 1000);\n\n// If we have no motion timestamp yet, do nothing\nif (!lastMotion) {\n    msg.payload = {};\n    return msg;\n}\n\n// Time since last motion in seconds\nlet secondsSinceMotion = now - lastMotion;\n\n// Define thresholds\nconst FIVE_MIN = 5 * 60;\nconst FOUR_HOURS = 4 * 60 * 60;\n\n// Retrieve current ventilator state\nlet ventilatorOn = flow.get(\"wc_on\") || false;\n\n// Default: no change\nmsg.payload = {};\n\n// --- Logic ---\n// Ventilator ON if: motion happened within 4h but not in last 5min\nif (secondsSinceMotion < FOUR_HOURS && secondsSinceMotion > FIVE_MIN) {\n    if (!ventilatorOn) {\n        msg.payload = { on: true };\n    }\n}\n// Ventilator OFF if: someone is in the bathroom right now\nelse if (motionDetected === true) {\n    if (ventilatorOn) {\n        msg.payload = { on: false };\n    }\n}\n// Ventilator OFF if: no motion for more than 4h\nelse if (secondsSinceMotion >= FOUR_HOURS) {\n    if (ventilatorOn) {\n        msg.payload = { on: false };\n    }\n}\n\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 880,
+        "y": 320,
+        "wires": [
+            [
+                "5e15b2b37b5f9c7c"
+            ]
+        ]
+    },
+    {
+        "id": "d02b62b0884e3168",
+        "type": "function",
+        "z": "1c0e9aecdf5ec591",
+        "name": "Store WC Lüfter variable",
+        "func": "// Check if there is at least one relay\nif (msg.payload.relays && msg.payload.relays.length > 0) {\n    // Read the \"ison\" state of the first relay\n    let isOn = msg.payload.relays[0].ison;\n\n    // Store in flow context variable\n    flow.set(\"wc_on\", isOn);\n}\n\n// Pass the message through unchanged\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1450,
+        "y": 320,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "b6043c4c535544e1",
+        "type": "function",
+        "z": "1c0e9aecdf5ec591",
+        "name": "Store Kitchen variable",
+        "func": "// Ensure the payload has a \"lights\" array\nif (msg.payload.lights && msg.payload.lights.length > 0) {\n    let light = msg.payload.lights[0];\n\n    // Extract relevant fields\n    let isOn = light.ison;\n    let brightness = light.brightness;\n    let source = light.source;\n\n    // Store in flow context (local variables)\n    flow.set(\"kitchen_on\", isOn);\n    flow.set(\"kitchen_brightness\", brightness);\n    flow.set(\"kitchen_source\", source);\n}\n\n// Pass the message through unchanged\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1440,
+        "y": 400,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "57102868525cfb20",
+        "type": "function",
+        "z": "1c0e9aecdf5ec591",
+        "name": "Store Stairs variable",
+        "func": "// Ensure the payload has a \"lights\" array\nif (msg.payload.lights && msg.payload.lights.length > 0) {\n    let light = msg.payload.lights[0];\n\n    // Extract relevant fields\n    let isOn = light.ison;\n    let brightness = light.brightness;\n    let source = light.source;\n\n    // Store in flow context (local variables)\n    flow.set(\"stairs_on\", isOn);\n    flow.set(\"stairs_brightness\", brightness);\n    flow.set(\"stairs_source\", source);\n}\n\n// Pass the message through unchanged\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1440,
+        "y": 460,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "0696a385d007a9c6",
+        "type": "function",
+        "z": "1c0e9aecdf5ec591",
+        "name": "LED logics",
+        "func": "// Retrieve motion, timestamp, and lux from flow\nlet motion = flow.get(\"motion_living\") || false;\nlet lastMotion = flow.get(\"last_motion_living\") || 0;\nlet lux = flow.get(\"lux_living\") || 0;\n\n// Retrieve current dimmer state\nlet dimmerOn = flow.get(\"stairs_on\") || false;\nlet dimmerBrightness = flow.get(\"stairs_brightness\") || 0;\nlet dimmerSource = flow.get(\"stairs_source\") || \"unknown\";\n\n// Calculate time since last motion\nlet now = Math.floor(Date.now() / 1000);\nlet sinceMotion = now - lastMotion;\n\n// Define thresholds\nconst OFF_DELAY = 15 * 60; // 15 minutes\nconst MAX_BRIGHTNESS = 70;\nconst MIN_BRIGHTNESS = 20;\n\n// --- Calculate desired brightness based on lux ---\nlet desiredBrightness;\n\nif (lux < 100) {\n    desiredBrightness = 20;\n} else if (lux < 150) {\n    desiredBrightness = 30;\n} else {\n    // Linear scaling between 150 and 1000 lux\n    let minLux = 150;\n    let maxLux = 1000;\n    let ratio = (lux - minLux) / (maxLux - minLux);\n    desiredBrightness = 30 + ratio * (MAX_BRIGHTNESS - 30);\n}\n\n// Clamp value between MIN and MAX\ndesiredBrightness = Math.max(MIN_BRIGHTNESS, Math.min(MAX_BRIGHTNESS, desiredBrightness));\ndesiredBrightness = Math.round(desiredBrightness);\n\n// Default: no change\nmsg.payload = {};\n\n// --- LOGIC ---\n\n// 1️⃣ Motion detected → ensure light is on and correct brightness\nif (motion === true) {\n    if ((!dimmerOn || dimmerBrightness !== desiredBrightness) && dimmerSource !== \"input\") {\n        msg.payload = { on: true, brightness: desiredBrightness };\n    }\n}\n\n// 2️⃣ No motion for more than 15 min → turn off\nelse if (sinceMotion > OFF_DELAY) {\n    if (dimmerOn && dimmerSource !== \"input\") {\n        msg.payload = { on: false };\n    }\n}\n\n// 3️⃣ Otherwise: no action\nelse {\n    msg.payload = {};\n}\n\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 870,
+        "y": 380,
+        "wires": [
+            [
+                "08a096bf5c3b82e9",
+                "08f366d4e239347b"
+            ]
+        ]
+    },
+    {
+        "id": "2f49a823642bb6e2",
+        "type": "function",
+        "z": "1c0e9aecdf5ec591",
+        "name": "Heating logics",
+        "func": "// Extract temperature data from payload\nlet values = msg.payload.values || {};\nlet tempIndoor = values.temperature_indoor;\nlet tempOutdoor = values.temperature_outdoor;\n\n// Get motion info from flow context\nlet motion = flow.get(\"motion\") || false;\nlet lastMotion = flow.get(\"last_motion\") || 0;\n\n// Get current heating state\nlet heatingOn = flow.get(\"heating_on\") || false;\n\n// Current time and inactivity duration\nlet now = Math.floor(Date.now() / 1000);\nlet sinceMotion = now - lastMotion;\n\n// Thresholds\nconst FROST_TEMP = 12;          // °C\nconst COMFORT_TEMP = 21;        // °C\nconst NO_MOTION_LIMIT = 60 * 60; // 1 hour\n\n// Default: no change\nmsg.payload = {};\n\n// --- LOGIC ---\n\n// 1️⃣ Frost prevention: Always heat if very cold inside\nif (tempIndoor < FROST_TEMP) {\n    if (!heatingOn) {\n        msg.payload = { on: true };\n        flow.set(\"heating_on\", true);\n    }\n}\n\n// 2️⃣ Otherwise only heat if it's colder outside than inside\nelse if (tempOutdoor < tempIndoor) {\n\n    // Turn ON if motion detected and below comfort temperature\n    if (motion && tempIndoor < COMFORT_TEMP) {\n        if (!heatingOn) {\n            msg.payload = { on: true };\n            flow.set(\"heating_on\", true);\n        }\n    }\n\n    // Turn OFF if temperature high enough or no motion for > 1h\n    else if (tempIndoor >= COMFORT_TEMP || sinceMotion > NO_MOTION_LIMIT) {\n        if (heatingOn) {\n            msg.payload = { on: false };\n            flow.set(\"heating_on\", false);\n        }\n    }\n}\n\n// 3️⃣ If it's warmer outside than inside → stop heating\nelse if (tempOutdoor >= tempIndoor) {\n    if (heatingOn) {\n        msg.payload = { on: false };\n        flow.set(\"heating_on\", false);\n    }\n}\n\n// --- END ---\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 900,
+        "y": 160,
+        "wires": [
+            [
+                "4a0f8d8fcd5bab62"
+            ]
+        ]
+    },
+    {
+        "id": "b104e5114c0b964d",
+        "type": "function",
+        "z": "1c0e9aecdf5ec591",
+        "name": "Store Heating variable",
+        "func": "// Check if there is at least one relay\nif (msg.payload.relays && msg.payload.relays.length > 0) {\n    // Read the \"ison\" state of the first relay\n    let isOn = msg.payload.relays[0].ison;\n\n    // Store in flow context variable\n    flow.set(\"heating_on\", isOn);\n}\n\n// Pass the message through unchanged\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1440,
+        "y": 180,
         "wires": [
             []
         ]
