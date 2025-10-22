@@ -85,11 +85,11 @@
         "z": "3e07724de1527d10",
         "name": "KWF Datenbank Connector",
         "sqlitePath": "/data/node-red/kwfemon/",
-        "sendInterval": "60000",
+        "sendInterval": "3600000",
         "apiURL": "${KWF_URL}",
         "apiKey": "${KWF_KEY}",
-        "x": 1480,
-        "y": 340,
+        "x": 1460,
+        "y": 320,
         "wires": []
     },
     {
@@ -97,7 +97,7 @@
         "type": "function",
         "z": "3e07724de1527d10",
         "name": "Decode Netatmo",
-        "func": "var addr = env.get('NETATMO_ADDRESS');\nvar devices = msg.payload.body.devices;\n\n// Initialize the new data format structure\nvar data = {\n    sensor_id: \"netatmo\",\n    timestamp: Date.now(), // Current timestamp in milliseconds\n    metering_point: \"K0\", // Placeholder measurement point\n    values: {}\n};\n\n// Loop through all devices found\nfor (let i = 0; i < devices.length; i++) {\n    if (devices[i]._id == addr) {\n        // Store device identifiers\n        data.values[\"device_id\"] = devices[i]._id;\n\n        var indoor_data = devices[i].dashboard_data;\n        data.values[\"device_reachable\"] = devices[i].reachable;\n\n        // Use the timestamp from the device data if available\n        if (indoor_data.time_utc) {\n            data.timestamp = indoor_data.time_utc * 1000; // Convert to milliseconds\n        }\n\n        if (devices[i].reachable) {\n            // Indoor sensor data (from devices[i].dashboard_data)\n            data.values[\"wifi_signal_strength\"] = devices[i].wifi_status;\n            data.values[\"temperature_indoor\"] = indoor_data.Temperature;\n            data.values[\"humidity_indoor\"] = indoor_data.Humidity;\n            data.values[\"co2_indoor\"] = indoor_data.CO2;\n            data.values[\"pressure\"] = indoor_data.Pressure;\n            data.values[\"noise_level\"] = indoor_data.Noise;\n            data.values[\"pressure_absolute\"] = indoor_data.AbsolutePressure;\n\n            // Outdoor modules data (from devices[i].modules[j])\n            var modules = devices[i].modules;\n            if (modules && modules.length > 0) {\n                for (let j = 0; j < modules.length; j++) {\n                    // Read data of the first module only (outdoor sensor)\n                    if (j == 0) {\n                        data.values[\"outdoor_module_reachable\"] = modules[j].reachable;\n                        data.values[\"outdoor_module_id\"] = modules[j]._id;\n\n                        if (modules[j].reachable) {\n                            var outdoor_data = modules[j].dashboard_data;\n                            // Outdoor sensor data (from devices[i].modules[0].dashboard_data)\n                            data.values[\"temperature_outdoor\"] = outdoor_data.Temperature;\n                            data.values[\"humidity_outdoor\"] = outdoor_data.Humidity;\n\n                            // Module status data (from devices[i].modules[0])\n                            data.values[\"battery_level\"] = modules[j].battery_percent;\n                            data.values[\"rf_signal_strength\"] = modules[j].rf_status;\n                            data.values[\"battery_voltage\"] = modules[j].battery_vp;\n\n                            // Calculate temperature difference\n                            data.values[\"temperature_difference\"] = indoor_data.Temperature - outdoor_data.Temperature;\n                        }\n                    }\n                    if (j > 0) {\n                        data.values[\"warning\"] = \"Multiple outdoor modules detected\";\n                    }\n                }\n            }\n        }\n    }\n}\n\nmsg.payload = data;\nreturn msg;",
+        "func": "var addr = env.get('NETATMO_ADDRESS');\nvar devices = msg.payload.body.devices;\n\n// Initialize the new data format structure\nvar data = {\n    sensor_id: \"netatmo\",\n    timestamp: Date.now(), // Current timestamp in milliseconds (fallback)\n    metering_point: \"K0\",\n    values: {}\n};\n\n// Loop through all devices found\nfor (let i = 0; i < devices.length; i++) {\n    if (devices[i]._id == addr){\n        // Store device identifiers\n        data.values[\"device_id\"] = devices[i]._id;\n        \n        var indoor_data = devices[i].dashboard_data;\n        data.values[\"device_reachable\"] = devices[i].reachable;\n\n        if (devices[i].reachable) {\n            // Indoor sensor data with individual timestamps (ts_ prefix)\n            data.values[\"ts_temperature_indoor\"] = indoor_data.time_utc * 1000;\n            data.values[\"temperature_indoor\"] = indoor_data.Temperature;\n            \n            data.values[\"ts_humidity_indoor\"] = indoor_data.time_utc * 1000;\n            data.values[\"humidity_indoor\"] = indoor_data.Humidity;\n            \n            data.values[\"ts_co2_indoor\"] = indoor_data.time_utc * 1000;\n            data.values[\"co2_indoor\"] = indoor_data.CO2;\n            \n            data.values[\"ts_pressure\"] = indoor_data.time_utc * 1000;\n            data.values[\"pressure\"] = indoor_data.Pressure;\n            \n            data.values[\"ts_noise_level\"] = indoor_data.time_utc * 1000;\n            data.values[\"noise_level\"] = indoor_data.Noise;\n            \n            data.values[\"ts_pressure_absolute\"] = indoor_data.time_utc * 1000;\n            data.values[\"pressure_absolute\"] = indoor_data.AbsolutePressure;\n            \n            // WiFi signal strength (no timestamp, always current)\n            data.values[\"wifi_signal_strength\"] = devices[i].wifi_status;\n\n            // Outdoor modules data (from devices[i].modules[j])\n            var modules = devices[i].modules;\n            if (modules && modules.length > 0) {\n                for (let j = 0; j < modules.length; j++) {\n                    // Read data of the first module only (outdoor sensor)\n                    if (j==0) {\n                        data.values[\"outdoor_module_reachable\"] = modules[j].reachable;\n                        data.values[\"outdoor_module_id\"] = modules[j]._id;\n\n                        if (modules[j].reachable) { \n                            var outdoor_data = modules[j].dashboard_data;\n                            \n                            // Outdoor sensor data with individual timestamps (ts_ prefix)\n                            data.values[\"ts_temperature_outdoor\"] = outdoor_data.time_utc * 1000;\n                            data.values[\"temperature_outdoor\"] = outdoor_data.Temperature;\n                            \n                            data.values[\"ts_humidity_outdoor\"] = outdoor_data.time_utc * 1000;\n                            data.values[\"humidity_outdoor\"] = outdoor_data.Humidity;\n                            \n                            // Module status data (no timestamp, always current)\n                            data.values[\"battery_level\"] = modules[j].battery_percent;\n                            data.values[\"rf_signal_strength\"] = modules[j].rf_status;\n                            data.values[\"battery_voltage\"] = modules[j].battery_vp;\n                            \n                            // Calculate temperature difference with timestamp (use most recent of the two)\n                            data.values[\"ts_temperature_difference\"] = Math.max(indoor_data.time_utc, outdoor_data.time_utc) * 1000;\n                            data.values[\"temperature_difference\"] = indoor_data.Temperature - outdoor_data.Temperature;\n                        }\n                    }\n                    if (j>0){\n                        data.values[\"warning\"] = \"Multiple outdoor modules detected\";\n                    }\n                }\n            }\n        }\n      }\n    }\n\nmsg.payload = data;\nreturn msg;",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
@@ -108,7 +108,8 @@
         "y": 320,
         "wires": [
             [
-                "22cfa0e395a3be0e"
+                "22cfa0e395a3be0e",
+                "78dea314d74e558e"
             ]
         ]
     },
@@ -664,7 +665,9 @@
         "x": 1070,
         "y": 100,
         "wires": [
-            []
+            [
+                "78dea314d74e558e"
+            ]
         ]
     },
     {
@@ -689,7 +692,9 @@
         "x": 1070,
         "y": 140,
         "wires": [
-            []
+            [
+                "78dea314d74e558e"
+            ]
         ]
     },
     {
@@ -714,7 +719,9 @@
         "x": 1070,
         "y": 180,
         "wires": [
-            []
+            [
+                "78dea314d74e558e"
+            ]
         ]
     },
     {
@@ -977,7 +984,9 @@
         "x": 940,
         "y": 520,
         "wires": [
-            []
+            [
+                "78dea314d74e558e"
+            ]
         ]
     },
     {
@@ -1221,7 +1230,9 @@
         "x": 940,
         "y": 680,
         "wires": [
-            []
+            [
+                "78dea314d74e558e"
+            ]
         ]
     },
     {
@@ -1231,7 +1242,7 @@
         "name": "Hier Messpunkte konfigurieren DC",
         "info": "",
         "x": 1000,
-        "y": 620,
+        "y": 640,
         "wires": []
     },
     {
