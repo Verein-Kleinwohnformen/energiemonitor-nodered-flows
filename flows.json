@@ -80,6 +80,37 @@
         "bpChkShowDebugWarnings": false
     },
     {
+        "id": "4eca6eb6845b38c5",
+        "type": "mqtt-broker",
+        "name": "Energiemonitor MQTT",
+        "broker": "localhost",
+        "port": 1883,
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": 4,
+        "keepalive": 60,
+        "cleansession": true,
+        "autoUnsubscribe": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthRetain": "false",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closeRetain": "false",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willRetain": "false",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
         "id": "78dea314d74e558e",
         "type": "kwf-energiemonitor",
         "z": "3e07724de1527d10",
@@ -109,7 +140,8 @@
         "wires": [
             [
                 "22cfa0e395a3be0e",
-                "78dea314d74e558e"
+                "78dea314d74e558e",
+                "2c04efba95eae95e"
             ]
         ]
     },
@@ -186,7 +218,7 @@
         "type": "mqtt in",
         "z": "3e07724de1527d10",
         "name": "Victron Grid Power",
-        "topic": "N/+/system/#",
+        "topic": "N/+/system/0/Ac/Grid/L1/Power",
         "qos": "0",
         "datatype": "json",
         "broker": "88c835032a852602",
@@ -195,7 +227,7 @@
         "rh": 0,
         "inputs": 0,
         "x": 110,
-        "y": 520,
+        "y": 660,
         "wires": [
             [
                 "96631ccb0aef5c8f"
@@ -209,7 +241,7 @@
         "name": "Victron Solarsysteme",
         "info": "https://github.com/victronenergy/dbus-flashmq",
         "x": 120,
-        "y": 440,
+        "y": 580,
         "wires": []
     },
     {
@@ -647,7 +679,7 @@
         "id": "ef49b28ccab5e2aa",
         "type": "change",
         "z": "3e07724de1527d10",
-        "name": "Messpunkt A",
+        "name": "Messpunkt I2",
         "rules": [
             {
                 "t": "set",
@@ -674,7 +706,7 @@
         "id": "87dca59412c72a56",
         "type": "change",
         "z": "3e07724de1527d10",
-        "name": "Messpunkt B",
+        "name": "Messpunkt E1",
         "rules": [
             {
                 "t": "set",
@@ -689,7 +721,7 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 1070,
+        "x": 1080,
         "y": 140,
         "wires": [
             [
@@ -701,7 +733,7 @@
         "id": "81eca74c1d9b1351",
         "type": "change",
         "z": "3e07724de1527d10",
-        "name": "Messpunkt C",
+        "name": "Messpunkt A1",
         "rules": [
             {
                 "t": "set",
@@ -716,7 +748,7 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 1070,
+        "x": 1080,
         "y": 180,
         "wires": [
             [
@@ -728,16 +760,18 @@
         "id": "b2319d6d76239947",
         "type": "comment",
         "z": "3e07724de1527d10",
+        "d": true,
         "name": "Read DC sensor (PZEM-017)",
         "info": "",
-        "x": 160,
-        "y": 620,
+        "x": 140,
+        "y": 920,
         "wires": []
     },
     {
         "id": "f690d1ccc2f25757",
         "type": "inject",
         "z": "3e07724de1527d10",
+        "d": true,
         "name": "1s",
         "props": [
             {
@@ -751,7 +785,7 @@
         "onceDelay": "5",
         "topic": "",
         "x": 90,
-        "y": 680,
+        "y": 960,
         "wires": [
             [
                 "a51deb7897732d9c"
@@ -762,6 +796,7 @@
         "id": "61eab257930a2ec4",
         "type": "bp-reader",
         "z": "3e07724de1527d10",
+        "d": true,
         "name": "Modbus read",
         "showStatusActivities": true,
         "showErrors": true,
@@ -776,7 +811,7 @@
         "delayOnStart": false,
         "startDelayTime": "",
         "x": 410,
-        "y": 680,
+        "y": 960,
         "wires": [
             [
                 "b7de6b053734d44f"
@@ -787,6 +822,7 @@
         "id": "a51deb7897732d9c",
         "type": "bp-device",
         "z": "3e07724de1527d10",
+        "d": true,
         "bpUnitName": "PZEM-017",
         "bpModbusId": "1",
         "bpRegisters": [
@@ -858,7 +894,7 @@
         "bpSelectedTemplate": "DEVICE_UNKNOWN",
         "bpSourceTemplatesFromWeb": false,
         "x": 250,
-        "y": 680,
+        "y": 960,
         "wires": [
             [
                 "61eab257930a2ec4"
@@ -869,13 +905,14 @@
         "id": "b7de6b053734d44f",
         "type": "bp-decoder",
         "z": "3e07724de1527d10",
+        "d": true,
         "bpDeviceDecoderName": "Modbus decode",
         "bpChkShowDateOnLabel": true,
         "bpChkShowDebugWarnings": true,
         "bpChkConvertPFactor": true,
         "bpChkSetRealTo3Dp": true,
         "x": 580,
-        "y": 680,
+        "y": 960,
         "wires": [
             [
                 "13ed1a25b6350050"
@@ -886,6 +923,7 @@
         "id": "13ed1a25b6350050",
         "type": "join",
         "z": "3e07724de1527d10",
+        "d": true,
         "name": "Join",
         "mode": "custom",
         "build": "object",
@@ -904,7 +942,7 @@
         "reduceInitType": "",
         "reduceFixup": "",
         "x": 230,
-        "y": 760,
+        "y": 1040,
         "wires": [
             [
                 "e81cfc346de986bd"
@@ -915,6 +953,7 @@
         "id": "e81cfc346de986bd",
         "type": "function",
         "z": "3e07724de1527d10",
+        "d": true,
         "name": "Decode",
         "func": "var modbus = msg.payload\n\nvar dc = {};\n\ndc[\"voltage\"] = modbus[\"PZEM017/VOLTAGE\"];\ndc[\"current\"] = modbus[\"PZEM017/CURRENT\"];\n// Bitshift with a 0.1 multiplier\ndc[\"power\"] = modbus[\"PZEM017/POWER_HIGH\"] * 6553.6 + modbus[\"PZEM017/POWER_LOW\"];\n// Bitshift with a 1 multiplier\ndc[\"energy_counter\"] = modbus[\"PZEM017/ENERGY_HIGH\"] * 65536 + modbus[\"PZEM017/ENERGY_LOW\"];\n\nmsg.payload = dc;\nreturn msg;",
         "outputs": 1,
@@ -924,7 +963,7 @@
         "finalize": "",
         "libs": [],
         "x": 360,
-        "y": 760,
+        "y": 1040,
         "wires": [
             [
                 "131f421765a82da0"
@@ -981,11 +1020,12 @@
         "from": "",
         "to": "",
         "reg": false,
-        "x": 940,
-        "y": 520,
+        "x": 1080,
+        "y": 660,
         "wires": [
             [
-                "78dea314d74e558e"
+                "78dea314d74e558e",
+                "2c04efba95eae95e"
             ]
         ]
     },
@@ -1004,7 +1044,7 @@
         "expiry": "",
         "broker": "88c835032a852602",
         "x": 240,
-        "y": 480,
+        "y": 620,
         "wires": []
     },
     {
@@ -1030,7 +1070,7 @@
         "payload": "",
         "payloadType": "str",
         "x": 70,
-        "y": 480,
+        "y": 620,
         "wires": [
             [
                 "5bea7e555e4add65"
@@ -1048,8 +1088,8 @@
         "submitIncompleteInterval": true,
         "submitPerTopic": true,
         "aggregationType": "mean",
-        "x": 430,
-        "y": 520,
+        "x": 570,
+        "y": 660,
         "wires": [
             [
                 "800a7605cef2908c"
@@ -1069,10 +1109,10 @@
         "addname": "topic",
         "property": "payload",
         "x": 270,
-        "y": 520,
+        "y": 660,
         "wires": [
             [
-                "94a00636dd9f7d21"
+                "cd820b93e3791aee"
             ]
         ]
     },
@@ -1097,11 +1137,12 @@
         "reduceInit": "",
         "reduceInitType": "",
         "reduceFixup": "",
-        "x": 590,
-        "y": 520,
+        "x": 730,
+        "y": 660,
         "wires": [
             [
-                "264b9d8d64759505"
+                "264b9d8d64759505",
+                "9f9535250d5f0d75"
             ]
         ]
     },
@@ -1111,8 +1152,8 @@
         "z": "3e07724de1527d10",
         "name": "Hier Messpunkte konfigurieren Victron",
         "info": "",
-        "x": 1010,
-        "y": 480,
+        "x": 1150,
+        "y": 620,
         "wires": []
     },
     {
@@ -1144,6 +1185,7 @@
         "id": "131f421765a82da0",
         "type": "split",
         "z": "3e07724de1527d10",
+        "d": true,
         "name": "Split",
         "splt": "\\n",
         "spltType": "str",
@@ -1153,7 +1195,7 @@
         "addname": "topic",
         "property": "payload",
         "x": 510,
-        "y": 760,
+        "y": 1040,
         "wires": [
             [
                 "3ae3114dd9ce656b"
@@ -1164,6 +1206,7 @@
         "id": "3ae3114dd9ce656b",
         "type": "aggregator",
         "z": "3e07724de1527d10",
+        "d": true,
         "name": "aggregate per 10s",
         "topic": "",
         "intervalCount": "10",
@@ -1172,7 +1215,7 @@
         "submitPerTopic": true,
         "aggregationType": "mean",
         "x": 550,
-        "y": 800,
+        "y": 1080,
         "wires": [
             [
                 "11acfc28dde9a229"
@@ -1183,6 +1226,7 @@
         "id": "11acfc28dde9a229",
         "type": "join",
         "z": "3e07724de1527d10",
+        "d": true,
         "name": "Join",
         "mode": "custom",
         "build": "object",
@@ -1201,7 +1245,7 @@
         "reduceInitType": "",
         "reduceFixup": "",
         "x": 510,
-        "y": 840,
+        "y": 1120,
         "wires": [
             [
                 "a7c1cf25a7d26ef0"
@@ -1212,6 +1256,7 @@
         "id": "3a1d10b21a371be0",
         "type": "change",
         "z": "3e07724de1527d10",
+        "d": true,
         "name": "Messpunkt A1",
         "rules": [
             {
@@ -1228,7 +1273,7 @@
         "to": "",
         "reg": false,
         "x": 940,
-        "y": 680,
+        "y": 960,
         "wires": [
             [
                 "78dea314d74e558e"
@@ -1239,16 +1284,18 @@
         "id": "fc58687f63d80146",
         "type": "comment",
         "z": "3e07724de1527d10",
+        "d": true,
         "name": "Hier Messpunkte konfigurieren DC",
         "info": "",
         "x": 1000,
-        "y": 640,
+        "y": 920,
         "wires": []
     },
     {
         "id": "a7c1cf25a7d26ef0",
         "type": "change",
         "z": "3e07724de1527d10",
+        "d": true,
         "name": "Format",
         "rules": [
             {
@@ -1303,7 +1350,7 @@
         "to": "",
         "reg": false,
         "x": 640,
-        "y": 840,
+        "y": 1120,
         "wires": [
             [
                 "3a1d10b21a371be0"
@@ -1319,8 +1366,655 @@
         "links": [
             "512fba66eee528b8"
         ],
+        "x": 865,
+        "y": 380,
+        "wires": []
+    },
+    {
+        "id": "994495eb0b91a643",
+        "type": "mqtt in",
+        "z": "3e07724de1527d10",
+        "name": "Sensirion CO2",
+        "topic": "energiemonitor/co2/top/co2",
+        "qos": "0",
+        "datatype": "auto-detect",
+        "broker": "4eca6eb6845b38c5",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 120,
+        "y": 420,
+        "wires": [
+            [
+                "762c42e279482ccd",
+                "f50b9489924ee58d"
+            ]
+        ]
+    },
+    {
+        "id": "ac2530cc91bb3c96",
+        "type": "comment",
+        "z": "3e07724de1527d10",
+        "name": "Bluetooth Sensoren",
+        "info": "",
+        "x": 130,
+        "y": 380,
+        "wires": []
+    },
+    {
+        "id": "2b17f08518474415",
+        "type": "mqtt in",
+        "z": "3e07724de1527d10",
+        "name": "Sensirion AIQ T",
+        "topic": "energiemonitor/aiq/top/temperature",
+        "qos": "0",
+        "datatype": "auto-detect",
+        "broker": "4eca6eb6845b38c5",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 120,
+        "y": 460,
+        "wires": [
+            [
+                "d4df9531b50f020d",
+                "f50b9489924ee58d"
+            ]
+        ]
+    },
+    {
+        "id": "29c8047e8ffdd917",
+        "type": "mqtt in",
+        "z": "3e07724de1527d10",
+        "name": "Sensirion AIQ RH",
+        "topic": "energiemonitor/aiq/top/humidity",
+        "qos": "0",
+        "datatype": "auto-detect",
+        "broker": "4eca6eb6845b38c5",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 120,
+        "y": 500,
+        "wires": [
+            [
+                "6650301a7585ee36",
+                "f50b9489924ee58d"
+            ]
+        ]
+    },
+    {
+        "id": "762c42e279482ccd",
+        "type": "aggregator",
+        "z": "3e07724de1527d10",
+        "name": "aggregate per 5min",
+        "topic": "",
+        "intervalCount": "2",
+        "intervalUnits": "m",
+        "submitIncompleteInterval": true,
+        "submitPerTopic": true,
+        "aggregationType": "mean",
+        "x": 350,
+        "y": 420,
+        "wires": [
+            [
+                "f870f68b5308f2b6"
+            ]
+        ]
+    },
+    {
+        "id": "d4df9531b50f020d",
+        "type": "aggregator",
+        "z": "3e07724de1527d10",
+        "name": "aggregate per 5min",
+        "topic": "",
+        "intervalCount": "2",
+        "intervalUnits": "m",
+        "submitIncompleteInterval": true,
+        "submitPerTopic": true,
+        "aggregationType": "mean",
+        "x": 350,
+        "y": 460,
+        "wires": [
+            [
+                "c177e441a099c499"
+            ]
+        ]
+    },
+    {
+        "id": "6650301a7585ee36",
+        "type": "aggregator",
+        "z": "3e07724de1527d10",
+        "name": "aggregate per 5min",
+        "topic": "",
+        "intervalCount": "2",
+        "intervalUnits": "m",
+        "submitIncompleteInterval": true,
+        "submitPerTopic": true,
+        "aggregationType": "mean",
+        "x": 350,
+        "y": 500,
+        "wires": [
+            [
+                "dd100405e74e294e"
+            ]
+        ]
+    },
+    {
+        "id": "f870f68b5308f2b6",
+        "type": "change",
+        "z": "3e07724de1527d10",
+        "name": "Messpunkt K0",
+        "rules": [
+            {
+                "t": "set",
+                "p": "data",
+                "pt": "msg",
+                "to": "payload",
+                "tot": "msg"
+            },
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "{}",
+                "tot": "json"
+            },
+            {
+                "t": "set",
+                "p": "payload.metering_point",
+                "pt": "msg",
+                "to": "K0",
+                "tot": "str"
+            },
+            {
+                "t": "set",
+                "p": "payload.sensor_id",
+                "pt": "msg",
+                "to": "sensirion_scd4x",
+                "tot": "str"
+            },
+            {
+                "t": "set",
+                "p": "payload.values.co2_indoor",
+                "pt": "msg",
+                "to": "data",
+                "tot": "msg"
+            },
+            {
+                "t": "set",
+                "p": "payload.timestamp",
+                "pt": "msg",
+                "to": "",
+                "tot": "date"
+            },
+            {
+                "t": "delete",
+                "p": "topic",
+                "pt": "msg"
+            },
+            {
+                "t": "delete",
+                "p": "data",
+                "pt": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 680,
+        "y": 420,
+        "wires": [
+            [
+                "78dea314d74e558e",
+                "2c04efba95eae95e"
+            ]
+        ]
+    },
+    {
+        "id": "c177e441a099c499",
+        "type": "change",
+        "z": "3e07724de1527d10",
+        "name": "Messpunkt K0",
+        "rules": [
+            {
+                "t": "set",
+                "p": "data",
+                "pt": "msg",
+                "to": "payload",
+                "tot": "msg"
+            },
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "{}",
+                "tot": "json"
+            },
+            {
+                "t": "set",
+                "p": "payload.metering_point",
+                "pt": "msg",
+                "to": "K0",
+                "tot": "str"
+            },
+            {
+                "t": "set",
+                "p": "payload.sensor_id",
+                "pt": "msg",
+                "to": "sensirion_voc",
+                "tot": "str"
+            },
+            {
+                "t": "set",
+                "p": "payload.values.temperature_indoor",
+                "pt": "msg",
+                "to": "data",
+                "tot": "msg"
+            },
+            {
+                "t": "set",
+                "p": "payload.timestamp",
+                "pt": "msg",
+                "to": "",
+                "tot": "date"
+            },
+            {
+                "t": "delete",
+                "p": "topic",
+                "pt": "msg"
+            },
+            {
+                "t": "delete",
+                "p": "data",
+                "pt": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 680,
+        "y": 460,
+        "wires": [
+            [
+                "78dea314d74e558e",
+                "2c04efba95eae95e"
+            ]
+        ]
+    },
+    {
+        "id": "dd100405e74e294e",
+        "type": "change",
+        "z": "3e07724de1527d10",
+        "name": "Messpunkt K0",
+        "rules": [
+            {
+                "t": "set",
+                "p": "data",
+                "pt": "msg",
+                "to": "payload",
+                "tot": "msg"
+            },
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "{}",
+                "tot": "json"
+            },
+            {
+                "t": "set",
+                "p": "payload.metering_point",
+                "pt": "msg",
+                "to": "K0",
+                "tot": "str"
+            },
+            {
+                "t": "set",
+                "p": "payload.sensor_id",
+                "pt": "msg",
+                "to": "sensirion_voc",
+                "tot": "str"
+            },
+            {
+                "t": "set",
+                "p": "payload.values.humidity_indoor",
+                "pt": "msg",
+                "to": "data",
+                "tot": "msg"
+            },
+            {
+                "t": "set",
+                "p": "payload.timestamp",
+                "pt": "msg",
+                "to": "",
+                "tot": "date"
+            },
+            {
+                "t": "delete",
+                "p": "topic",
+                "pt": "msg"
+            },
+            {
+                "t": "delete",
+                "p": "data",
+                "pt": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 680,
+        "y": 500,
+        "wires": [
+            [
+                "78dea314d74e558e",
+                "2c04efba95eae95e"
+            ]
+        ]
+    },
+    {
+        "id": "2c04efba95eae95e",
+        "type": "debug",
+        "z": "3e07724de1527d10",
+        "name": "debug 1",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1420,
+        "y": 440,
+        "wires": []
+    },
+    {
+        "id": "cd820b93e3791aee",
+        "type": "change",
+        "z": "3e07724de1527d10",
+        "name": "null→0",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "payload != null ? payload : 0",
+                "tot": "jsonata"
+            }
+        ],
+        "x": 400,
+        "y": 660,
+        "wires": [
+            [
+                "94a00636dd9f7d21"
+            ]
+        ]
+    },
+    {
+        "id": "a9141f85664395f1",
+        "type": "mqtt in",
+        "z": "3e07724de1527d10",
+        "name": "Victron Solar Power",
+        "topic": "N/+/system/0/Dc/Pv/Power",
+        "qos": "0",
+        "datatype": "json",
+        "broker": "88c835032a852602",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 110,
+        "y": 780,
+        "wires": [
+            [
+                "8e3811be65e8e321"
+            ]
+        ]
+    },
+    {
+        "id": "c54f7b5a287bb5bb",
+        "type": "change",
+        "z": "3e07724de1527d10",
+        "name": "Messpunkt E3",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload.metering_point",
+                "pt": "msg",
+                "to": "E3",
+                "tot": "str"
+            },
+            {
+                "t": "set",
+                "p": "payload.sensor_id",
+                "pt": "msg",
+                "to": "victron",
+                "tot": "str"
+            },
+            {
+                "t": "set",
+                "p": "payload.values.power",
+                "pt": "msg",
+                "to": "payload.value",
+                "tot": "msg"
+            },
+            {
+                "t": "set",
+                "p": "payload.timestamp",
+                "pt": "msg",
+                "to": "",
+                "tot": "date"
+            },
+            {
+                "t": "delete",
+                "p": "topic",
+                "pt": "msg"
+            },
+            {
+                "t": "delete",
+                "p": "payload.value",
+                "pt": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1080,
+        "y": 780,
+        "wires": [
+            [
+                "78dea314d74e558e"
+            ]
+        ]
+    },
+    {
+        "id": "cb4ca4e2700f4b49",
+        "type": "mqtt out",
+        "z": "3e07724de1527d10",
+        "name": "Poll Solar Power",
+        "topic": "",
+        "qos": "0",
+        "retain": "false",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "88c835032a852602",
+        "x": 250,
+        "y": 740,
+        "wires": []
+    },
+    {
+        "id": "45c0aa0c6efc2626",
+        "type": "inject",
+        "z": "3e07724de1527d10",
+        "name": "1s",
+        "props": [
+            {
+                "p": "topic",
+                "v": "R/${VICTRON_SERIAL}/system/0/Dc/Pv/Power",
+                "vt": "env"
+            },
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "1",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "str",
+        "x": 70,
+        "y": 740,
+        "wires": [
+            [
+                "cb4ca4e2700f4b49"
+            ]
+        ]
+    },
+    {
+        "id": "7bd4c52dd3f64766",
+        "type": "aggregator",
+        "z": "3e07724de1527d10",
+        "name": "aggregate per 10s",
+        "topic": "",
+        "intervalCount": "10",
+        "intervalUnits": "s",
+        "submitIncompleteInterval": true,
+        "submitPerTopic": true,
+        "aggregationType": "mean",
+        "x": 570,
+        "y": 780,
+        "wires": [
+            [
+                "47c1ce99b6595623"
+            ]
+        ]
+    },
+    {
+        "id": "8e3811be65e8e321",
+        "type": "split",
+        "z": "3e07724de1527d10",
+        "name": "Split",
+        "splt": "\\n",
+        "spltType": "str",
+        "arraySplt": 1,
+        "arraySpltType": "len",
+        "stream": false,
+        "addname": "topic",
+        "property": "payload",
+        "x": 270,
+        "y": 780,
+        "wires": [
+            [
+                "d6e46c598d1d5b9f"
+            ]
+        ]
+    },
+    {
+        "id": "47c1ce99b6595623",
+        "type": "join",
+        "z": "3e07724de1527d10",
+        "name": "Join",
+        "mode": "custom",
+        "build": "object",
+        "property": "payload",
+        "propertyType": "msg",
+        "key": "topic",
+        "joiner": "\\n",
+        "joinerType": "str",
+        "useparts": true,
+        "accumulate": false,
+        "timeout": "10",
+        "count": "",
+        "reduceRight": false,
+        "reduceExp": "",
+        "reduceInit": "",
+        "reduceInitType": "",
+        "reduceFixup": "",
+        "x": 730,
+        "y": 780,
+        "wires": [
+            [
+                "c54f7b5a287bb5bb",
+                "59d250311738984d"
+            ]
+        ]
+    },
+    {
+        "id": "d6e46c598d1d5b9f",
+        "type": "change",
+        "z": "3e07724de1527d10",
+        "name": "null→0",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "payload != null ? payload : 0",
+                "tot": "jsonata"
+            }
+        ],
+        "x": 400,
+        "y": 780,
+        "wires": [
+            [
+                "7bd4c52dd3f64766"
+            ]
+        ]
+    },
+    {
+        "id": "9f9535250d5f0d75",
+        "type": "link out",
+        "z": "3e07724de1527d10",
+        "name": "Grid in",
+        "mode": "link",
+        "links": [
+            "982fa373650ad9c6"
+        ],
         "x": 825,
-        "y": 400,
+        "y": 720,
+        "wires": []
+    },
+    {
+        "id": "59d250311738984d",
+        "type": "link out",
+        "z": "3e07724de1527d10",
+        "name": "Solar in",
+        "mode": "link",
+        "links": [
+            "0b10b94fe91441c3"
+        ],
+        "x": 825,
+        "y": 840,
+        "wires": []
+    },
+    {
+        "id": "f50b9489924ee58d",
+        "type": "link out",
+        "z": "3e07724de1527d10",
+        "name": "Sensi Gadgets",
+        "mode": "link",
+        "links": [
+            "1b3bf39060d692ae"
+        ],
+        "x": 285,
+        "y": 380,
         "wires": []
     },
     {
@@ -2001,7 +2695,7 @@
         "type": "function",
         "z": "1c0e9aecdf5ec591",
         "name": "Store Netatmo values",
-        "func": "// Extract the values object\nlet values = msg.payload.values;\n\n// Check if the values object exists\nif (!values) {\n    node.warn(\"No 'values' object found in payload\");\n    return null;\n}\n\n// Helper function to determine trend\nfunction getTrend(current, previous, threshold) {\n    if (previous === undefined) return \"stable\"; // first value\n    if (current - previous > threshold) return \"up\";\n    if (previous - current > threshold) return \"down\";\n    return \"stable\";\n}\n\n// Extract desired fields\nlet temperature_indoor = values.temperature_indoor;\nlet co2_indoor = values.co2_indoor;\nlet temperature_outdoor = values.temperature_outdoor;\n\n// Compute trends based on last stored values\nlet tempIndoorPrev = flow.get(\"temperature_indoor\");\nlet co2IndoorPrev = flow.get(\"co2_indoor\");\nlet tempOutdoorPrev = flow.get(\"temperature_outdoor\");\n\nlet temperature_indoor_trend = getTrend(temperature_indoor, tempIndoorPrev, 0.1);\nlet indoor_co2_trend = getTrend(co2_indoor, co2IndoorPrev, 5);\nlet temperature_outdoor_trend = getTrend(temperature_outdoor, tempOutdoorPrev, 0.1);\n\n// Store current values in flow context\nflow.set(\"temperature_indoor\", temperature_indoor);\nflow.set(\"temperature_indoor_trend\", temperature_indoor_trend);\n\nflow.set(\"co2_indoor\", co2_indoor);\nflow.set(\"indoor_co2_trend\", indoor_co2_trend);\n\nflow.set(\"temperature_outdoor\", temperature_outdoor);\nflow.set(\"temperature_outdoor_trend\", temperature_outdoor_trend);\n\n// Optionally store humidity as before\nflow.set(\"humidity_indoor\", values.humidity_indoor);\nflow.set(\"humidity_outdoor\", values.humidity_outdoor);\n\n// Pass through the message\nreturn msg;",
+        "func": "// Extract the values object\nlet values = msg.payload.values;\n\n// Check if the values object exists\nif (!values) {\n    node.warn(\"No 'values' object found in payload\");\n    return null;\n}\n\n// Helper function to determine trend\nfunction getTrend(current, previous, threshold) {\n    if (previous === undefined) return \"stable\"; // first value\n    if (current - previous > threshold) return \"up\";\n    if (previous - current > threshold) return \"down\";\n    return \"stable\";\n}\n\n// Extract desired fields\nlet temperature_indoor = values.temperature_indoor;\nlet co2_indoor = values.co2_indoor;\nlet temperature_outdoor = values.temperature_outdoor;\n\n// Compute trends based on last stored values\nlet tempIndoorPrev = flow.get(\"temperature_indoor\");\nlet co2IndoorPrev = flow.get(\"co2_indoor\");\nlet tempOutdoorPrev = flow.get(\"temperature_outdoor\");\n\nlet temperature_indoor_trend = getTrend(temperature_indoor, tempIndoorPrev, 0.1);\nlet indoor_co2_trend = getTrend(co2_indoor, co2IndoorPrev, 25);\nlet temperature_outdoor_trend = getTrend(temperature_outdoor, tempOutdoorPrev, 0.1);\n\n// Store current values in flow context\nflow.set(\"temperature_indoor\", temperature_indoor);\nflow.set(\"temperature_indoor_trend\", temperature_indoor_trend);\n\nflow.set(\"co2_indoor\", co2_indoor);\nflow.set(\"indoor_co2_trend\", indoor_co2_trend);\n\nflow.set(\"temperature_outdoor\", temperature_outdoor);\nflow.set(\"temperature_outdoor_trend\", temperature_outdoor_trend);\n\n// Optionally store humidity as before\nflow.set(\"humidity_indoor\", values.humidity_indoor);\nflow.set(\"humidity_outdoor\", values.humidity_outdoor);\n\n// Pass through the message\nreturn msg;",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
@@ -2080,7 +2774,7 @@
         "type": "function",
         "z": "1c0e9aecdf5ec591",
         "name": "Ventilator logics",
-        "func": "// --- Extract current CO2 and trend ---\nlet values = msg.payload.values;\nif (!values || values.co2_indoor === undefined) {\n    node.warn(\"No CO2 data found\");\n    return {};\n}\n\nlet co2 = values.co2_indoor;\n\n// Retrieve trend from flow context (must be stored previously)\nlet co2Trend = flow.get(\"indoor_co2_trend\") || \"stable\";\n\n// Retrieve current ventilator state\nlet ventilatorOn = flow.get(\"bayernluft_on\");\nif (ventilatorOn === undefined) ventilatorOn = false;\n\n// --- Decision logic ---\nlet output = {};\n\n// Always turn ON above 800ppm\nif (co2 > 600 && !ventilatorOn) {\n    output.on = true;\n}\n// Always turn OFF below 600ppm\nelse if (co2 < 600 && ventilatorOn) {\n    output.on = false;\n}\n// Above 700ppm, turn ON if trend is rising\nelse if (co2 > 700 && co2Trend === \"up\" && !ventilatorOn) {\n    output.on = true;\n}\n\nmsg.payload = output;\n\n// If no action required, output stays empty\nreturn msg;\n",
+        "func": "// ------------------------------------------------\n// Helpers\n// ------------------------------------------------\nfunction toNumber(v) {\n    const n = Number(v);\n    return Number.isFinite(n) ? n : null;\n}\n\nfunction toBool(v) {\n    return v === true;\n}\n\n// ------------------------------------------------\n// Time\n// ------------------------------------------------\nconst now = Math.floor(Date.now() / 1000);\n\n// ------------------------------------------------\n// Load values from flow context ONLY\n// ------------------------------------------------\n\n// --- CO2 sources ---\nconst co2Primary = toNumber(flow.get(\"co2_indoor\"));           // Netatmo\nconst co2Backup  = toNumber(flow.get(\"sensirion_co2\"));       // Sensirion\n\n// --- Ventilator state ---\nconst ventilatorOn = toBool(flow.get(\"bayernluft_on\"));\n\n// --- Presence ---\nconst lastMotion = toNumber(flow.get(\"last_motion\"));\n\n// --- Trend (Netatmo only) ---\nconst rawTrend = flow.get(\"indoor_co2_trend\");\n\n// ------------------------------------------------\n// CO2 Failover Logic\n// ------------------------------------------------\nlet co2 = null;\nlet co2Source = null;\n\nif (co2Primary !== null) {\n    co2 = co2Primary;\n    co2Source = \"netatmo\";\n}\nelse if (co2Backup !== null) {\n    co2 = co2Backup;\n    co2Source = \"sensirion\";\n}\n\n// ------------------------------------------------\n// FAIL-SAFE: CO2 unknown → force OFF\n// ------------------------------------------------\nif (co2 === null) {\n\n    if (ventilatorOn) {\n        flow.set(\"bayernluft_on\", false);\n        msg.payload = {\n            on: false,\n            reason: \"missing_co2\"\n        };\n        return msg;\n    }\n\n    return null;\n}\n\n// ------------------------------------------------\n// Presence calculation (validated)\n// ------------------------------------------------\nlet sinceMotion = Infinity;\n\nif (lastMotion !== null && lastMotion > 0) {\n    sinceMotion = now - lastMotion;\n}\n\n// ------------------------------------------------\n// Thresholds\n// ------------------------------------------------\nconst NO_MOTION_LIMIT = 60 * 60; // 1 hour\n\nconst CO2_OFF = 800;\nconst CO2_ON_TREND = 1000;\nconst CO2_ON_ALWAYS = 1200;\n\n// ------------------------------------------------\n// Trend validation (Netatmo only)\n// ------------------------------------------------\nlet co2Trend = \"unknown\";\n\nif (\n    co2Source === \"netatmo\" &&\n    (rawTrend === \"up\" || rawTrend === \"down\" || rawTrend === \"stable\")\n) {\n    co2Trend = rawTrend;\n}\n\n// ------------------------------------------------\n// LOGIC\n// ------------------------------------------------\n\n// ------------------------------------------------\n// SAFETY OVERRIDE: very high CO2 always wins\n// ------------------------------------------------\nif (co2 >= CO2_ON_ALWAYS) {\n\n    if (!ventilatorOn) {\n        flow.set(\"bayernluft_on\", true);\n        msg.payload = {\n            on: true,\n            reason: \"co2_critical\",\n            co2_source: co2Source\n        };\n        return msg;\n    }\n\n    return null;\n}\n\n// ------------------------------------------------\n// No presence → allow OFF, but not safety override\n// ------------------------------------------------\nif (sinceMotion > NO_MOTION_LIMIT) {\n\n    if (ventilatorOn && co2 < CO2_ON_ALWAYS) {\n        flow.set(\"bayernluft_on\", false);\n        msg.payload = {\n            on: false,\n            reason: \"no_presence\",\n            co2_source: co2Source\n        };\n        return msg;\n    }\n\n    return null;\n}\n\n// ------------------------------------------------\n// Normal presence-based control\n// ------------------------------------------------\n\n// OFF below lower threshold\nif (co2 < CO2_OFF && ventilatorOn) {\n    flow.set(\"bayernluft_on\", false);\n    msg.payload = {\n        on: false,\n        reason: \"co2_low\",\n        co2_source: co2Source\n    };\n    return msg;\n}\n\n// Trend-based ON (Netatmo only)\nif (\n    !ventilatorOn &&\n    co2 >= CO2_ON_TREND &&\n    co2 < CO2_ON_ALWAYS &&\n    co2Trend === \"up\"\n) {\n    flow.set(\"bayernluft_on\", true);\n    msg.payload = {\n        on: true,\n        reason: \"co2_rising\",\n        co2_source: co2Source\n    };\n    return msg;\n}\n\n// ------------------------------------------------\n// No state change\n// ------------------------------------------------\nreturn null;\n",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
@@ -2091,7 +2785,8 @@
         "y": 80,
         "wires": [
             [
-                "333859a95e219148"
+                "333859a95e219148",
+                "fc0d56ad24f1c7d8"
             ]
         ]
     },
@@ -2099,15 +2794,15 @@
         "id": "3a3a8f0d2fd7067f",
         "type": "function",
         "z": "1c0e9aecdf5ec591",
-        "name": "Ventilator logics",
-        "func": "// Get current motion and last motion timestamp\nlet motionDetected = flow.get(\"motion_bad\");\nlet lastMotion = flow.get(\"last_motion_bad\");\n\n// Current time in seconds\nlet now = Math.floor(Date.now() / 1000);\n\n// If we have no motion timestamp yet, do nothing\nif (!lastMotion) {\n    msg.payload = {};\n    return msg;\n}\n\n// Time since last motion in seconds\nlet secondsSinceMotion = now - lastMotion;\n\n// Define thresholds\nconst FIVE_MIN = 5 * 60;\nconst FOUR_HOURS = 4 * 60 * 60;\n\n// Retrieve current ventilator state\nlet ventilatorOn = flow.get(\"wc_on\") || false;\n\n// Default: no change\nmsg.payload = {};\n\n// --- Logic ---\n// Ventilator ON if: motion happened within 4h but not in last 5min\nif (secondsSinceMotion < FOUR_HOURS && secondsSinceMotion > FIVE_MIN) {\n    if (!ventilatorOn) {\n        msg.payload = { on: true };\n    }\n}\n// Ventilator OFF if: someone is in the bathroom right now\nelse if (motionDetected === true) {\n    if (ventilatorOn) {\n        msg.payload = { on: false };\n    }\n}\n// Ventilator OFF if: no motion for more than 4h\nelse if (secondsSinceMotion >= FOUR_HOURS) {\n    if (ventilatorOn) {\n        msg.payload = { on: false };\n    }\n}\n\nreturn msg;\n",
+        "name": "Bathroom ventilator logics",
+        "func": "// ------------------------------------------------\n// Helpers\n// ------------------------------------------------\nfunction toBool(v) {\n    return v === true;\n}\n\nfunction toNumber(v) {\n    const n = Number(v);\n    return Number.isFinite(n) ? n : null;\n}\n\n// ------------------------------------------------\n// Load state from flow\n// ------------------------------------------------\nconst motionDetected = toBool(flow.get(\"motion_bad\"));\nconst lastMotion = toNumber(flow.get(\"last_motion_bad\"));\nconst ventilatorOn = toBool(flow.get(\"wc_on\"));\n\n// ------------------------------------------------\n// Time\n// ------------------------------------------------\nconst now = Math.floor(Date.now() / 1000);\n\n// ------------------------------------------------\n// FAIL-SAFE: motion state unknown → force ON\n// ------------------------------------------------\nif (flow.get(\"motion_bad\") === undefined || lastMotion === null) {\n\n    if (!ventilatorOn) {\n        flow.set(\"wc_on\", true);\n        msg.payload = { on: true, reason: \"unknown_motion\" };\n        return msg;\n    }\n\n    return null;\n}\n\n// ------------------------------------------------\n// Timing\n// ------------------------------------------------\nconst secondsSinceMotion = now - lastMotion;\n\nconst FIVE_MIN = 5 * 60;\nconst FOUR_HOURS = 4 * 60 * 60;\n\n// ------------------------------------------------\n// LOGIC\n// ------------------------------------------------\n\n// Between 5 min and 4 h after motion → ON\nif (\n    secondsSinceMotion > FIVE_MIN &&\n    secondsSinceMotion < FOUR_HOURS &&\n    !ventilatorOn\n) {\n    flow.set(\"wc_on\", true);\n    msg.payload = { on: true, reason: \"post_motion_ventilation\" };\n    return msg;\n}\n\n// Motion detected → OFF\nif (motionDetected && ventilatorOn) {\n    flow.set(\"wc_on\", false);\n    msg.payload = { on: false, reason: \"motion_detected\" };\n    return msg;\n}\n\n// No motion for 4h → OFF\nif (secondsSinceMotion >= FOUR_HOURS && ventilatorOn) {\n    flow.set(\"wc_on\", false);\n    msg.payload = { on: false, reason: \"timeout\" };\n    return msg;\n}\n\n// No state change\nreturn null;\n",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 880,
+        "x": 910,
         "y": 320,
         "wires": [
             [
@@ -2174,7 +2869,7 @@
         "type": "function",
         "z": "1c0e9aecdf5ec591",
         "name": "LED logics",
-        "func": "// Retrieve motion, timestamp, and lux from flow\nlet motion = flow.get(\"motion_living\") || false;\nlet lastMotion = flow.get(\"last_motion_living\") || 0;\nlet lux = flow.get(\"lux_living\") || 0;\n\n// Retrieve current dimmer state\nlet dimmerOn = flow.get(\"stairs_on\") || false;\nlet dimmerBrightness = flow.get(\"stairs_brightness\") || 0;\nlet dimmerSource = flow.get(\"stairs_source\") || \"unknown\";\n\n// Calculate time since last motion\nlet now = Math.floor(Date.now() / 1000);\nlet sinceMotion = now - lastMotion;\n\n// Define thresholds\nconst OFF_DELAY = 15 * 60; // 15 minutes\nconst MAX_BRIGHTNESS = 70;\nconst MIN_BRIGHTNESS = 20;\n\n// --- Calculate desired brightness based on lux ---\nlet desiredBrightness;\n\nif (lux < 100) {\n    desiredBrightness = 20;\n} else if (lux < 150) {\n    desiredBrightness = 30;\n} else {\n    // Linear scaling between 150 and 1000 lux\n    let minLux = 150;\n    let maxLux = 1000;\n    let ratio = (lux - minLux) / (maxLux - minLux);\n    desiredBrightness = 30 + ratio * (MAX_BRIGHTNESS - 30);\n}\n\n// Clamp value between MIN and MAX\ndesiredBrightness = Math.max(MIN_BRIGHTNESS, Math.min(MAX_BRIGHTNESS, desiredBrightness));\ndesiredBrightness = Math.round(desiredBrightness);\n\n// Default: no change\nmsg.payload = {};\n\n// --- LOGIC ---\n\n// 1️⃣ Motion detected → ensure light is on and correct brightness\nif (motion === true) {\n    if ((!dimmerOn || dimmerBrightness !== desiredBrightness) && dimmerSource !== \"input\") {\n        msg.payload = { on: true, brightness: desiredBrightness };\n    }\n}\n\n// 2️⃣ No motion for more than 15 min → turn off\nelse if (sinceMotion > OFF_DELAY) {\n    if (dimmerOn && dimmerSource !== \"input\") {\n        msg.payload = { on: false };\n    }\n}\n\n// 3️⃣ Otherwise: no action\nelse {\n    msg.payload = {};\n}\n\nreturn msg;\n",
+        "func": "// ------------------------------------------------\n// Helpers\n// ------------------------------------------------\nfunction toBool(v) {\n    return v === true;\n}\n\nfunction toNumber(v) {\n    const n = Number(v);\n    return Number.isFinite(n) ? n : null;\n}\n\n// ------------------------------------------------\n// Load values from flow\n// ------------------------------------------------\nconst motion = toBool(flow.get(\"motion_living\"));\nconst lastMotion = toNumber(flow.get(\"last_motion_living\"));\nconst lux = toNumber(flow.get(\"lux_living\"));\n\nconst dimmerOn = toBool(flow.get(\"stairs_on\"));\nconst dimmerBrightness = toNumber(flow.get(\"stairs_brightness\")) ?? 0;\nconst dimmerSource = flow.get(\"stairs_source\") || \"unknown\";\n\n// ------------------------------------------------\n// FAIL-SAFE: missing lux or motion → no action\n// ------------------------------------------------\nif (lux === null || flow.get(\"motion_living\") === undefined || lastMotion === null) {\n    return null;\n}\n\n// ------------------------------------------------\n// Time\n// ------------------------------------------------\nconst now = Math.floor(Date.now() / 1000);\nconst sinceMotion = now - lastMotion;\n\n// ------------------------------------------------\n// Thresholds\n// ------------------------------------------------\nconst OFF_DELAY = 15 * 60;\n\nconst MIN_BRIGHTNESS = 20;\nconst MAX_BRIGHTNESS = 70;\n\n// ------------------------------------------------\n// Brightness calculation\n// ------------------------------------------------\nlet desiredBrightness;\n\nif (lux < 100) {\n    desiredBrightness = 20;\n}\nelse if (lux < 150) {\n    desiredBrightness = 30;\n}\nelse {\n    const minLux = 150;\n    const maxLux = 1000;\n    const ratio = (lux - minLux) / (maxLux - minLux);\n    desiredBrightness = 30 + ratio * (MAX_BRIGHTNESS - 30);\n}\n\ndesiredBrightness = Math.round(\n    Math.max(MIN_BRIGHTNESS, Math.min(MAX_BRIGHTNESS, desiredBrightness))\n);\n\n// ------------------------------------------------\n// LOGIC\n// ------------------------------------------------\n\n// Motion → ensure ON and correct brightness\nif (motion) {\n\n    if (\n        dimmerSource !== \"input\" &&\n        (!dimmerOn || dimmerBrightness !== desiredBrightness)\n    ) {\n        flow.set(\"stairs_on\", true);\n        flow.set(\"stairs_brightness\", desiredBrightness);\n        flow.set(\"stairs_source\", \"auto\");\n\n        msg.payload = {\n            on: true,\n            brightness: desiredBrightness\n        };\n        return msg;\n    }\n\n    return null;\n}\n\n// No motion → timeout OFF\nif (\n    sinceMotion > OFF_DELAY &&\n    dimmerOn &&\n    dimmerSource !== \"input\"\n) {\n    flow.set(\"stairs_on\", false);\n    flow.set(\"stairs_source\", \"auto\");\n\n    msg.payload = { on: false };\n    return msg;\n}\n\n// No state change\nreturn null;\n",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
@@ -2195,7 +2890,7 @@
         "type": "function",
         "z": "1c0e9aecdf5ec591",
         "name": "Heating logics",
-        "func": "// Extract temperature data from payload\nlet values = msg.payload.values || {};\nlet tempIndoor = values.temperature_indoor;\nlet tempOutdoor = values.temperature_outdoor;\n\n// Get motion info from flow context\nlet motion = flow.get(\"motion\") || false;\nlet lastMotion = flow.get(\"last_motion\") || 0;\n\n// Get current heating state\nlet heatingOn = flow.get(\"heating_on\") || false;\n\n// Current time and inactivity duration\nlet now = Math.floor(Date.now() / 1000);\nlet sinceMotion = now - lastMotion;\n\n// Thresholds\nconst FROST_TEMP = 12;          // °C\nconst COMFORT_TEMP = 21;        // °C\nconst NO_MOTION_LIMIT = 60 * 60; // 1 hour\n\n// Default: no change\nmsg.payload = {};\n\n// --- LOGIC ---\n\n// 1️⃣ Frost prevention: Always heat if very cold inside\nif (tempIndoor < FROST_TEMP) {\n    if (!heatingOn) {\n        msg.payload = { on: true };\n        flow.set(\"heating_on\", true);\n    }\n}\n\n// 2️⃣ Otherwise only heat if it's colder outside than inside\nelse if (tempOutdoor < tempIndoor) {\n\n    // Turn ON if motion detected and below comfort temperature\n    if (motion && tempIndoor < COMFORT_TEMP) {\n        if (!heatingOn) {\n            msg.payload = { on: true };\n            flow.set(\"heating_on\", true);\n        }\n    }\n\n    // Turn OFF if temperature high enough or no motion for > 1h\n    else if (tempIndoor >= COMFORT_TEMP || sinceMotion > NO_MOTION_LIMIT) {\n        if (heatingOn) {\n            msg.payload = { on: false };\n            flow.set(\"heating_on\", false);\n        }\n    }\n}\n\n// 3️⃣ If it's warmer outside than inside → stop heating\nelse if (tempOutdoor >= tempIndoor) {\n    if (heatingOn) {\n        msg.payload = { on: false };\n        flow.set(\"heating_on\", false);\n    }\n}\n\n// --- END ---\nreturn msg;\n",
+        "func": "// ------------------------------------------------\n// Helpers\n// ------------------------------------------------\nfunction toNumber(v) {\n    const n = Number(v);\n    return Number.isFinite(n) ? n : null;\n}\n\n// ------------------------------------------------\n// Load ALL values from flow context\n// ------------------------------------------------\n\n// --- Primary (Netatmo) ---\nlet tempIndoorPrimary = toNumber(flow.get(\"temperature_indoor\"));\nlet tempOutdoor = toNumber(flow.get(\"temperature_outdoor\"));\n\n// --- Backup (Sensirion aggregated) ---\nlet tempIndoorBackup = toNumber(flow.get(\"sensirion_temperature\"));\n\n// --- Energy ---\nlet solarPower = toNumber(flow.get(\"solar_power\")) ?? 0;\nlet gridPower  = toNumber(flow.get(\"grid_power\")) ?? 0;\n\n// --- State ---\nlet heatingOn = flow.get(\"heating_on\") === true;\nlet motion = flow.get(\"motion\") === true;\nlet lastMotion = toNumber(flow.get(\"last_motion\")) ?? 0;\n\n// ------------------------------------------------\n// Temperature Failover Logic\n// ------------------------------------------------\n\nlet tempIndoor = null;\nlet tempSource = null;\n\n// Prefer Netatmo\nif (tempIndoorPrimary !== null) {\n    tempIndoor = tempIndoorPrimary;\n    tempSource = \"netatmo\";\n}\n// Fallback to Sensirion\nelse if (tempIndoorBackup !== null) {\n    tempIndoor = tempIndoorBackup;\n    tempSource = \"sensirion\";\n}\n\n// ------------------------------------------------\n// FAIL-SAFE\n// ------------------------------------------------\n\nif (tempIndoor === null || tempOutdoor === null) {\n\n    if (heatingOn) {\n        flow.set(\"heating_on\", false);\n        msg.payload = { on: false, reason: \"missing_temperature\" };\n        return msg;\n    }\n\n    return null;\n}\n\n// ------------------------------------------------\n// Time calculation\n// ------------------------------------------------\n\nlet now = Math.floor(Date.now() / 1000);\nlet sinceMotion = now - lastMotion;\n\n// ------------------------------------------------\n// Thresholds\n// ------------------------------------------------\n\nconst FROST_TEMP = 12;\nconst COMFORT_TEMP = 18;\nconst NO_MOTION_LIMIT = 60 * 60;\n\nconst SOLAR_ON = 400;\nconst SOLAR_OFF = 200;\n\n// ------------------------------------------------\n// Step 1: Temperature demand logic\n// ------------------------------------------------\n\nlet tempRequestsHeating = false;\n\nif (tempIndoor < FROST_TEMP) {\n    tempRequestsHeating = true;\n}\nelse if (tempOutdoor < tempIndoor) {\n\n    if (motion && tempIndoor < COMFORT_TEMP) {\n        tempRequestsHeating = true;\n    }\n\n    if (tempIndoor >= COMFORT_TEMP || sinceMotion > NO_MOTION_LIMIT) {\n        tempRequestsHeating = false;\n    }\n}\nelse {\n    tempRequestsHeating = false;\n}\n\n// ------------------------------------------------\n// Step 2: Energy permission (solar hysteresis + grid)\n// ------------------------------------------------\n\nlet energyAllowsHeating = false;\n\nif (heatingOn) {\n    if (solarPower > SOLAR_OFF || gridPower > 0) {\n        energyAllowsHeating = true;\n    }\n}\nelse {\n    if (solarPower > SOLAR_ON || gridPower > 0) {\n        energyAllowsHeating = true;\n    }\n}\n\n// ------------------------------------------------\n// Step 3: Final decision\n// ------------------------------------------------\n\nif (tempRequestsHeating && energyAllowsHeating) {\n\n    if (!heatingOn) {\n        flow.set(\"heating_on\", true);\n        msg.payload = {\n            on: true,\n            temperature_source: tempSource\n        };\n        return msg;\n    }\n\n}\nelse {\n\n    if (heatingOn) {\n        flow.set(\"heating_on\", false);\n        msg.payload = {\n            on: false,\n            temperature_source: tempSource\n        };\n        return msg;\n    }\n}\n\n// No state change → no message\nreturn null;\n",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
@@ -2206,7 +2901,8 @@
         "y": 160,
         "wires": [
             [
-                "4a0f8d8fcd5bab62"
+                "4a0f8d8fcd5bab62",
+                "0456a08eadf29155"
             ]
         ]
     },
@@ -2227,5 +2923,294 @@
         "wires": [
             []
         ]
+    },
+    {
+        "id": "0b10b94fe91441c3",
+        "type": "link in",
+        "z": "1c0e9aecdf5ec591",
+        "name": "Solar in",
+        "links": [
+            "59d250311738984d"
+        ],
+        "x": 65,
+        "y": 520,
+        "wires": [
+            [
+                "b225d93f73e8d713"
+            ]
+        ]
+    },
+    {
+        "id": "982fa373650ad9c6",
+        "type": "link in",
+        "z": "1c0e9aecdf5ec591",
+        "name": "Grid in",
+        "links": [
+            "9f9535250d5f0d75"
+        ],
+        "x": 65,
+        "y": 580,
+        "wires": [
+            [
+                "bf0b9b1111fb337e"
+            ]
+        ]
+    },
+    {
+        "id": "b225d93f73e8d713",
+        "type": "function",
+        "z": "1c0e9aecdf5ec591",
+        "name": "Store Solar Power",
+        "func": "// Expecting: msg.payload = { value: <number> }\n\nlet power = msg.payload && Number.isFinite(msg.payload.value)\n    ? msg.payload.value\n    : null;\n\n// If invalid → do nothing\nif (power === null) {\n    node.warn(\"Invalid or missing solar power value\");\n    return null;\n}\n\n// Retrieve previous value\nlet previous = flow.get(\"solar_power\");\n\n// Helper: trend detection\nfunction getTrend(current, previous, threshold) {\n    if (!Number.isFinite(previous)) return \"stable\";\n    if (current - previous > threshold) return \"up\";\n    if (previous - current > threshold) return \"down\";\n    return \"stable\";\n}\n\n// Compute trend (threshold 50W to ignore noise)\nlet trend = getTrend(power, previous, 50);\n\n// Store values\nflow.set(\"solar_power\", power);\nflow.set(\"solar_power_trend\", trend);\nflow.set(\"solar_power_last_update\", Date.now());\n\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 250,
+        "y": 520,
+        "wires": [
+            [
+                "2f49a823642bb6e2",
+                "0456a08eadf29155"
+            ]
+        ]
+    },
+    {
+        "id": "bf0b9b1111fb337e",
+        "type": "function",
+        "z": "1c0e9aecdf5ec591",
+        "name": "Store Grid Power",
+        "func": "// Expecting: msg.payload = { value: <number> }\n\nlet power = msg.payload && Number.isFinite(msg.payload.value)\n    ? msg.payload.value\n    : null;\n\n// If invalid → do nothing\nif (power === null) {\n    node.warn(\"Invalid or missing grid power value\");\n    return null;\n}\n\n// Retrieve previous value\nlet previous = flow.get(\"grid_power\");\n\n// Helper: trend detection\nfunction getTrend(current, previous, threshold) {\n    if (!Number.isFinite(previous)) return \"stable\";\n    if (current - previous > threshold) return \"up\";\n    if (previous - current > threshold) return \"down\";\n    return \"stable\";\n}\n\n// Compute trend (threshold 50W to ignore noise)\nlet trend = getTrend(power, previous, 50);\n\n// Store values\nflow.set(\"grid_power\", power);\nflow.set(\"grid_power_trend\", trend);\nflow.set(\"grid_power_last_update\", Date.now());\n\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 250,
+        "y": 580,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "1bed5ae00065b8e2",
+        "type": "function",
+        "z": "1c0e9aecdf5ec591",
+        "name": "DEBUG",
+        "func": "// ------------------------------------------------\n// FULL FLOW STATE SNAPSHOT LOGGER (EXTENDED)\n// Trigger manually via Inject button\n// ------------------------------------------------\n\nfunction get(name, fallback = null) {\n    let v = flow.get(name);\n    return (v === undefined) ? fallback : v;\n}\n\nlet nowMs = Date.now();\nlet nowSec = Math.floor(nowMs / 1000);\n\nlet snapshot = {\n\n    timestamp_iso: new Date(nowMs).toISOString(),\n    timestamp_unix: nowSec,\n\n    // -------------------------\n    // Heating\n    // -------------------------\n    heating_on: get(\"heating_on\", false),\n\n    // -------------------------\n    // Primary Climate (Netatmo)\n    // -------------------------\n    temperature_indoor: get(\"temperature_indoor\"),\n    temperature_indoor_trend: get(\"temperature_indoor_trend\"),\n\n    temperature_outdoor: get(\"temperature_outdoor\"),\n    temperature_outdoor_trend: get(\"temperature_outdoor_trend\"),\n\n    humidity_indoor: get(\"humidity_indoor\"),\n    humidity_outdoor: get(\"humidity_outdoor\"),\n\n    co2_indoor: get(\"co2_indoor\"),\n    indoor_co2_trend: get(\"indoor_co2_trend\"),\n\n    // -------------------------\n    // Sensirion Backup - Individual Sensors\n    // -------------------------\n    sensirion_temp_bottom: get(\"sensirion_temp_bottom\"),\n    sensirion_temp_bathroom: get(\"sensirion_temp_bathroom\"),\n    sensirion_temp_top: get(\"sensirion_temp_top\"),\n\n    sensirion_hum_bottom: get(\"sensirion_hum_bottom\"),\n    sensirion_hum_bathroom: get(\"sensirion_hum_bathroom\"),\n    sensirion_hum_top: get(\"sensirion_hum_top\"),\n\n    sensirion_co2_top: get(\"sensirion_co2_top\"),\n\n    // -------------------------\n    // Sensirion Backup - Aggregated\n    // -------------------------\n    sensirion_temperature: get(\"sensirion_temperature\"),\n    sensirion_humidity: get(\"sensirion_humidity\"),\n    sensirion_co2: get(\"sensirion_co2\"),\n    sensirion_last_update: get(\"sensirion_last_update\"),\n\n    // -------------------------\n    // Energy\n    // -------------------------\n    solar_power: get(\"solar_power\", 0),\n    solar_power_trend: get(\"solar_power_trend\"),\n    solar_power_last_update: get(\"solar_power_last_update\"),\n\n    grid_power: get(\"grid_power\", 0),\n    grid_power_trend: get(\"grid_power_trend\"),\n    grid_power_last_update: get(\"grid_power_last_update\"),\n\n    // -------------------------\n    // Motion + Lux (Main)\n    // -------------------------\n    motion: get(\"motion\", false),\n    last_motion: get(\"last_motion\"),\n    lux: get(\"lux\"),\n\n    // -------------------------\n    // Motion + Lux (Bad)\n    // -------------------------\n    motion_bad: get(\"motion_bad\", false),\n    last_motion_bad: get(\"last_motion_bad\"),\n    lux_bad: get(\"lux_bad\")\n};\n\n\n// ------------------------------------------------\n// Derived Diagnostics\n// ------------------------------------------------\n\nif (snapshot.last_motion) {\n    snapshot.seconds_since_motion =\n        nowSec - snapshot.last_motion;\n}\n\nif (snapshot.last_motion_bad) {\n    snapshot.seconds_since_motion_bad =\n        nowSec - snapshot.last_motion_bad;\n}\n\nif (snapshot.solar_power_last_update) {\n    snapshot.seconds_since_solar_update =\n        Math.floor((nowMs - snapshot.solar_power_last_update) / 1000);\n}\n\nif (snapshot.grid_power_last_update) {\n    snapshot.seconds_since_grid_update =\n        Math.floor((nowMs - snapshot.grid_power_last_update) / 1000);\n}\n\nif (snapshot.sensirion_last_update) {\n    snapshot.seconds_since_sensirion_update =\n        Math.floor((nowMs - snapshot.sensirion_last_update) / 1000);\n}\n\n\n// ------------------------------------------------\n// Output\n// ------------------------------------------------\n\nmsg.payload = snapshot;\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 940,
+        "y": 620,
+        "wires": [
+            [
+                "9973720f3594bd9c"
+            ]
+        ]
+    },
+    {
+        "id": "5c177adf44579347",
+        "type": "inject",
+        "z": "1c0e9aecdf5ec591",
+        "name": "DEBUG",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 810,
+        "y": 620,
+        "wires": [
+            [
+                "1bed5ae00065b8e2"
+            ]
+        ]
+    },
+    {
+        "id": "9973720f3594bd9c",
+        "type": "debug",
+        "z": "1c0e9aecdf5ec591",
+        "name": "Variables debug",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1120,
+        "y": 620,
+        "wires": []
+    },
+    {
+        "id": "ff4da8615969deb7",
+        "type": "function",
+        "z": "1c0e9aecdf5ec591",
+        "name": "Store Sensi Gadgets",
+        "func": "// ------------------------------------------------\n// SENSIRION BACKUP STORAGE + MEAN AGGREGATION\n// Connect ALL backup MQTT topics here\n// ------------------------------------------------\n\n// Validate payload\nlet value = Number(msg.payload);\nif (!Number.isFinite(value)) {\n    return null; // ignore null / NaN\n}\n\nlet topic = msg.topic || \"\";\n\n// ------------------------------------------------\n// Store individual sensor values\n// ------------------------------------------------\n\nfunction store(key, val) {\n    flow.set(key, val);\n}\n\n// Temperature sensors\nif (topic === \"energiemonitor/humi/bottom/temperature\") {\n    store(\"sensirion_temp_bottom\", value);\n}\nelse if (topic === \"energiemonitor/humi/bathroom/temperature\") {\n    store(\"sensirion_temp_bathroom\", value);\n}\nelse if (topic === \"energiemonitor/aiq/top/temperature\") {\n    store(\"sensirion_temp_top\", value);\n}\n\n// Humidity sensors\nelse if (topic === \"energiemonitor/humi/bottom/humidity\") {\n    store(\"sensirion_hum_bottom\", value);\n}\nelse if (topic === \"energiemonitor/humi/bathroom/humidity\") {\n    store(\"sensirion_hum_bathroom\", value);\n}\nelse if (topic === \"energiemonitor/aiq/top/humidity\") {\n    store(\"sensirion_hum_top\", value);\n}\n\n// CO2 sensor\nelse if (topic === \"energiemonitor/co2/top/co2\") {\n    store(\"sensirion_co2_top\", value);\n}\n\nelse {\n    return null; // ignore unrelated topics\n}\n\n\n// ------------------------------------------------\n// Helper: calculate mean of valid numbers\n// ------------------------------------------------\n\nfunction mean(values) {\n    let valid = values.filter(v => Number.isFinite(v));\n    if (valid.length === 0) return null;\n    return valid.reduce((a, b) => a + b, 0) / valid.length;\n}\n\n\n// ------------------------------------------------\n// Calculate aggregated backup values\n// ------------------------------------------------\n\n// Temperature mean (3 sensors max)\nlet tempMean = mean([\n    flow.get(\"sensirion_temp_bottom\"),\n    flow.get(\"sensirion_temp_bathroom\"),\n    flow.get(\"sensirion_temp_top\")\n]);\n\n// Humidity mean (3 sensors max)\nlet humMean = mean([\n    flow.get(\"sensirion_hum_bottom\"),\n    flow.get(\"sensirion_hum_bathroom\"),\n    flow.get(\"sensirion_hum_top\")\n]);\n\n// CO2 mean (currently 1 sensor, future-proofed)\nlet co2Mean = mean([\n    flow.get(\"sensirion_co2_top\")\n]);\n\n\n// ------------------------------------------------\n// Store aggregated backup values\n// ------------------------------------------------\n\nif (tempMean !== null)\n    flow.set(\"sensirion_temperature\", tempMean);\n\nif (humMean !== null)\n    flow.set(\"sensirion_humidity\", humMean);\n\nif (co2Mean !== null)\n    flow.set(\"sensirion_co2\", co2Mean);\n\n\n// Optional: store last update timestamp\nflow.set(\"sensirion_last_update\", Date.now());\n\n\n// No output needed (pure storage node)\nreturn null;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 440,
+        "y": 720,
+        "wires": [
+            [
+                "49392064099d3cf5"
+            ]
+        ]
+    },
+    {
+        "id": "652d6ecf0b5f75a1",
+        "type": "mqtt in",
+        "z": "1c0e9aecdf5ec591",
+        "name": "Temperature Bottom",
+        "topic": "energiemonitor/humi/bottom/temperature",
+        "qos": "0",
+        "datatype": "auto-detect",
+        "broker": "4eca6eb6845b38c5",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 130,
+        "y": 740,
+        "wires": [
+            [
+                "ff4da8615969deb7"
+            ]
+        ]
+    },
+    {
+        "id": "e79abb8186d8e37d",
+        "type": "mqtt in",
+        "z": "1c0e9aecdf5ec591",
+        "name": "Humidity Bottom",
+        "topic": "energiemonitor/humi/bottom/humidity",
+        "qos": "0",
+        "datatype": "auto-detect",
+        "broker": "4eca6eb6845b38c5",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 120,
+        "y": 780,
+        "wires": [
+            [
+                "ff4da8615969deb7"
+            ]
+        ]
+    },
+    {
+        "id": "a501bc7b84272429",
+        "type": "mqtt in",
+        "z": "1c0e9aecdf5ec591",
+        "name": "Temperature Bathroom",
+        "topic": "energiemonitor/humi/bathroom/temperature",
+        "qos": "0",
+        "datatype": "auto-detect",
+        "broker": "4eca6eb6845b38c5",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 140,
+        "y": 840,
+        "wires": [
+            [
+                "ff4da8615969deb7"
+            ]
+        ]
+    },
+    {
+        "id": "50e00011dcbbe68b",
+        "type": "mqtt in",
+        "z": "1c0e9aecdf5ec591",
+        "name": "Humidity Bathroom",
+        "topic": "energiemonitor/humi/bathroom/humidity",
+        "qos": "0",
+        "datatype": "auto-detect",
+        "broker": "4eca6eb6845b38c5",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 130,
+        "y": 880,
+        "wires": [
+            [
+                "ff4da8615969deb7"
+            ]
+        ]
+    },
+    {
+        "id": "1b3bf39060d692ae",
+        "type": "link in",
+        "z": "1c0e9aecdf5ec591",
+        "name": "Sensirion in",
+        "links": [
+            "f50b9489924ee58d"
+        ],
+        "x": 65,
+        "y": 660,
+        "wires": [
+            [
+                "ff4da8615969deb7"
+            ]
+        ]
+    },
+    {
+        "id": "0456a08eadf29155",
+        "type": "debug",
+        "z": "1c0e9aecdf5ec591",
+        "name": "debug 2",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1050,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "fc0d56ad24f1c7d8",
+        "type": "debug",
+        "z": "1c0e9aecdf5ec591",
+        "name": "debug 3",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1030,
+        "y": 20,
+        "wires": []
     }
 ]
