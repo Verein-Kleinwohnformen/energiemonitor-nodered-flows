@@ -764,7 +764,7 @@
         "name": "Read DC sensor (PZEM-017)",
         "info": "",
         "x": 140,
-        "y": 920,
+        "y": 1040,
         "wires": []
     },
     {
@@ -785,7 +785,7 @@
         "onceDelay": "5",
         "topic": "",
         "x": 90,
-        "y": 960,
+        "y": 1080,
         "wires": [
             [
                 "a51deb7897732d9c"
@@ -811,7 +811,7 @@
         "delayOnStart": false,
         "startDelayTime": "",
         "x": 410,
-        "y": 960,
+        "y": 1080,
         "wires": [
             [
                 "b7de6b053734d44f"
@@ -894,7 +894,7 @@
         "bpSelectedTemplate": "DEVICE_UNKNOWN",
         "bpSourceTemplatesFromWeb": false,
         "x": 250,
-        "y": 960,
+        "y": 1080,
         "wires": [
             [
                 "61eab257930a2ec4"
@@ -912,7 +912,7 @@
         "bpChkConvertPFactor": true,
         "bpChkSetRealTo3Dp": true,
         "x": 580,
-        "y": 960,
+        "y": 1080,
         "wires": [
             [
                 "13ed1a25b6350050"
@@ -942,7 +942,7 @@
         "reduceInitType": "",
         "reduceFixup": "",
         "x": 230,
-        "y": 1040,
+        "y": 1160,
         "wires": [
             [
                 "e81cfc346de986bd"
@@ -963,7 +963,7 @@
         "finalize": "",
         "libs": [],
         "x": 360,
-        "y": 1040,
+        "y": 1160,
         "wires": [
             [
                 "131f421765a82da0"
@@ -1195,7 +1195,7 @@
         "addname": "topic",
         "property": "payload",
         "x": 510,
-        "y": 1040,
+        "y": 1160,
         "wires": [
             [
                 "3ae3114dd9ce656b"
@@ -1215,7 +1215,7 @@
         "submitPerTopic": true,
         "aggregationType": "mean",
         "x": 550,
-        "y": 1080,
+        "y": 1200,
         "wires": [
             [
                 "11acfc28dde9a229"
@@ -1245,7 +1245,7 @@
         "reduceInitType": "",
         "reduceFixup": "",
         "x": 510,
-        "y": 1120,
+        "y": 1240,
         "wires": [
             [
                 "a7c1cf25a7d26ef0"
@@ -1273,7 +1273,7 @@
         "to": "",
         "reg": false,
         "x": 940,
-        "y": 960,
+        "y": 1080,
         "wires": [
             [
                 "78dea314d74e558e"
@@ -1288,7 +1288,7 @@
         "name": "Hier Messpunkte konfigurieren DC",
         "info": "",
         "x": 1000,
-        "y": 920,
+        "y": 1040,
         "wires": []
     },
     {
@@ -1350,7 +1350,7 @@
         "to": "",
         "reg": false,
         "x": 640,
-        "y": 1120,
+        "y": 1240,
         "wires": [
             [
                 "3a1d10b21a371be0"
@@ -2774,7 +2774,7 @@
         "type": "function",
         "z": "1c0e9aecdf5ec591",
         "name": "Ventilator logics",
-        "func": "// ------------------------------------------------\n// Helpers\n// ------------------------------------------------\nfunction toNumber(v) {\n    const n = Number(v);\n    return Number.isFinite(n) ? n : null;\n}\n\nfunction toBool(v) {\n    return v === true;\n}\n\n// ------------------------------------------------\n// Time\n// ------------------------------------------------\nconst now = Math.floor(Date.now() / 1000);\n\n// ------------------------------------------------\n// Load values from flow context ONLY\n// ------------------------------------------------\n\n// --- CO2 sources ---\nconst co2Primary = toNumber(flow.get(\"co2_indoor\"));           // Netatmo\nconst co2Backup  = toNumber(flow.get(\"sensirion_co2\"));       // Sensirion\n\n// --- Ventilator state ---\nconst ventilatorOn = toBool(flow.get(\"bayernluft_on\"));\n\n// --- Presence ---\nconst lastMotion = toNumber(flow.get(\"last_motion\"));\n\n// --- Trend (Netatmo only) ---\nconst rawTrend = flow.get(\"indoor_co2_trend\");\n\n// ------------------------------------------------\n// CO2 Failover Logic\n// ------------------------------------------------\nlet co2 = null;\nlet co2Source = null;\n\nif (co2Primary !== null) {\n    co2 = co2Primary;\n    co2Source = \"netatmo\";\n}\nelse if (co2Backup !== null) {\n    co2 = co2Backup;\n    co2Source = \"sensirion\";\n}\n\n// ------------------------------------------------\n// FAIL-SAFE: CO2 unknown → force OFF\n// ------------------------------------------------\nif (co2 === null) {\n\n    if (ventilatorOn) {\n        flow.set(\"bayernluft_on\", false);\n        msg.payload = {\n            on: false,\n            reason: \"missing_co2\"\n        };\n        return msg;\n    }\n\n    return null;\n}\n\n// ------------------------------------------------\n// Presence calculation (validated)\n// ------------------------------------------------\nlet sinceMotion = Infinity;\n\nif (lastMotion !== null && lastMotion > 0) {\n    sinceMotion = now - lastMotion;\n}\n\n// ------------------------------------------------\n// Thresholds\n// ------------------------------------------------\nconst NO_MOTION_LIMIT = 60 * 60; // 1 hour\n\nconst CO2_OFF = 800;\nconst CO2_ON_TREND = 1000;\nconst CO2_ON_ALWAYS = 1200;\n\n// ------------------------------------------------\n// Trend validation (Netatmo only)\n// ------------------------------------------------\nlet co2Trend = \"unknown\";\n\nif (\n    co2Source === \"netatmo\" &&\n    (rawTrend === \"up\" || rawTrend === \"down\" || rawTrend === \"stable\")\n) {\n    co2Trend = rawTrend;\n}\n\n// ------------------------------------------------\n// LOGIC\n// ------------------------------------------------\n\n// ------------------------------------------------\n// SAFETY OVERRIDE: very high CO2 always wins\n// ------------------------------------------------\nif (co2 >= CO2_ON_ALWAYS) {\n\n    if (!ventilatorOn) {\n        flow.set(\"bayernluft_on\", true);\n        msg.payload = {\n            on: true,\n            reason: \"co2_critical\",\n            co2_source: co2Source\n        };\n        return msg;\n    }\n\n    return null;\n}\n\n// ------------------------------------------------\n// No presence → allow OFF, but not safety override\n// ------------------------------------------------\nif (sinceMotion > NO_MOTION_LIMIT) {\n\n    if (ventilatorOn && co2 < CO2_ON_ALWAYS) {\n        flow.set(\"bayernluft_on\", false);\n        msg.payload = {\n            on: false,\n            reason: \"no_presence\",\n            co2_source: co2Source\n        };\n        return msg;\n    }\n\n    return null;\n}\n\n// ------------------------------------------------\n// Normal presence-based control\n// ------------------------------------------------\n\n// OFF below lower threshold\nif (co2 < CO2_OFF && ventilatorOn) {\n    flow.set(\"bayernluft_on\", false);\n    msg.payload = {\n        on: false,\n        reason: \"co2_low\",\n        co2_source: co2Source\n    };\n    return msg;\n}\n\n// Trend-based ON (Netatmo only)\nif (\n    !ventilatorOn &&\n    co2 >= CO2_ON_TREND &&\n    co2 < CO2_ON_ALWAYS &&\n    co2Trend === \"up\"\n) {\n    flow.set(\"bayernluft_on\", true);\n    msg.payload = {\n        on: true,\n        reason: \"co2_rising\",\n        co2_source: co2Source\n    };\n    return msg;\n}\n\n// ------------------------------------------------\n// No state change\n// ------------------------------------------------\nreturn null;\n",
+        "func": "// ------------------------------------------------\n// Helpers\n// ------------------------------------------------\nfunction toNumber(v) {\n    const n = Number(v);\n    return Number.isFinite(n) ? n : null;\n}\n\nfunction toBool(v) {\n    return v === true;\n}\n\n// ------------------------------------------------\n// Time\n// ------------------------------------------------\nconst now = Math.floor(Date.now() / 1000);\n\n// ------------------------------------------------\n// Load values from flow context ONLY\n// ------------------------------------------------\n\n// --- CO2 sources ---\nconst co2Primary = toNumber(flow.get(\"co2_indoor\"));           // Netatmo\nconst co2Backup  = toNumber(flow.get(\"sensirion_co2\"));       // Sensirion\n\n// --- Ventilator state ---\nconst ventilatorOn = toBool(flow.get(\"bayernluft_on\"));\n\n// --- Presence ---\nconst lastMotion = toNumber(flow.get(\"last_motion\"));\n\n// --- Trend (Netatmo only) ---\nconst rawTrend = flow.get(\"indoor_co2_trend\");\n\n// ------------------------------------------------\n// CO2 Failover Logic\n// ------------------------------------------------\nlet co2 = null;\nlet co2Source = null;\n\nif (co2Primary !== null) {\n    co2 = co2Primary;\n    co2Source = \"netatmo\";\n}\nelse if (co2Backup !== null) {\n    co2 = co2Backup;\n    co2Source = \"sensirion\";\n}\n\n// ------------------------------------------------\n// FAIL-SAFE: CO2 unknown → force OFF\n// ------------------------------------------------\nif (co2 === null) {\n\n    if (ventilatorOn) {\n        flow.set(\"bayernluft_on\", false);\n        msg.payload = {\n            on: false,\n            reason: \"missing_co2\"\n        };\n        return msg;\n    }\n\n    return null;\n}\n\n// ------------------------------------------------\n// Presence calculation (validated)\n// ------------------------------------------------\nlet sinceMotion = Infinity;\n\nif (lastMotion !== null && lastMotion > 0) {\n    sinceMotion = now - lastMotion;\n}\n\n// ------------------------------------------------\n// Thresholds\n// ------------------------------------------------\nconst NO_MOTION_LIMIT = 60 * 60; // 1 hour\n\nconst CO2_OFF = 800;\nconst CO2_ON_TREND = 1000;\nconst CO2_ON_ALWAYS = 1200;\n\n// ------------------------------------------------\n// Trend validation (Netatmo only)\n// ------------------------------------------------\nlet co2Trend = \"unknown\";\n\nif (\n    co2Source === \"netatmo\" &&\n    (rawTrend === \"up\" || rawTrend === \"down\" || rawTrend === \"stable\")\n) {\n    co2Trend = rawTrend;\n}\n\n// ------------------------------------------------\n// LOGIC\n// ------------------------------------------------\n\n// ------------------------------------------------\n// SAFETY OVERRIDE: very high CO2 always wins\n// ------------------------------------------------\nif (co2 >= CO2_ON_ALWAYS) {\n\n    if (!ventilatorOn) {\n        flow.set(\"bayernluft_on\", true);\n        msg.payload = {\n            on: true,\n            reason: \"co2_critical\",\n            co2_source: co2Source\n        };\n        return msg;\n    }\n\n    return null;\n}\n\n// ------------------------------------------------\n// No presence → allow OFF, but not safety override\n// ------------------------------------------------\nif (sinceMotion > NO_MOTION_LIMIT) {\n\n    if (ventilatorOn && co2 < CO2_ON_ALWAYS) {\n        flow.set(\"bayernluft_on\", false);\n        msg.payload = {\n            on: false,\n            reason: \"no_presence\",\n            co2_source: co2Source\n        };\n        return msg;\n    }\n\n    return null;\n}\n\n// ------------------------------------------------\n// Normal presence-based control\n// ------------------------------------------------\n\n// OFF below lower threshold\nif (co2 < CO2_OFF && ventilatorOn) {\n    flow.set(\"bayernluft_on\", false);\n    msg.payload = {\n        on: false,\n        reason: \"co2_low\",\n        co2_source: co2Source\n    };\n    return msg;\n}\n\n// Trend-based ON (Netatmo only)\nif (\n    !ventilatorOn &&\n    co2 >= CO2_ON_TREND &&\n    co2 < CO2_ON_ALWAYS &&\n    co2Trend === \"up\"\n) {\n    flow.set(\"bayernluft_on\", true);\n    msg.payload = {\n        on: true,\n        reason: \"co2_rising\",\n        co2_source: co2Source\n    };\n    return msg;\n}\n\n// ------------------------------------------------\n// No state change\n// ------------------------------------------------\nreturn {};\n",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
@@ -2785,8 +2785,7 @@
         "y": 80,
         "wires": [
             [
-                "333859a95e219148",
-                "fc0d56ad24f1c7d8"
+                "333859a95e219148"
             ]
         ]
     },
@@ -2795,7 +2794,7 @@
         "type": "function",
         "z": "1c0e9aecdf5ec591",
         "name": "Bathroom ventilator logics",
-        "func": "// ------------------------------------------------\n// Helpers\n// ------------------------------------------------\nfunction toBool(v) {\n    return v === true;\n}\n\nfunction toNumber(v) {\n    const n = Number(v);\n    return Number.isFinite(n) ? n : null;\n}\n\n// ------------------------------------------------\n// Load state from flow\n// ------------------------------------------------\nconst motionDetected = toBool(flow.get(\"motion_bad\"));\nconst lastMotion = toNumber(flow.get(\"last_motion_bad\"));\nconst ventilatorOn = toBool(flow.get(\"wc_on\"));\n\n// ------------------------------------------------\n// Time\n// ------------------------------------------------\nconst now = Math.floor(Date.now() / 1000);\n\n// ------------------------------------------------\n// FAIL-SAFE: motion state unknown → force ON\n// ------------------------------------------------\nif (flow.get(\"motion_bad\") === undefined || lastMotion === null) {\n\n    if (!ventilatorOn) {\n        flow.set(\"wc_on\", true);\n        msg.payload = { on: true, reason: \"unknown_motion\" };\n        return msg;\n    }\n\n    return null;\n}\n\n// ------------------------------------------------\n// Timing\n// ------------------------------------------------\nconst secondsSinceMotion = now - lastMotion;\n\nconst FIVE_MIN = 5 * 60;\nconst FOUR_HOURS = 4 * 60 * 60;\n\n// ------------------------------------------------\n// LOGIC\n// ------------------------------------------------\n\n// Between 5 min and 4 h after motion → ON\nif (\n    secondsSinceMotion > FIVE_MIN &&\n    secondsSinceMotion < FOUR_HOURS &&\n    !ventilatorOn\n) {\n    flow.set(\"wc_on\", true);\n    msg.payload = { on: true, reason: \"post_motion_ventilation\" };\n    return msg;\n}\n\n// Motion detected → OFF\nif (motionDetected && ventilatorOn) {\n    flow.set(\"wc_on\", false);\n    msg.payload = { on: false, reason: \"motion_detected\" };\n    return msg;\n}\n\n// No motion for 4h → OFF\nif (secondsSinceMotion >= FOUR_HOURS && ventilatorOn) {\n    flow.set(\"wc_on\", false);\n    msg.payload = { on: false, reason: \"timeout\" };\n    return msg;\n}\n\n// No state change\nreturn null;\n",
+        "func": "// ------------------------------------------------\n// Helpers\n// ------------------------------------------------\nfunction toBool(v) {\n    return v === true;\n}\n\nfunction toNumber(v) {\n    const n = Number(v);\n    return Number.isFinite(n) ? n : null;\n}\n\n// ------------------------------------------------\n// Load state from flow\n// ------------------------------------------------\nconst motionDetected = toBool(flow.get(\"motion_bad\"));\nconst lastMotion = toNumber(flow.get(\"last_motion_bad\"));\nconst ventilatorOn = toBool(flow.get(\"wc_on\"));\n\n// ------------------------------------------------\n// Time\n// ------------------------------------------------\nconst now = Math.floor(Date.now() / 1000);\n\n// ------------------------------------------------\n// FAIL-SAFE: motion state unknown → force ON\n// ------------------------------------------------\nif (flow.get(\"motion_bad\") === undefined || lastMotion === null) {\n\n    if (!ventilatorOn) {\n        flow.set(\"wc_on\", true);\n        msg.payload = { on: true, reason: \"unknown_motion\" };\n        return msg;\n    }\n\n    return null;\n}\n\n// ------------------------------------------------\n// Timing\n// ------------------------------------------------\nconst secondsSinceMotion = now - lastMotion;\n\nconst FIVE_MIN = 5 * 60;\nconst FOUR_HOURS = 4 * 60 * 60;\n\n// ------------------------------------------------\n// LOGIC\n// ------------------------------------------------\n\n// Between 5 min and 4 h after motion → ON\nif (\n    secondsSinceMotion > FIVE_MIN &&\n    secondsSinceMotion < FOUR_HOURS &&\n    !ventilatorOn\n) {\n    flow.set(\"wc_on\", true);\n    msg.payload = { on: true, reason: \"post_motion_ventilation\" };\n    return msg;\n}\n\n// Motion detected → OFF\nif (motionDetected && ventilatorOn) {\n    flow.set(\"wc_on\", false);\n    msg.payload = { on: false, reason: \"motion_detected\" };\n    return msg;\n}\n\n// No motion for 4h → OFF\nif (secondsSinceMotion >= FOUR_HOURS && ventilatorOn) {\n    flow.set(\"wc_on\", false);\n    msg.payload = { on: false, reason: \"timeout\" };\n    return msg;\n}\n\n// No state change\nreturn {};\n",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
@@ -2869,7 +2868,7 @@
         "type": "function",
         "z": "1c0e9aecdf5ec591",
         "name": "LED logics",
-        "func": "// ------------------------------------------------\n// Helpers\n// ------------------------------------------------\nfunction toBool(v) {\n    return v === true;\n}\n\nfunction toNumber(v) {\n    const n = Number(v);\n    return Number.isFinite(n) ? n : null;\n}\n\n// ------------------------------------------------\n// Load values from flow\n// ------------------------------------------------\nconst motion = toBool(flow.get(\"motion_living\"));\nconst lastMotion = toNumber(flow.get(\"last_motion_living\"));\nconst lux = toNumber(flow.get(\"lux_living\"));\n\nconst dimmerOn = toBool(flow.get(\"stairs_on\"));\nconst dimmerBrightness = toNumber(flow.get(\"stairs_brightness\")) ?? 0;\nconst dimmerSource = flow.get(\"stairs_source\") || \"unknown\";\n\n// ------------------------------------------------\n// FAIL-SAFE: missing lux or motion → no action\n// ------------------------------------------------\nif (lux === null || flow.get(\"motion_living\") === undefined || lastMotion === null) {\n    return null;\n}\n\n// ------------------------------------------------\n// Time\n// ------------------------------------------------\nconst now = Math.floor(Date.now() / 1000);\nconst sinceMotion = now - lastMotion;\n\n// ------------------------------------------------\n// Thresholds\n// ------------------------------------------------\nconst OFF_DELAY = 15 * 60;\n\nconst MIN_BRIGHTNESS = 20;\nconst MAX_BRIGHTNESS = 70;\n\n// ------------------------------------------------\n// Brightness calculation\n// ------------------------------------------------\nlet desiredBrightness;\n\nif (lux < 100) {\n    desiredBrightness = 20;\n}\nelse if (lux < 150) {\n    desiredBrightness = 30;\n}\nelse {\n    const minLux = 150;\n    const maxLux = 1000;\n    const ratio = (lux - minLux) / (maxLux - minLux);\n    desiredBrightness = 30 + ratio * (MAX_BRIGHTNESS - 30);\n}\n\ndesiredBrightness = Math.round(\n    Math.max(MIN_BRIGHTNESS, Math.min(MAX_BRIGHTNESS, desiredBrightness))\n);\n\n// ------------------------------------------------\n// LOGIC\n// ------------------------------------------------\n\n// Motion → ensure ON and correct brightness\nif (motion) {\n\n    if (\n        dimmerSource !== \"input\" &&\n        (!dimmerOn || dimmerBrightness !== desiredBrightness)\n    ) {\n        flow.set(\"stairs_on\", true);\n        flow.set(\"stairs_brightness\", desiredBrightness);\n        flow.set(\"stairs_source\", \"auto\");\n\n        msg.payload = {\n            on: true,\n            brightness: desiredBrightness\n        };\n        return msg;\n    }\n\n    return null;\n}\n\n// No motion → timeout OFF\nif (\n    sinceMotion > OFF_DELAY &&\n    dimmerOn &&\n    dimmerSource !== \"input\"\n) {\n    flow.set(\"stairs_on\", false);\n    flow.set(\"stairs_source\", \"auto\");\n\n    msg.payload = { on: false };\n    return msg;\n}\n\n// No state change\nreturn null;\n",
+        "func": "// ------------------------------------------------\n// Helpers\n// ------------------------------------------------\nfunction toBool(v) {\n    return v === true;\n}\n\nfunction toNumber(v) {\n    const n = Number(v);\n    return Number.isFinite(n) ? n : null;\n}\n\n// ------------------------------------------------\n// Load values from flow\n// ------------------------------------------------\nconst motion = toBool(flow.get(\"motion_living\"));\nconst lastMotion = toNumber(flow.get(\"last_motion_living\"));\nconst lux = toNumber(flow.get(\"lux_living\"));\n\nconst dimmerOn = toBool(flow.get(\"stairs_on\"));\nconst dimmerBrightness = toNumber(flow.get(\"stairs_brightness\")) ?? 0;\nconst dimmerSource = flow.get(\"stairs_source\") || \"unknown\";\n\n// ------------------------------------------------\n// FAIL-SAFE: missing lux or motion → no action\n// ------------------------------------------------\nif (lux === null || flow.get(\"motion_living\") === undefined || lastMotion === null) {\n    return null;\n}\n\n// ------------------------------------------------\n// Time\n// ------------------------------------------------\nconst now = Math.floor(Date.now() / 1000);\nconst sinceMotion = now - lastMotion;\n\n// ------------------------------------------------\n// Thresholds\n// ------------------------------------------------\nconst OFF_DELAY = 15 * 60;\n\nconst MIN_BRIGHTNESS = 20;\nconst MAX_BRIGHTNESS = 70;\n\n// ------------------------------------------------\n// Brightness calculation\n// ------------------------------------------------\nlet desiredBrightness;\n\nif (lux < 100) {\n    desiredBrightness = 20;\n}\nelse if (lux < 150) {\n    desiredBrightness = 30;\n}\nelse {\n    const minLux = 150;\n    const maxLux = 1000;\n    const ratio = (lux - minLux) / (maxLux - minLux);\n    desiredBrightness = 30 + ratio * (MAX_BRIGHTNESS - 30);\n}\n\ndesiredBrightness = Math.round(\n    Math.max(MIN_BRIGHTNESS, Math.min(MAX_BRIGHTNESS, desiredBrightness))\n);\n\n// ------------------------------------------------\n// LOGIC\n// ------------------------------------------------\n\n// Motion → ensure ON and correct brightness\nif (motion) {\n\n    if (\n        dimmerSource !== \"input\" &&\n        (!dimmerOn || dimmerBrightness !== desiredBrightness)\n    ) {\n        flow.set(\"stairs_on\", true);\n        flow.set(\"stairs_brightness\", desiredBrightness);\n        flow.set(\"stairs_source\", \"auto\");\n\n        msg.payload = {\n            on: true,\n            brightness: desiredBrightness\n        };\n        return msg;\n    }\n\n    return null;\n}\n\n// No motion → timeout OFF\nif (\n    sinceMotion > OFF_DELAY &&\n    dimmerOn &&\n    dimmerSource !== \"input\"\n) {\n    flow.set(\"stairs_on\", false);\n    flow.set(\"stairs_source\", \"auto\");\n\n    msg.payload = { on: false };\n    return msg;\n}\n\n// No state change\nreturn {};\n",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
@@ -2890,7 +2889,7 @@
         "type": "function",
         "z": "1c0e9aecdf5ec591",
         "name": "Heating logics",
-        "func": "// ------------------------------------------------\n// Helpers\n// ------------------------------------------------\nfunction toNumber(v) {\n    const n = Number(v);\n    return Number.isFinite(n) ? n : null;\n}\n\n// ------------------------------------------------\n// Load ALL values from flow context\n// ------------------------------------------------\n\n// --- Primary (Netatmo) ---\nlet tempIndoorPrimary = toNumber(flow.get(\"temperature_indoor\"));\nlet tempOutdoor = toNumber(flow.get(\"temperature_outdoor\"));\n\n// --- Backup (Sensirion aggregated) ---\nlet tempIndoorBackup = toNumber(flow.get(\"sensirion_temperature\"));\n\n// --- Energy ---\nlet solarPower = toNumber(flow.get(\"solar_power\")) ?? 0;\nlet gridPower  = toNumber(flow.get(\"grid_power\")) ?? 0;\n\n// --- State ---\nlet heatingOn = flow.get(\"heating_on\") === true;\nlet motion = flow.get(\"motion\") === true;\nlet lastMotion = toNumber(flow.get(\"last_motion\")) ?? 0;\n\n// ------------------------------------------------\n// Temperature Failover Logic\n// ------------------------------------------------\n\nlet tempIndoor = null;\nlet tempSource = null;\n\n// Prefer Netatmo\nif (tempIndoorPrimary !== null) {\n    tempIndoor = tempIndoorPrimary;\n    tempSource = \"netatmo\";\n}\n// Fallback to Sensirion\nelse if (tempIndoorBackup !== null) {\n    tempIndoor = tempIndoorBackup;\n    tempSource = \"sensirion\";\n}\n\n// ------------------------------------------------\n// FAIL-SAFE\n// ------------------------------------------------\n\nif (tempIndoor === null || tempOutdoor === null) {\n\n    if (heatingOn) {\n        flow.set(\"heating_on\", false);\n        msg.payload = { on: false, reason: \"missing_temperature\" };\n        return msg;\n    }\n\n    return null;\n}\n\n// ------------------------------------------------\n// Time calculation\n// ------------------------------------------------\n\nlet now = Math.floor(Date.now() / 1000);\nlet sinceMotion = now - lastMotion;\n\n// ------------------------------------------------\n// Thresholds\n// ------------------------------------------------\n\nconst FROST_TEMP = 12;\nconst COMFORT_TEMP = 18;\nconst NO_MOTION_LIMIT = 60 * 60;\n\nconst SOLAR_ON = 400;\nconst SOLAR_OFF = 200;\n\n// ------------------------------------------------\n// Step 1: Temperature demand logic\n// ------------------------------------------------\n\nlet tempRequestsHeating = false;\n\nif (tempIndoor < FROST_TEMP) {\n    tempRequestsHeating = true;\n}\nelse if (tempOutdoor < tempIndoor) {\n\n    if (motion && tempIndoor < COMFORT_TEMP) {\n        tempRequestsHeating = true;\n    }\n\n    if (tempIndoor >= COMFORT_TEMP || sinceMotion > NO_MOTION_LIMIT) {\n        tempRequestsHeating = false;\n    }\n}\nelse {\n    tempRequestsHeating = false;\n}\n\n// ------------------------------------------------\n// Step 2: Energy permission (solar hysteresis + grid)\n// ------------------------------------------------\n\nlet energyAllowsHeating = false;\n\nif (heatingOn) {\n    if (solarPower > SOLAR_OFF || gridPower > 0) {\n        energyAllowsHeating = true;\n    }\n}\nelse {\n    if (solarPower > SOLAR_ON || gridPower > 0) {\n        energyAllowsHeating = true;\n    }\n}\n\n// ------------------------------------------------\n// Step 3: Final decision\n// ------------------------------------------------\n\nif (tempRequestsHeating && energyAllowsHeating) {\n\n    if (!heatingOn) {\n        flow.set(\"heating_on\", true);\n        msg.payload = {\n            on: true,\n            temperature_source: tempSource\n        };\n        return msg;\n    }\n\n}\nelse {\n\n    if (heatingOn) {\n        flow.set(\"heating_on\", false);\n        msg.payload = {\n            on: false,\n            temperature_source: tempSource\n        };\n        return msg;\n    }\n}\n\n// No state change → no message\nreturn null;\n",
+        "func": "// ------------------------------------------------\n// Helpers\n// ------------------------------------------------\nfunction toNumber(v) {\n    const n = Number(v);\n    return Number.isFinite(n) ? n : null;\n}\n\n// ------------------------------------------------\n// Load ALL values from flow context\n// ------------------------------------------------\n\n// --- Primary (Netatmo) ---\nlet tempIndoorPrimary = toNumber(flow.get(\"temperature_indoor\"));\nlet tempOutdoor = toNumber(flow.get(\"temperature_outdoor\"));\n\n// --- Backup (Sensirion aggregated) ---\nlet tempIndoorBackup = toNumber(flow.get(\"sensirion_temperature\"));\n\n// --- Energy ---\nlet solarPower = toNumber(flow.get(\"solar_power\")) ?? 0;\nlet gridPower  = toNumber(flow.get(\"grid_power\")) ?? 0;\nlet batterySoc = toNumber(flow.get(\"battery_soc\")) ?? 0;\n\n// --- State ---\nlet heatingOn = flow.get(\"heating_on\") === true;\nlet motion = flow.get(\"motion\") === true;\nlet lastMotion = toNumber(flow.get(\"last_motion\")) ?? 0;\n\n// ------------------------------------------------\n// Temperature Failover Logic\n// ------------------------------------------------\n\nlet tempIndoor = null;\nlet tempSource = null;\n\n// Prefer Netatmo\nif (tempIndoorPrimary !== null) {\n    tempIndoor = tempIndoorPrimary;\n    tempSource = \"netatmo\";\n}\n// Fallback to Sensirion\nelse if (tempIndoorBackup !== null) {\n    tempIndoor = tempIndoorBackup;\n    tempSource = \"sensirion\";\n}\n\n// ------------------------------------------------\n// FAIL-SAFE\n// ------------------------------------------------\n\nif (tempIndoor === null || tempOutdoor === null) {\n\n    if (heatingOn) {\n        flow.set(\"heating_on\", false);\n        msg.payload = { on: false, reason: \"missing_temperature\" };\n        return msg;\n    }\n\n    return null;\n}\n\n// ------------------------------------------------\n// Time calculation\n// ------------------------------------------------\n\nlet now = Math.floor(Date.now() / 1000);\nlet sinceMotion = now - lastMotion;\n\n// ------------------------------------------------\n// Thresholds\n// ------------------------------------------------\n\nconst FROST_TEMP = 16;\nconst COMFORT_TEMP = 20;\nconst NO_MOTION_LIMIT = 60 * 60;\n\nconst SOLAR_ON = 600;\nconst SOLAR_OFF = 400;\nconst BATTERY_FULL = 98;\nconst BATT_HYST = 4; // Hysteresis\n\n// ------------------------------------------------\n// Step 1: Temperature demand logic\n// ------------------------------------------------\n\nlet tempRequestsHeating = false;\n\nif (tempIndoor < FROST_TEMP) {\n    tempRequestsHeating = true;\n}\nelse if (tempOutdoor < tempIndoor) {\n\n    if (motion && tempIndoor < COMFORT_TEMP) {\n        tempRequestsHeating = true;\n    }\n\n    if (tempIndoor >= COMFORT_TEMP || sinceMotion > NO_MOTION_LIMIT) {\n        tempRequestsHeating = false;\n    }\n}\nelse {\n    tempRequestsHeating = false;\n}\n\n// ------------------------------------------------\n// Step 2: Energy permission (solar hysteresis + grid)\n// ------------------------------------------------\n\nlet energyAllowsHeating = false;\n\nif (heatingOn) {\n    if (solarPower > SOLAR_OFF || batterySoc >= BATTERY_FULL - BATT_HYST) {\n        energyAllowsHeating = true;\n    }\n}\nelse {\n    if (solarPower > SOLAR_ON || batterySoc >= BATTERY_FULL) {\n        energyAllowsHeating = true;\n    }\n}\n\n// ------------------------------------------------\n// Step 3: Final decision\n// ------------------------------------------------\n\nif (tempRequestsHeating && energyAllowsHeating) {\n\n    if (!heatingOn) {\n        flow.set(\"heating_on\", true);\n        msg.payload = {\n            on: true,\n            temperature_source: tempSource\n        };\n        return msg;\n    }\n\n}\nelse {\n\n    if (heatingOn) {\n        flow.set(\"heating_on\", false);\n        msg.payload = {\n            on: false,\n            temperature_source: tempSource\n        };\n        return msg;\n    }\n}\n\n// No state change → no message\nreturn {};\n",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
@@ -2901,8 +2900,7 @@
         "y": 160,
         "wires": [
             [
-                "4a0f8d8fcd5bab62",
-                "0456a08eadf29155"
+                "4a0f8d8fcd5bab62"
             ]
         ]
     },
@@ -2972,8 +2970,7 @@
         "y": 520,
         "wires": [
             [
-                "2f49a823642bb6e2",
-                "0456a08eadf29155"
+                "2f49a823642bb6e2"
             ]
         ]
     },
@@ -3000,7 +2997,7 @@
         "type": "function",
         "z": "1c0e9aecdf5ec591",
         "name": "DEBUG",
-        "func": "// ------------------------------------------------\n// FULL FLOW STATE SNAPSHOT LOGGER (EXTENDED)\n// Trigger manually via Inject button\n// ------------------------------------------------\n\nfunction get(name, fallback = null) {\n    let v = flow.get(name);\n    return (v === undefined) ? fallback : v;\n}\n\nlet nowMs = Date.now();\nlet nowSec = Math.floor(nowMs / 1000);\n\nlet snapshot = {\n\n    timestamp_iso: new Date(nowMs).toISOString(),\n    timestamp_unix: nowSec,\n\n    // -------------------------\n    // Heating\n    // -------------------------\n    heating_on: get(\"heating_on\", false),\n\n    // -------------------------\n    // Primary Climate (Netatmo)\n    // -------------------------\n    temperature_indoor: get(\"temperature_indoor\"),\n    temperature_indoor_trend: get(\"temperature_indoor_trend\"),\n\n    temperature_outdoor: get(\"temperature_outdoor\"),\n    temperature_outdoor_trend: get(\"temperature_outdoor_trend\"),\n\n    humidity_indoor: get(\"humidity_indoor\"),\n    humidity_outdoor: get(\"humidity_outdoor\"),\n\n    co2_indoor: get(\"co2_indoor\"),\n    indoor_co2_trend: get(\"indoor_co2_trend\"),\n\n    // -------------------------\n    // Sensirion Backup - Individual Sensors\n    // -------------------------\n    sensirion_temp_bottom: get(\"sensirion_temp_bottom\"),\n    sensirion_temp_bathroom: get(\"sensirion_temp_bathroom\"),\n    sensirion_temp_top: get(\"sensirion_temp_top\"),\n\n    sensirion_hum_bottom: get(\"sensirion_hum_bottom\"),\n    sensirion_hum_bathroom: get(\"sensirion_hum_bathroom\"),\n    sensirion_hum_top: get(\"sensirion_hum_top\"),\n\n    sensirion_co2_top: get(\"sensirion_co2_top\"),\n\n    // -------------------------\n    // Sensirion Backup - Aggregated\n    // -------------------------\n    sensirion_temperature: get(\"sensirion_temperature\"),\n    sensirion_humidity: get(\"sensirion_humidity\"),\n    sensirion_co2: get(\"sensirion_co2\"),\n    sensirion_last_update: get(\"sensirion_last_update\"),\n\n    // -------------------------\n    // Energy\n    // -------------------------\n    solar_power: get(\"solar_power\", 0),\n    solar_power_trend: get(\"solar_power_trend\"),\n    solar_power_last_update: get(\"solar_power_last_update\"),\n\n    grid_power: get(\"grid_power\", 0),\n    grid_power_trend: get(\"grid_power_trend\"),\n    grid_power_last_update: get(\"grid_power_last_update\"),\n\n    // -------------------------\n    // Motion + Lux (Main)\n    // -------------------------\n    motion: get(\"motion\", false),\n    last_motion: get(\"last_motion\"),\n    lux: get(\"lux\"),\n\n    // -------------------------\n    // Motion + Lux (Bad)\n    // -------------------------\n    motion_bad: get(\"motion_bad\", false),\n    last_motion_bad: get(\"last_motion_bad\"),\n    lux_bad: get(\"lux_bad\")\n};\n\n\n// ------------------------------------------------\n// Derived Diagnostics\n// ------------------------------------------------\n\nif (snapshot.last_motion) {\n    snapshot.seconds_since_motion =\n        nowSec - snapshot.last_motion;\n}\n\nif (snapshot.last_motion_bad) {\n    snapshot.seconds_since_motion_bad =\n        nowSec - snapshot.last_motion_bad;\n}\n\nif (snapshot.solar_power_last_update) {\n    snapshot.seconds_since_solar_update =\n        Math.floor((nowMs - snapshot.solar_power_last_update) / 1000);\n}\n\nif (snapshot.grid_power_last_update) {\n    snapshot.seconds_since_grid_update =\n        Math.floor((nowMs - snapshot.grid_power_last_update) / 1000);\n}\n\nif (snapshot.sensirion_last_update) {\n    snapshot.seconds_since_sensirion_update =\n        Math.floor((nowMs - snapshot.sensirion_last_update) / 1000);\n}\n\n\n// ------------------------------------------------\n// Output\n// ------------------------------------------------\n\nmsg.payload = snapshot;\nreturn msg;\n",
+        "func": "// ------------------------------------------------\n// FULL FLOW STATE SNAPSHOT LOGGER (EXTENDED)\n// Trigger manually via Inject button\n// ------------------------------------------------\n\nfunction get(name, fallback = null) {\n    let v = flow.get(name);\n    return (v === undefined) ? fallback : v;\n}\n\nlet nowMs = Date.now();\nlet nowSec = Math.floor(nowMs / 1000);\n\nlet snapshot = {\n\n    timestamp_iso: new Date(nowMs).toISOString(),\n    timestamp_unix: nowSec,\n\n    // -------------------------\n    // Heating\n    // -------------------------\n    heating_on: get(\"heating_on\", false),\n\n    // -------------------------\n    // Primary Climate (Netatmo)\n    // -------------------------\n    temperature_indoor: get(\"temperature_indoor\"),\n    temperature_indoor_trend: get(\"temperature_indoor_trend\"),\n\n    temperature_outdoor: get(\"temperature_outdoor\"),\n    temperature_outdoor_trend: get(\"temperature_outdoor_trend\"),\n\n    humidity_indoor: get(\"humidity_indoor\"),\n    humidity_outdoor: get(\"humidity_outdoor\"),\n\n    co2_indoor: get(\"co2_indoor\"),\n    indoor_co2_trend: get(\"indoor_co2_trend\"),\n\n    // -------------------------\n    // Sensirion Backup - Individual Sensors\n    // -------------------------\n    sensirion_temp_bottom: get(\"sensirion_temp_bottom\"),\n    sensirion_temp_bathroom: get(\"sensirion_temp_bathroom\"),\n    sensirion_temp_top: get(\"sensirion_temp_top\"),\n\n    sensirion_hum_bottom: get(\"sensirion_hum_bottom\"),\n    sensirion_hum_bathroom: get(\"sensirion_hum_bathroom\"),\n    sensirion_hum_top: get(\"sensirion_hum_top\"),\n\n    sensirion_co2_top: get(\"sensirion_co2_top\"),\n\n    // -------------------------\n    // Sensirion Backup - Aggregated\n    // -------------------------\n    sensirion_temperature: get(\"sensirion_temperature\"),\n    sensirion_humidity: get(\"sensirion_humidity\"),\n    sensirion_co2: get(\"sensirion_co2\"),\n    sensirion_last_update: get(\"sensirion_last_update\"),\n\n    // -------------------------\n    // Energy\n    // -------------------------\n    solar_power: get(\"solar_power\", 0),\n    solar_power_trend: get(\"solar_power_trend\"),\n    solar_power_last_update: get(\"solar_power_last_update\"),\n\n    grid_power: get(\"grid_power\", 0),\n    grid_power_trend: get(\"grid_power_trend\"),\n    grid_power_last_update: get(\"grid_power_last_update\"),\n\n    battery_soc: get(\"battery_soc\", 0),\n\n    // -------------------------\n    // Motion + Lux (Main)\n    // -------------------------\n    motion: get(\"motion\", false),\n    last_motion: get(\"last_motion\"),\n    lux: get(\"lux\"),\n\n    // -------------------------\n    // Motion + Lux (Bad)\n    // -------------------------\n    motion_bad: get(\"motion_bad\", false),\n    last_motion_bad: get(\"last_motion_bad\"),\n    lux_bad: get(\"lux_bad\")\n};\n\n\n// ------------------------------------------------\n// Derived Diagnostics\n// ------------------------------------------------\n\nif (snapshot.last_motion) {\n    snapshot.seconds_since_motion =\n        nowSec - snapshot.last_motion;\n}\n\nif (snapshot.last_motion_bad) {\n    snapshot.seconds_since_motion_bad =\n        nowSec - snapshot.last_motion_bad;\n}\n\nif (snapshot.solar_power_last_update) {\n    snapshot.seconds_since_solar_update =\n        Math.floor((nowMs - snapshot.solar_power_last_update) / 1000);\n}\n\nif (snapshot.grid_power_last_update) {\n    snapshot.seconds_since_grid_update =\n        Math.floor((nowMs - snapshot.grid_power_last_update) / 1000);\n}\n\nif (snapshot.sensirion_last_update) {\n    snapshot.seconds_since_sensirion_update =\n        Math.floor((nowMs - snapshot.sensirion_last_update) / 1000);\n}\n\n\n// ------------------------------------------------\n// Output\n// ------------------------------------------------\n\nmsg.payload = snapshot;\nreturn msg;\n",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
@@ -3182,35 +3179,90 @@
         ]
     },
     {
-        "id": "0456a08eadf29155",
-        "type": "debug",
+        "id": "bfddf59090d56e14",
+        "type": "mqtt in",
         "z": "1c0e9aecdf5ec591",
-        "name": "debug 2",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "false",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 1050,
-        "y": 240,
+        "name": "Victron Battery SoC",
+        "topic": "N/+/system/0/Dc/Battery/Soc",
+        "qos": "0",
+        "datatype": "json",
+        "broker": "88c835032a852602",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 130,
+        "y": 1040,
+        "wires": [
+            [
+                "faaf2627542bb7dc"
+            ]
+        ]
+    },
+    {
+        "id": "82b4eb90bb3e5cb4",
+        "type": "mqtt out",
+        "z": "1c0e9aecdf5ec591",
+        "name": "Poll Battery SoC",
+        "topic": "",
+        "qos": "0",
+        "retain": "false",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "88c835032a852602",
+        "x": 260,
+        "y": 1000,
         "wires": []
     },
     {
-        "id": "fc0d56ad24f1c7d8",
-        "type": "debug",
+        "id": "6577a2e781f8efee",
+        "type": "inject",
         "z": "1c0e9aecdf5ec591",
-        "name": "debug 3",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "false",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 1030,
-        "y": 20,
-        "wires": []
+        "name": "1min",
+        "props": [
+            {
+                "p": "topic",
+                "v": "R/${VICTRON_SERIAL}/system/0/Dc/Battery/Soc",
+                "vt": "env"
+            },
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "60",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "str",
+        "x": 90,
+        "y": 1000,
+        "wires": [
+            [
+                "82b4eb90bb3e5cb4"
+            ]
+        ]
+    },
+    {
+        "id": "faaf2627542bb7dc",
+        "type": "function",
+        "z": "1c0e9aecdf5ec591",
+        "name": "Store Battery SoC",
+        "func": "// Ensure payload exists and contains a numeric value\nif (msg.payload && typeof msg.payload.value === \"number\") {\n\n    const soc = msg.payload.value;\n\n    // Store SOC in flow context\n    flow.set(\"battery_soc\", soc);\n\n    // Optional: also attach to msg for downstream debugging\n    msg.battery_soc = soc;\n\n    return msg;\n}\n\n// If invalid message, do nothing\nreturn null;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 410,
+        "y": 1040,
+        "wires": [
+            []
+        ]
     }
 ]
