@@ -2025,6 +2025,136 @@
         "wires": []
     },
     {
+        "id": "cb1027b5f704be4e",
+        "type": "link in",
+        "z": "3e07724de1527d10",
+        "name": "Water consumption",
+        "links": [
+            "17b5449517168695"
+        ],
+        "x": 45,
+        "y": 920,
+        "wires": [
+            [
+                "e3727ccfd315180f"
+            ]
+        ]
+    },
+    {
+        "id": "e3727ccfd315180f",
+        "type": "change",
+        "z": "3e07724de1527d10",
+        "name": "Messpunkt D1",
+        "rules": [
+            {
+                "t": "set",
+                "p": "w",
+                "pt": "msg",
+                "to": "{}",
+                "tot": "json"
+            },
+            {
+                "t": "set",
+                "p": "w.level_liter",
+                "pt": "msg",
+                "to": "payload.level_liter",
+                "tot": "msg"
+            },
+            {
+                "t": "set",
+                "p": "w.water_use_l",
+                "pt": "msg",
+                "to": "payload.water_use_l",
+                "tot": "msg"
+            },
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "{}",
+                "tot": "json"
+            },
+            {
+                "t": "set",
+                "p": "payload.metering_point",
+                "pt": "msg",
+                "to": "D1",
+                "tot": "str"
+            },
+            {
+                "t": "set",
+                "p": "payload.sensor_id",
+                "pt": "msg",
+                "to": "apollon",
+                "tot": "str"
+            },
+            {
+                "t": "set",
+                "p": "payload.values",
+                "pt": "msg",
+                "to": "w",
+                "tot": "msg"
+            },
+            {
+                "t": "set",
+                "p": "payload.timestamp",
+                "pt": "msg",
+                "to": "",
+                "tot": "date"
+            },
+            {
+                "t": "delete",
+                "p": "topic",
+                "pt": "msg"
+            },
+            {
+                "t": "delete",
+                "p": "b",
+                "pt": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 200,
+        "y": 920,
+        "wires": [
+            [
+                "2c04efba95eae95e",
+                "78dea314d74e558e",
+                "0be1473adc3e7fcc"
+            ]
+        ]
+    },
+    {
+        "id": "37eb81db5431c975",
+        "type": "comment",
+        "z": "3e07724de1527d10",
+        "name": "Wasserverbrauch",
+        "info": "",
+        "x": 100,
+        "y": 880,
+        "wires": []
+    },
+    {
+        "id": "0be1473adc3e7fcc",
+        "type": "debug",
+        "z": "3e07724de1527d10",
+        "name": "debug 3",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 370,
+        "y": 920,
+        "wires": []
+    },
+    {
         "id": "48c9ba7a4d6a5359",
         "type": "http request",
         "z": "72660c1c718b6a08",
@@ -2520,7 +2650,7 @@
         "id": "237faa6dc3ab832e",
         "type": "shelly-gen1",
         "z": "1c0e9aecdf5ec591",
-        "hostname": "192.168.1.241",
+        "hostname": "192.168.1.114",
         "description": "Shelly Bewegung Bad",
         "mode": "polling",
         "server": "",
@@ -2563,7 +2693,7 @@
         "id": "08a096bf5c3b82e9",
         "type": "shelly-gen1",
         "z": "1c0e9aecdf5ec591",
-        "hostname": "192.168.1.111",
+        "hostname": "192.168.1.186",
         "description": "Shelly Dimmer Küche",
         "mode": "polling",
         "server": "",
@@ -2586,7 +2716,7 @@
         "id": "08f366d4e239347b",
         "type": "shelly-gen1",
         "z": "1c0e9aecdf5ec591",
-        "hostname": "192.168.1.158",
+        "hostname": "192.168.1.85",
         "description": "Shelly Dimmer Treppe",
         "mode": "polling",
         "server": "",
@@ -2609,7 +2739,7 @@
         "id": "4a0f8d8fcd5bab62",
         "type": "shelly-gen1",
         "z": "1c0e9aecdf5ec591",
-        "hostname": "192.168.1.191",
+        "hostname": "192.168.1.18",
         "description": "Shelly Bodenheizung",
         "mode": "polling",
         "server": "",
@@ -2632,7 +2762,7 @@
         "id": "5e15b2b37b5f9c7c",
         "type": "shelly-gen1",
         "z": "1c0e9aecdf5ec591",
-        "hostname": "192.168.1.175",
+        "hostname": "192.168.1.86",
         "description": "Shelly WC Lüfter",
         "mode": "polling",
         "server": "",
@@ -2655,7 +2785,7 @@
         "id": "333859a95e219148",
         "type": "shelly-gen1",
         "z": "1c0e9aecdf5ec591",
-        "hostname": "192.168.1.108",
+        "hostname": "192.168.1.151",
         "description": "Shelly Bayernlüfter",
         "mode": "polling",
         "server": "",
@@ -2678,7 +2808,7 @@
         "id": "4dd7f4b16043269a",
         "type": "shelly-gen1",
         "z": "1c0e9aecdf5ec591",
-        "hostname": "192.168.1.183",
+        "hostname": "192.168.1.106",
         "description": "Shelly Bewegung Wohnzimmer",
         "mode": "polling",
         "server": "",
@@ -2702,7 +2832,7 @@
         "type": "function",
         "z": "1c0e9aecdf5ec591",
         "name": "Store Netatmo values",
-        "func": "// Extract the values object\nlet values = msg.payload.values;\n\n// Check if the values object exists\nif (!values) {\n    node.warn(\"No 'values' object found in payload\");\n    return null;\n}\n\n// Helper function to determine trend\nfunction getTrend(current, previous, threshold) {\n    if (previous === undefined) return \"stable\"; // first value\n    if (current - previous > threshold) return \"up\";\n    if (previous - current > threshold) return \"down\";\n    return \"stable\";\n}\n\n// Extract desired fields\nlet temperature_indoor = values.temperature_indoor;\nlet co2_indoor = values.co2_indoor;\nlet temperature_outdoor = values.temperature_outdoor;\n\n// Compute trends based on last stored values\nlet tempIndoorPrev = flow.get(\"temperature_indoor\");\nlet co2IndoorPrev = flow.get(\"co2_indoor\");\nlet tempOutdoorPrev = flow.get(\"temperature_outdoor\");\n\nlet temperature_indoor_trend = getTrend(temperature_indoor, tempIndoorPrev, 0.1);\nlet indoor_co2_trend = getTrend(co2_indoor, co2IndoorPrev, 25);\nlet temperature_outdoor_trend = getTrend(temperature_outdoor, tempOutdoorPrev, 0.1);\n\n// Store current values in flow context\nflow.set(\"temperature_indoor\", temperature_indoor);\nflow.set(\"temperature_indoor_trend\", temperature_indoor_trend);\n\nflow.set(\"co2_indoor\", co2_indoor);\nflow.set(\"indoor_co2_trend\", indoor_co2_trend);\n\nflow.set(\"temperature_outdoor\", temperature_outdoor);\nflow.set(\"temperature_outdoor_trend\", temperature_outdoor_trend);\n\n// Optionally store humidity as before\nflow.set(\"humidity_indoor\", values.humidity_indoor);\nflow.set(\"humidity_outdoor\", values.humidity_outdoor);\n\n// Pass through the message\nreturn msg;",
+        "func": "// Extract the values object\nlet values = msg.payload.values;\n\n// Check if the values object exists\nif (!values) {\n    node.warn(\"No 'values' object found in payload\");\n    return null;\n}\n\n// Extract last update timestamp (based on indoor temperature timestamp)\nlet netatmo_last_update = values.ts_temperature_indoor;\n\n// Helper function to determine trend\nfunction getTrend(current, previous, threshold) {\n    if (previous === undefined) return \"stable\";\n    if (current - previous > threshold) return \"up\";\n    if (previous - current > threshold) return \"down\";\n    return \"stable\";\n}\n\n// Extract desired fields\nlet temperature_indoor = values.temperature_indoor;\nlet co2_indoor = values.co2_indoor;\nlet temperature_outdoor = values.temperature_outdoor;\n\n// Compute trends based on last stored values\nlet tempIndoorPrev = flow.get(\"temperature_indoor\");\nlet co2IndoorPrev = flow.get(\"co2_indoor\");\nlet tempOutdoorPrev = flow.get(\"temperature_outdoor\");\n\nlet temperature_indoor_trend = getTrend(temperature_indoor, tempIndoorPrev, 0.1);\nlet indoor_co2_trend = getTrend(co2_indoor, co2IndoorPrev, 25);\nlet temperature_outdoor_trend = getTrend(temperature_outdoor, tempOutdoorPrev, 0.1);\n\n// Store current values in flow context\nflow.set(\"temperature_indoor\", temperature_indoor);\nflow.set(\"temperature_indoor_trend\", temperature_indoor_trend);\n\nflow.set(\"co2_indoor\", co2_indoor);\nflow.set(\"indoor_co2_trend\", indoor_co2_trend);\n\nflow.set(\"temperature_outdoor\", temperature_outdoor);\nflow.set(\"temperature_outdoor_trend\", temperature_outdoor_trend);\n\n// Store humidity values\nflow.set(\"humidity_indoor\", values.humidity_indoor);\nflow.set(\"humidity_outdoor\", values.humidity_outdoor);\n\n// Store last update timestamp (Netatmo)\nflow.set(\"netatmo_last_update\", netatmo_last_update);\n\n// Pass through message (optional: expose timestamp downstream)\nmsg.netatmo_last_update = netatmo_last_update;\n\nreturn msg;",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
@@ -2781,7 +2911,7 @@
         "type": "function",
         "z": "1c0e9aecdf5ec591",
         "name": "Ventilator logics",
-        "func": "// ------------------------------------------------\n// Helpers\n// ------------------------------------------------\nfunction toNumber(v) {\n    const n = Number(v);\n    return Number.isFinite(n) ? n : null;\n}\n\nfunction toBool(v) {\n    return v === true;\n}\n\n// ------------------------------------------------\n// Time\n// ------------------------------------------------\nconst now = Math.floor(Date.now() / 1000);\nconst nowDate = new Date();\n\n// Zurich local hour (DST-aware)\nconst zurichHour = Number(\n    new Intl.DateTimeFormat('en-GB', {\n        timeZone: 'Europe/Zurich',\n        hour: 'numeric',\n        hour12: false\n    }).format(nowDate)\n);\n\n// ------------------------------------------------\n// Load values from flow context ONLY\n// ------------------------------------------------\n\n// --- CO2 sources ---\nconst co2Primary = toNumber(flow.get(\"sensirion_co2\"));  // Netatmo\nconst co2Backup = toNumber(flow.get(\"co2_indoor\"));      // Sensirion\n\n// --- Ventilator state ---\nconst ventilatorOn = toBool(flow.get(\"bayernluft_on\"));\n\n// --- Presence ---\nconst lastMotion = toNumber(flow.get(\"last_motion\"));\n\n// --- Trend (Netatmo only) ---\nconst rawTrend = flow.get(\"indoor_co2_trend\");\n\n// ------------------------------------------------\n// CO2 Failover Logic\n// ------------------------------------------------\nlet co2 = null;\nlet co2Source = null;\n\nif (co2Primary !== null) {\n    co2 = co2Primary;\n    co2Source = \"netatmo\";\n}\nelse if (co2Backup !== null) {\n    co2 = co2Backup;\n    co2Source = \"sensirion\";\n}\n\n// ------------------------------------------------\n// FAIL-SAFE: CO2 unknown → force OFF\n// ------------------------------------------------\nif (co2 === null) {\n\n    if (ventilatorOn) {\n        flow.set(\"bayernluft_on\", false);\n        msg.payload = {\n            on: false,\n            reason: \"missing_co2\"\n        };\n        return msg;\n    }\n\n    return null;\n}\n\n// ------------------------------------------------\n// Presence calculation (validated)\n// ------------------------------------------------\nlet sinceMotion = Infinity;\n\nif (lastMotion !== null && lastMotion > 0) {\n    sinceMotion = now - lastMotion;\n}\n\n// ------------------------------------------------\n// Thresholds\n// ------------------------------------------------\nconst NO_MOTION_LIMIT = 60 * 60;         // 1 hour\nconst NO_MOTION_LUEFTEN = 12 * 60 * 60;  // 12 hours\n\nconst CO2_OFF = 800;\nconst CO2_ON_TREND = 1000;\nconst CO2_ON_ALWAYS = 1200;\n\n// ------------------------------------------------\n// Trend validation (Netatmo only)\n// ------------------------------------------------\nlet co2Trend = \"unknown\";\n\nif (\n    co2Source === \"netatmo\" &&\n    (rawTrend === \"up\" || rawTrend === \"down\" || rawTrend === \"stable\")\n) {\n    co2Trend = rawTrend;\n}\n\n// ------------------------------------------------\n// LOGIC\n// ------------------------------------------------\n\n// ------------------------------------------------\n// SAFETY OVERRIDE: very high CO2 always wins\n// ------------------------------------------------\nif (co2 >= CO2_ON_ALWAYS) {\n\n    if (!ventilatorOn) {\n        flow.set(\"bayernluft_on\", true);\n        msg.payload = {\n            on: true,\n            reason: \"co2_critical\",\n            co2_source: co2Source\n        };\n        return msg;\n    }\n\n    return null;\n}\n\n// ------------------------------------------------\n// Scheduled \"Lüften\" after 12h no motion\n// Only between 12:00–12:59 and 08:00–08:59 Zurich time\n// ------------------------------------------------\nconst inLueftenWindow = (zurichHour === 12 || zurichHour === 8);\n\nif (\n    sinceMotion > NO_MOTION_LUEFTEN &&\n    inLueftenWindow &&\n    co2 < CO2_ON_ALWAYS\n) {\n    if (!ventilatorOn) {\n        flow.set(\"bayernluft_on\", true);\n        msg.payload = {\n            on: true,\n            reason: \"scheduled_lueften\",\n            co2_source: co2Source\n        };\n        return msg;\n    }\n\n    return null;\n}\n\n// ------------------------------------------------\n// No presence (>1h) → allow OFF (but not safety)\n// ------------------------------------------------\nif (sinceMotion > NO_MOTION_LIMIT) {\n\n    if (ventilatorOn && co2 < CO2_ON_ALWAYS) {\n        flow.set(\"bayernluft_on\", false);\n        msg.payload = {\n            on: false,\n            reason: \"no_presence\",\n            co2_source: co2Source\n        };\n        return msg;\n    }\n\n    return null;\n}\n\n// ------------------------------------------------\n// Normal presence-based control\n// ------------------------------------------------\n\n// OFF below lower threshold\nif (co2 < CO2_OFF && ventilatorOn) {\n    flow.set(\"bayernluft_on\", false);\n    msg.payload = {\n        on: false,\n        reason: \"co2_low\",\n        co2_source: co2Source\n    };\n    return msg;\n}\n\n// Trend-based ON (Netatmo only)\nif (\n    !ventilatorOn &&\n    co2 >= CO2_ON_TREND &&\n    co2 < CO2_ON_ALWAYS &&\n    co2Trend === \"up\"\n) {\n    flow.set(\"bayernluft_on\", true);\n    msg.payload = {\n        on: true,\n        reason: \"co2_rising\",\n        co2_source: co2Source\n    };\n    return msg;\n}\n\n// ------------------------------------------------\n// No state change\n// ------------------------------------------------\nreturn {};",
+        "func": "// ------------------------------------------------\n// Helpers\n// ------------------------------------------------\nfunction toNumber(v) {\n    const n = Number(v);\n    return Number.isFinite(n) ? n : null;\n}\n\nfunction toBool(v) {\n    return v === true;\n}\n\n// ------------------------------------------------\n// Time\n// ------------------------------------------------\nconst now = Math.floor(Date.now() / 1000);\nconst nowDate = new Date();\n\n// Zurich local hour (DST-aware)\nconst zurichHour = Number(\n    new Intl.DateTimeFormat('en-GB', {\n        timeZone: 'Europe/Zurich',\n        hour: 'numeric',\n        hour12: false\n    }).format(nowDate)\n);\n\n// ------------------------------------------------\n// Load values from flow context ONLY\n// ------------------------------------------------\n\n// --- CO2 sources ---\nconst co2Primary = toNumber(flow.get(\"sensirion_co2\"));  // Netatmo\nconst co2Backup = toNumber(flow.get(\"co2_indoor\"));      // Sensirion\n\n// --- Ventilator state ---\nconst ventilatorOn = toBool(flow.get(\"bayernluft_on\"));\n\n// --- Presence ---\nconst lastMotion = toNumber(flow.get(\"last_motion\"));\n\n// --- Trend (Netatmo only) ---\nconst rawTrend = flow.get(\"indoor_co2_trend\");\n\n// ------------------------------------------------\n// CO2 Failover Logic\n// ------------------------------------------------\nlet co2 = null;\nlet co2Source = null;\n\nif (co2Primary !== null) {\n    co2 = co2Primary;\n    co2Source = \"netatmo\";\n}\nelse if (co2Backup !== null) {\n    co2 = co2Backup;\n    co2Source = \"sensirion\";\n}\n\n// ------------------------------------------------\n// FAIL-SAFE: CO2 unknown → force OFF\n// ------------------------------------------------\nif (co2 === null) {\n\n    if (ventilatorOn) {\n        flow.set(\"bayernluft_on\", false);\n        msg.payload = {\n            on: false,\n            reason: \"missing_co2\"\n        };\n        return msg;\n    }\n\n    return null;\n}\n\n// ------------------------------------------------\n// Presence calculation (validated)\n// ------------------------------------------------\nlet sinceMotion = Infinity;\n\nif (lastMotion !== null && lastMotion > 0) {\n    sinceMotion = now - lastMotion;\n}\n\n// ------------------------------------------------\n// Thresholds\n// ------------------------------------------------\nconst NO_MOTION_LIMIT = 60 * 60;         // 1 hour\nconst NO_MOTION_LUEFTEN = 12 * 60 * 60;  // 12 hours\n\nconst CO2_OFF = 1800;\nconst CO2_ON_TREND = 2000;\nconst CO2_ON_ALWAYS = 2000;\n\n// ------------------------------------------------\n// Trend validation (Netatmo only)\n// ------------------------------------------------\nlet co2Trend = \"unknown\";\n\nif (\n    co2Source === \"netatmo\" &&\n    (rawTrend === \"up\" || rawTrend === \"down\" || rawTrend === \"stable\")\n) {\n    co2Trend = rawTrend;\n}\n\n// ------------------------------------------------\n// LOGIC\n// ------------------------------------------------\n\n// ------------------------------------------------\n// SAFETY OVERRIDE: very high CO2 always wins\n// ------------------------------------------------\nif (co2 >= CO2_ON_ALWAYS) {\n\n    if (!ventilatorOn) {\n        flow.set(\"bayernluft_on\", true);\n        msg.payload = {\n            on: true,\n            reason: \"co2_critical\",\n            co2_source: co2Source\n        };\n        return msg;\n    }\n\n    return null;\n}\n\n// ------------------------------------------------\n// Scheduled \"Lüften\" after 12h no motion\n// Only between 12:00–12:59 and 08:00–08:59 Zurich time\n// ------------------------------------------------\nconst inLueftenWindow = (zurichHour === 12 || zurichHour === 8);\n\nif (\n    sinceMotion > NO_MOTION_LUEFTEN &&\n    inLueftenWindow &&\n    co2 < CO2_ON_ALWAYS\n) {\n    if (!ventilatorOn) {\n        flow.set(\"bayernluft_on\", true);\n        msg.payload = {\n            on: true,\n            reason: \"scheduled_lueften\",\n            co2_source: co2Source\n        };\n        return msg;\n    }\n\n    return null;\n}\n\n// ------------------------------------------------\n// No presence (>1h) → allow OFF (but not safety)\n// ------------------------------------------------\nif (sinceMotion > NO_MOTION_LIMIT) {\n\n    if (ventilatorOn && co2 < CO2_ON_ALWAYS) {\n        flow.set(\"bayernluft_on\", false);\n        msg.payload = {\n            on: false,\n            reason: \"no_presence\",\n            co2_source: co2Source\n        };\n        return msg;\n    }\n\n    return null;\n}\n\n// ------------------------------------------------\n// Normal presence-based control\n// ------------------------------------------------\n\n// OFF below lower threshold\nif (co2 < CO2_OFF && ventilatorOn) {\n    flow.set(\"bayernluft_on\", false);\n    msg.payload = {\n        on: false,\n        reason: \"co2_low\",\n        co2_source: co2Source\n    };\n    return msg;\n}\n\n// Trend-based ON (Netatmo only)\nif (\n    !ventilatorOn &&\n    co2 >= CO2_ON_TREND &&\n    co2 < CO2_ON_ALWAYS &&\n    co2Trend === \"up\"\n) {\n    flow.set(\"bayernluft_on\", true);\n    msg.payload = {\n        on: true,\n        reason: \"co2_rising\",\n        co2_source: co2Source\n    };\n    return msg;\n}\n\n// ------------------------------------------------\n// No state change\n// ------------------------------------------------\nreturn {};",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
@@ -2801,7 +2931,7 @@
         "type": "function",
         "z": "1c0e9aecdf5ec591",
         "name": "Bathroom ventilator logics",
-        "func": "//------------------------------------------------\n// Helpers\n//------------------------------------------------\nfunction toBool(v) {\n    return v === true;\n}\n\nfunction toNumber(v) {\n    const n = Number(v);\n    return Number.isFinite(n) ? n : null;\n}\n\n//------------------------------------------------\n// Load state\n//------------------------------------------------\nconst motionDetected = toBool(flow.get(\"motion_bad\"));\nconst lastMotion = toNumber(flow.get(\"last_motion_bad\"));\nconst ventilatorOn = toBool(flow.get(\"wc_on\"));\n\n//------------------------------------------------\n// Time\n//------------------------------------------------\nconst now = Math.floor(Date.now() / 1000);\nconst nowDate = new Date();\n\n// Zurich local hour (DST aware)\nconst zurichHour = Number(\n    new Intl.DateTimeFormat('en-GB', {\n        timeZone: 'Europe/Zurich',\n        hour: 'numeric',\n        hour12: false\n    }).format(nowDate)\n);\n\n//------------------------------------------------\n// FAIL SAFE\n//------------------------------------------------\nif (lastMotion === null) {\n\n    if (!ventilatorOn) {\n        flow.set(\"wc_on\", true);\n        msg.payload = { on: true, reason: \"unknown_motion\" };\n        return msg;\n    }\n\n    return null;\n}\n\n//------------------------------------------------\n// Timing constants\n//------------------------------------------------\nconst TEN_MIN = 10 * 60;\nconst FOUR_HOURS = 4 * 60 * 60;\nconst TWELVE_HOURS = 12 * 60 * 60;\n\nconst secondsSinceMotion = now - lastMotion;\n\n//------------------------------------------------\n// Time windows (Zurich local time)\n//------------------------------------------------\nconst night = (zurichHour >= 23 || zurichHour < 7);\nconst dryingWindow = (zurichHour >= 14 && zurichHour < 17);\n\n//------------------------------------------------\n// Rule 1: Presence protection\n//------------------------------------------------\nif (motionDetected || secondsSinceMotion < TEN_MIN) {\n\n    if (ventilatorOn) {\n        flow.set(\"wc_on\", false);\n        msg.payload = { on: false, reason: \"presence_protection\" };\n        return msg;\n    }\n\n    return {};\n}\n\n//------------------------------------------------\n// Rule 2: Night silence\n//------------------------------------------------\nif (night) {\n\n    if (ventilatorOn) {\n        flow.set(\"wc_on\", false);\n        msg.payload = { on: false, reason: \"night_silence\" };\n        return msg;\n    }\n\n    return {};\n}\n\n//------------------------------------------------\n// Rule 3: Post-use ventilation\n//------------------------------------------------\nif (secondsSinceMotion < FOUR_HOURS) {\n\n    if (!ventilatorOn) {\n        flow.set(\"wc_on\", true);\n        msg.payload = { on: true, reason: \"post_use_ventilation\" };\n        return msg;\n    }\n\n    return {};\n}\n\n//------------------------------------------------\n// Rule 4: Daily drying cycle\n//------------------------------------------------\nif (secondsSinceMotion >= TWELVE_HOURS && dryingWindow) {\n\n    if (!ventilatorOn) {\n        flow.set(\"wc_on\", true);\n        msg.payload = { on: true, reason: \"daily_drying_cycle\" };\n        return msg;\n    }\n\n    return {};\n}\n\n//------------------------------------------------\n// Default\n//------------------------------------------------\nif (ventilatorOn) {\n\n    flow.set(\"wc_on\", false);\n    msg.payload = { on: false, reason: \"idle\" };\n    return msg;\n}\n\nreturn {};",
+        "func": "//------------------------------------------------\n// Helpers\n//------------------------------------------------\nfunction toBool(v) {\n    return v === true;\n}\n\nfunction toNumber(v) {\n    const n = Number(v);\n    return Number.isFinite(n) ? n : null;\n}\n\n//------------------------------------------------\n// Load state\n//------------------------------------------------\nconst motionDetected = toBool(flow.get(\"motion_bad\"));\nconst lastMotion = toNumber(flow.get(\"last_motion_bad\"));\nconst ventilatorOn = toBool(flow.get(\"wc_on\"));\n\n//------------------------------------------------\n// Time\n//------------------------------------------------\nconst now = Math.floor(Date.now() / 1000);\nconst nowDate = new Date();\n\n// Zurich local hour (DST aware)\nconst zurichHour = Number(\n    new Intl.DateTimeFormat('en-GB', {\n        timeZone: 'Europe/Zurich',\n        hour: 'numeric',\n        hour12: false\n    }).format(nowDate)\n);\n\n//------------------------------------------------\n// Constants\n//------------------------------------------------\nconst ACTIVE_PERIOD = 48 * 60 * 60; // 48h\n\n//------------------------------------------------\n// Night window (23:00 - 05:59)\n//------------------------------------------------\nconst night = (zurichHour >= 23 || zurichHour < 6);\n\n//------------------------------------------------\n// Fail-safe\n//------------------------------------------------\nif (lastMotion === null) {\n\n    if (ventilatorOn) {\n        flow.set(\"wc_on\", false);\n        msg.payload = { on: false, reason: \"unknown_motion\" };\n        return msg;\n    }\n\n    return {};\n}\n\n//------------------------------------------------\n// Time since last motion\n//------------------------------------------------\nconst secondsSinceMotion = now - lastMotion;\n\n//------------------------------------------------\n// Rule 1: Night silence always wins\n//------------------------------------------------\nif (night) {\n\n    if (ventilatorOn) {\n        flow.set(\"wc_on\", false);\n        msg.payload = { on: false, reason: \"night_silence\" };\n        return msg;\n    }\n\n    return {};\n}\n\n//------------------------------------------------\n// Rule 2: Someone has used bathroom within 48h\n//------------------------------------------------\nif (secondsSinceMotion < ACTIVE_PERIOD) {\n\n    if (!ventilatorOn) {\n        flow.set(\"wc_on\", true);\n        msg.payload = { on: true, reason: \"recent_usage\" };\n        return msg;\n    }\n\n    return {};\n}\n\n//------------------------------------------------\n// Rule 3: No usage for 48h\n//------------------------------------------------\nif (ventilatorOn) {\n\n    flow.set(\"wc_on\", false);\n    msg.payload = { on: false, reason: \"inactive_48h\" };\n    return msg;\n}\n\nreturn {};",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
@@ -2896,7 +3026,7 @@
         "type": "function",
         "z": "1c0e9aecdf5ec591",
         "name": "Heating logics",
-        "func": "// ------------------------------------------------\n// Helpers\n// ------------------------------------------------\nfunction toNumber(v) {\n    const n = Number(v);\n    return Number.isFinite(n) ? n : null;\n}\n\n// ------------------------------------------------\n// Load ALL values from flow context\n// ------------------------------------------------\n\n// --- Primary (Sensirion) ---\nlet tempIndoorPrimary = toNumber(flow.get(\"sensirion_temperature\"));\nlet tempOutdoor = toNumber(flow.get(\"temperature_outdoor\"));\n\n// --- Backup (Netatmo) ---\nlet tempIndoorBackup = toNumber(flow.get(\"temperature_indoor\"));\n\n// --- Energy ---\nlet solarPower = toNumber(flow.get(\"solar_power\")) ?? 0;\nlet gridPower  = toNumber(flow.get(\"grid_power\")) ?? 0;\nlet batterySoc = toNumber(flow.get(\"battery_soc\")) ?? 0;\n\n// --- State ---\nlet heatingOn = flow.get(\"heating_on\") === true;\nlet motion = flow.get(\"motion\") === true;\nlet lastMotion = toNumber(flow.get(\"last_motion\")) ?? 0;\n\n// --- Button / Silence ---\nlet buttonLastShort = toNumber(flow.get(\"button_last_press_s\")) ?? 0;\nlet buttonLastLong  = toNumber(flow.get(\"button_last_press_l\")) ?? 0;\n\n// ------------------------------------------------\n// Temperature Failover Logic\n// ------------------------------------------------\n\nlet tempIndoor = null;\nlet tempSource = null;\n\nif (tempIndoorPrimary !== null) {\n    tempIndoor = tempIndoorPrimary;\n    tempSource = \"sensirion\";\n}\nelse if (tempIndoorBackup !== null) {\n    tempIndoor = tempIndoorBackup;\n    tempSource = \"netatmo\";\n}\n\n// ------------------------------------------------\n// FAIL-SAFE\n// ------------------------------------------------\n\nif (tempIndoor === null || tempOutdoor === null) {\n\n    if (heatingOn) {\n        flow.set(\"heating_on\", false);\n        msg.payload = { on: false, reason: \"missing_temperature\" };\n        return msg;\n    }\n\n    return null;\n}\n\n// ------------------------------------------------\n// Time calculation\n// ------------------------------------------------\n\nlet now = Math.floor(Date.now() / 1000);\n\n// Silence logic\nlet silenceActive = false;\n\nif (buttonLastShort > 0 && (now - buttonLastShort) < 3600) {\n    silenceActive = true;\n}\n\nif (buttonLastLong > buttonLastShort) {\n    silenceActive = false;\n}\n\n// ------------------------------------------------\n// Thresholds\n// ------------------------------------------------\n\nconst FROST_TEMP = 5;\nconst IDLE_TEMP = 18;\nconst COMFORT_TEMP = 21;\n\nconst SOLAR_ON = 800;\nconst SOLAR_OFF = 700;\nconst BATTERY_FULL = 99;\nconst BATT_HYST = 3;\n\n// ------------------------------------------------\n// Step 1: Temperature demand logic\n// ------------------------------------------------\n\nlet tempRequestsHeating = false;\nlet isComfortHeating = false;\n\n// --- Frost ---\nif (tempIndoor < FROST_TEMP) {\n    tempRequestsHeating = true;\n}\n// --- Idle baseline ---\nelse if (tempIndoor < IDLE_TEMP) {\n    tempRequestsHeating = true;\n}\n// --- Comfort heating ---\nelse if (tempOutdoor < tempIndoor) {\n\n    if (motion && tempIndoor < COMFORT_TEMP) {\n        tempRequestsHeating = true;\n        isComfortHeating = true;\n    }\n\n    if (tempIndoor >= COMFORT_TEMP) {\n        tempRequestsHeating = false;\n    }\n}\nelse {\n    tempRequestsHeating = false;\n}\n\n// ------------------------------------------------\n// Step 2: Energy permission\n// ------------------------------------------------\n\nlet energyAllowsHeating = false;\n\n// --- Solar ---\nlet solarAllows = false;\n\nif (heatingOn) {\n    if (solarPower > SOLAR_OFF) {\n        solarAllows = true;\n    }\n} else {\n    if (solarPower > SOLAR_ON) {\n        solarAllows = true;\n    }\n}\n\n// --- Battery ---\nlet batteryAllows = false;\n\nif (heatingOn) {\n    if (batterySoc >= BATTERY_FULL - BATT_HYST) {\n        batteryAllows = true;\n    }\n} else {\n    if (batterySoc >= BATTERY_FULL) {\n        batteryAllows = true;\n    }\n}\n\nenergyAllowsHeating = solarAllows || batteryAllows;\n\n// ------------------------------------------------\n// Step 3: Final decision\n// ------------------------------------------------\n\n// --- Frost override ---\nif (tempIndoor < FROST_TEMP) {\n\n    if (!heatingOn) {\n        flow.set(\"heating_on\", true);\n        msg.payload = {\n            on: true,\n            reason: \"frost_protection\",\n            temperature_source: tempSource\n        };\n        return msg;\n    }\n\n    return {};\n}\n\n// --- Silence mode (ONLY blocks comfort heating) ---\nif (silenceActive && isComfortHeating) {\n\n    if (heatingOn) {\n        flow.set(\"heating_on\", false);\n        msg.payload = {\n            on: false,\n            reason: \"silence_mode\",\n            temperature_source: tempSource\n        };\n        return msg;\n    }\n\n    return {};\n}\n\n// --- Normal operation ---\nif (tempRequestsHeating && energyAllowsHeating) {\n\n    if (!heatingOn) {\n        flow.set(\"heating_on\", true);\n        msg.payload = {\n            on: true,\n            temperature_source: tempSource\n        };\n        return msg;\n    }\n\n}\nelse {\n\n    if (heatingOn) {\n        flow.set(\"heating_on\", false);\n        msg.payload = {\n            on: false,\n            temperature_source: tempSource\n        };\n        return msg;\n    }\n}\n\nreturn {};",
+        "func": "// ------------------------------------------------\n// Helpers\n// ------------------------------------------------\nfunction toNumber(v) {\n    const n = Number(v);\n    return Number.isFinite(n) ? n : null;\n}\n\n// ------------------------------------------------\n// Load ALL values from flow context\n// ------------------------------------------------\n\n// --- Primary (Sensirion) ---\nlet tempIndoorPrimary = toNumber(flow.get(\"sensirion_temperature\"));\nlet tempOutdoor = toNumber(flow.get(\"temperature_outdoor\"));\n\n// --- Backup (Netatmo) ---\nlet tempIndoorBackup = toNumber(flow.get(\"temperature_indoor\"));\n\n// --- Energy ---\nlet solarPower = toNumber(flow.get(\"solar_power\")) ?? 0;\nlet gridPower  = toNumber(flow.get(\"grid_power\")) ?? 0;\nlet batterySoc = toNumber(flow.get(\"battery_soc\")) ?? 0;\n\n// --- State ---\nlet heatingOn = flow.get(\"heating_on\") === true;\nlet motion = flow.get(\"motion\") === true;\nlet lastMotion = toNumber(flow.get(\"last_motion\")) ?? 0;\n\n// --- Button / Silence ---\nlet buttonLastShort = toNumber(flow.get(\"button_last_press_s\")) ?? 0;\nlet buttonLastLong  = toNumber(flow.get(\"button_last_press_l\")) ?? 0;\n\n// ------------------------------------------------\n// Temperature Failover Logic\n// ------------------------------------------------\n\nlet tempIndoor = null;\nlet tempSource = null;\n\nif (tempIndoorPrimary !== null) {\n    tempIndoor = tempIndoorPrimary;\n    tempSource = \"sensirion\";\n}\nelse if (tempIndoorBackup !== null) {\n    tempIndoor = tempIndoorBackup;\n    tempSource = \"netatmo\";\n}\n\n// ------------------------------------------------\n// FAIL-SAFE\n// ------------------------------------------------\n\nif (tempIndoor === null || tempOutdoor === null) {\n\n    if (heatingOn) {\n        flow.set(\"heating_on\", false);\n        msg.payload = { on: false, reason: \"missing_temperature\" };\n        return msg;\n    }\n\n    return null;\n}\n\n// ------------------------------------------------\n// Time calculation\n// ------------------------------------------------\n\nlet now = Math.floor(Date.now() / 1000);\nlet currentHour = new Date().getHours();\n\n// Silence logic\nlet silenceActive = false;\n\nif (buttonLastShort > 0 && (now - buttonLastShort) < 3600) {\n    silenceActive = true;\n}\n\nif (buttonLastLong > buttonLastShort) {\n    silenceActive = false;\n}\n\n// ------------------------------------------------\n// Thresholds\n// ------------------------------------------------\n\nconst FROST_TEMP = 5;\nconst IDLE_TEMP = 18;\nconst COMFORT_TEMP = 21;\n\nconst SOLAR_ON = 800;\nconst SOLAR_OFF = 700;\n\nconst BATTERY_FULL = 85;\nconst BATT_HYST = 10;\n\n// Minimum SOC for non-frost heating\nconst MIN_SOC_HEATING = 74;\n\n// ------------------------------------------------\n// Step 1: Temperature demand logic\n// ------------------------------------------------\n\nlet tempRequestsHeating = false;\n\nlet isFrostHeating = false;\nlet isIdleHeating = false;\nlet isComfortHeating = false;\n\n// --- Frost ---\nif (tempIndoor < FROST_TEMP) {\n    tempRequestsHeating = true;\n    isFrostHeating = true;\n}\n// --- Idle baseline ---\nelse if (tempIndoor < IDLE_TEMP) {\n    tempRequestsHeating = true;\n    isIdleHeating = true;\n}\n// --- Comfort heating ---\nelse if (tempOutdoor < tempIndoor) {\n\n    if (motion && tempIndoor < COMFORT_TEMP) {\n        tempRequestsHeating = true;\n        isComfortHeating = true;\n    }\n\n    if (tempIndoor >= COMFORT_TEMP) {\n        tempRequestsHeating = false;\n    }\n}\nelse {\n    tempRequestsHeating = false;\n}\n\n// ------------------------------------------------\n// Step 2: Energy permission\n// ------------------------------------------------\n\nlet energyAllowsHeating = false;\n\n// --- Solar ---\nlet solarAllows = false;\n\nif (heatingOn) {\n    if (solarPower > SOLAR_OFF) {\n        solarAllows = true;\n    }\n} else {\n    if (solarPower > SOLAR_ON) {\n        solarAllows = true;\n    }\n}\n\n// --- Battery (energy optimization) ---\n// Before 16:00:\n//   ON  at >= 85%\n//   OFF at < 75%\n//\n// After 16:00:\n//   ON  at >= 85%\n//   OFF immediately when < 85%\nlet batteryAllows = false;\n\nif (currentHour < 16) {\n\n    // Daytime hysteresis\n    if (heatingOn) {\n        if (batterySoc >= (BATTERY_FULL - BATT_HYST)) {\n            batteryAllows = true;\n        }\n    } else {\n        if (batterySoc >= BATTERY_FULL) {\n            batteryAllows = true;\n        }\n    }\n\n} else {\n\n    // Evening: disable battery hysteresis\n    batteryAllows = batterySoc >= BATTERY_FULL;\n\n}\n\nenergyAllowsHeating = solarAllows || batteryAllows;\n\n// ------------------------------------------------\n// Step 3: Final decision\n// ------------------------------------------------\n\n// --- Frost override (ALWAYS allowed) ---\nif (isFrostHeating) {\n\n    if (!heatingOn) {\n        flow.set(\"heating_on\", true);\n\n        msg.payload = {\n            on: true,\n            reason: \"frost_protection\",\n            temperature_source: tempSource\n        };\n\n        return msg;\n    }\n\n    return {};\n}\n\n// --- Silence mode (ONLY blocks comfort heating) ---\nif (silenceActive && isComfortHeating) {\n\n    if (heatingOn) {\n        flow.set(\"heating_on\", false);\n\n        msg.payload = {\n            on: false,\n            reason: \"silence_mode\",\n            temperature_source: tempSource\n        };\n\n        return msg;\n    }\n\n    return {};\n}\n\n// --- SOC restriction for idle + comfort ---\nlet socAllowsHeating = true;\n\nif (isIdleHeating || isComfortHeating) {\n    socAllowsHeating = batterySoc >= MIN_SOC_HEATING;\n}\n\n// --- Normal operation ---\nif (tempRequestsHeating && energyAllowsHeating && socAllowsHeating) {\n\n    if (!heatingOn) {\n\n        flow.set(\"heating_on\", true);\n\n        msg.payload = {\n            on: true,\n            temperature_source: tempSource\n        };\n\n        return msg;\n    }\n\n} else {\n\n    if (heatingOn) {\n\n        flow.set(\"heating_on\", false);\n\n        msg.payload = {\n            on: false,\n            temperature_source: tempSource\n        };\n\n        return msg;\n    }\n}\n\nreturn {};",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
@@ -3004,7 +3134,7 @@
         "type": "function",
         "z": "1c0e9aecdf5ec591",
         "name": "DEBUG",
-        "func": "// ------------------------------------------------\n// FULL FLOW STATE SNAPSHOT LOGGER (EXTENDED)\n// Trigger manually via Inject button\n// ------------------------------------------------\n\nfunction get(name, fallback = null) {\n    let v = flow.get(name);\n    return (v === undefined) ? fallback : v;\n}\n\nlet nowMs = Date.now();\nlet nowSec = Math.floor(nowMs / 1000);\n\nlet snapshot = {\n\n    timestamp_iso: new Date(nowMs).toISOString(),\n    timestamp_unix: nowSec,\n\n    // -------------------------\n    // Heating\n    // -------------------------\n    heating_on: get(\"heating_on\", false),\n\n    // -------------------------\n    // Primary Climate (Netatmo)\n    // -------------------------\n    temperature_indoor: get(\"temperature_indoor\"),\n    temperature_indoor_trend: get(\"temperature_indoor_trend\"),\n\n    temperature_outdoor: get(\"temperature_outdoor\"),\n    temperature_outdoor_trend: get(\"temperature_outdoor_trend\"),\n\n    humidity_indoor: get(\"humidity_indoor\"),\n    humidity_outdoor: get(\"humidity_outdoor\"),\n\n    co2_indoor: get(\"co2_indoor\"),\n    indoor_co2_trend: get(\"indoor_co2_trend\"),\n\n    // -------------------------\n    // Sensirion Backup - Individual Sensors\n    // -------------------------\n    sensirion_temp_bottom: get(\"sensirion_temp_bottom\"),\n    sensirion_temp_bathroom: get(\"sensirion_temp_bathroom\"),\n    sensirion_temp_top: get(\"sensirion_temp_top\"),\n\n    sensirion_hum_bottom: get(\"sensirion_hum_bottom\"),\n    sensirion_hum_bathroom: get(\"sensirion_hum_bathroom\"),\n    sensirion_hum_top: get(\"sensirion_hum_top\"),\n\n    sensirion_co2_top: get(\"sensirion_co2_top\"),\n\n    // -------------------------\n    // Sensirion Backup - Aggregated\n    // -------------------------\n    sensirion_temperature: get(\"sensirion_temperature\"),\n    sensirion_humidity: get(\"sensirion_humidity\"),\n    sensirion_co2: get(\"sensirion_co2\"),\n    sensirion_last_update: get(\"sensirion_last_update\"),\n\n    // -------------------------\n    // Energy\n    // -------------------------\n    solar_power: get(\"solar_power\", 0),\n    solar_power_trend: get(\"solar_power_trend\"),\n    solar_power_last_update: get(\"solar_power_last_update\"),\n\n    grid_power: get(\"grid_power\", 0),\n    grid_power_trend: get(\"grid_power_trend\"),\n    grid_power_last_update: get(\"grid_power_last_update\"),\n\n    battery_soc: get(\"battery_soc\", 0),\n\n    // -------------------------\n    // Pump\n    // -------------------------\n    pump_state: get(\"pump_on\"),\n    temperature_tech: get(\"temperature_tech\"),\n\n    // -------------------------\n    // Flood Kitchen\n    // -------------------------\n\n    leakage_kitchen: get(\"leakage_kitchen\"),\n\n    // -------------------------\n    // Motion + Lux (Main)\n    // -------------------------\n    motion: get(\"motion\", false),\n    last_motion: get(\"last_motion\"),\n    lux: get(\"lux\"),\n\n    // -------------------------\n    // Motion + Lux (Bad)\n    // -------------------------\n    motion_bad: get(\"motion_bad\", false),\n    last_motion_bad: get(\"last_motion_bad\"),\n    lux_bad: get(\"lux_bad\")\n};\n\n\n// ------------------------------------------------\n// Derived Diagnostics\n// ------------------------------------------------\n\nif (snapshot.last_motion) {\n    snapshot.seconds_since_motion =\n        nowSec - snapshot.last_motion;\n}\n\nif (snapshot.last_motion_bad) {\n    snapshot.seconds_since_motion_bad =\n        nowSec - snapshot.last_motion_bad;\n}\n\nif (snapshot.solar_power_last_update) {\n    snapshot.seconds_since_solar_update =\n        Math.floor((nowMs - snapshot.solar_power_last_update) / 1000);\n}\n\nif (snapshot.grid_power_last_update) {\n    snapshot.seconds_since_grid_update =\n        Math.floor((nowMs - snapshot.grid_power_last_update) / 1000);\n}\n\nif (snapshot.sensirion_last_update) {\n    snapshot.seconds_since_sensirion_update =\n        Math.floor((nowMs - snapshot.sensirion_last_update) / 1000);\n}\n\n\n// ------------------------------------------------\n// Output\n// ------------------------------------------------\n\nmsg.payload = snapshot;\nreturn msg;\n",
+        "func": "// ------------------------------------------------\n// FULL FLOW STATE SNAPSHOT LOGGER (EXTENDED)\n// Trigger manually via Inject button\n// ------------------------------------------------\n\nfunction get(name, fallback = null) {\n    let v = flow.get(name);\n    return (v === undefined) ? fallback : v;\n}\n\nlet nowMs = Date.now();\nlet nowSec = Math.floor(nowMs / 1000);\n\nlet snapshot = {\n\n    timestamp_iso: new Date(nowMs).toISOString(),\n    timestamp_unix: nowSec,\n\n    // -------------------------\n    // Heating\n    // -------------------------\n    heating_on: get(\"heating_on\", false),\n\n    // -------------------------\n    // Primary Climate (Netatmo)\n    // -------------------------\n    netatmo_last_update: get(\"netatmo_last_update\"),\n\n    temperature_indoor: get(\"temperature_indoor\"),\n    temperature_indoor_trend: get(\"temperature_indoor_trend\"),\n\n    temperature_outdoor: get(\"temperature_outdoor\"),\n    temperature_outdoor_trend: get(\"temperature_outdoor_trend\"),\n\n    humidity_indoor: get(\"humidity_indoor\"),\n    humidity_outdoor: get(\"humidity_outdoor\"),\n\n    co2_indoor: get(\"co2_indoor\"),\n    indoor_co2_trend: get(\"indoor_co2_trend\"),\n\n    // -------------------------\n    // Sensirion Backup - Individual Sensors\n    // -------------------------\n    sensirion_temp_bottom: get(\"sensirion_temp_bottom\"),\n    sensirion_temp_bathroom: get(\"sensirion_temp_bathroom\"),\n    sensirion_temp_top: get(\"sensirion_temp_top\"),\n\n    sensirion_hum_bottom: get(\"sensirion_hum_bottom\"),\n    sensirion_hum_bathroom: get(\"sensirion_hum_bathroom\"),\n    sensirion_hum_top: get(\"sensirion_hum_top\"),\n\n    sensirion_co2_top: get(\"sensirion_co2_top\"),\n\n    // -------------------------\n    // Sensirion Backup - Aggregated\n    // -------------------------\n    sensirion_temperature: get(\"sensirion_temperature\"),\n    sensirion_humidity: get(\"sensirion_humidity\"),\n    sensirion_co2: get(\"sensirion_co2\"),\n    sensirion_last_update: get(\"sensirion_last_update\"),\n\n    // -------------------------\n    // Energy\n    // -------------------------\n    solar_power: get(\"solar_power\", 0),\n    solar_power_trend: get(\"solar_power_trend\"),\n    solar_power_last_update: get(\"solar_power_last_update\"),\n\n    grid_power: get(\"grid_power\", 0),\n    grid_power_trend: get(\"grid_power_trend\"),\n    grid_power_last_update: get(\"grid_power_last_update\"),\n\n    battery_soc: get(\"battery_soc\", 0),\n\n    // -------------------------\n    // Water Tank / Consumption\n    // -------------------------\n\n    level_liter: get(\"level_liter\"),\n    level_percent: get(\"level_percent\"),\n    water_use_l: get(\"water_use_l\"),\n    level_last_update: get(\"level_last_update\"),\n\n    // -------------------------\n    // Pump\n    // -------------------------\n    pump_state: get(\"pump_on\"),\n    temperature_tech: get(\"temperature_tech\"),\n\n    // -------------------------\n    // Flood Kitchen\n    // -------------------------\n\n    leakage_kitchen: get(\"leakage_kitchen\"),\n\n    // -------------------------\n    // Motion + Lux (Main)\n    // -------------------------\n    motion: get(\"motion\", false),\n    last_motion: get(\"last_motion\"),\n    lux: get(\"lux\"),\n\n    // -------------------------\n    // Motion + Lux (Bad)\n    // -------------------------\n    motion_bad: get(\"motion_bad\", false),\n    last_motion_bad: get(\"last_motion_bad\"),\n    lux_bad: get(\"lux_bad\")\n};\n\n\n// ------------------------------------------------\n// Derived Diagnostics\n// ------------------------------------------------\n\nif (snapshot.last_motion) {\n    snapshot.seconds_since_motion =\n        nowSec - snapshot.last_motion;\n}\n\nif (snapshot.last_motion_bad) {\n    snapshot.seconds_since_motion_bad =\n        nowSec - snapshot.last_motion_bad;\n}\n\nif (snapshot.solar_power_last_update) {\n    snapshot.seconds_since_solar_update =\n        Math.floor((nowMs - snapshot.solar_power_last_update) / 1000);\n}\n\nif (snapshot.grid_power_last_update) {\n    snapshot.seconds_since_grid_update =\n        Math.floor((nowMs - snapshot.grid_power_last_update) / 1000);\n}\n\nif (snapshot.sensirion_last_update) {\n    snapshot.seconds_since_sensirion_update =\n        Math.floor((nowMs - snapshot.sensirion_last_update) / 1000);\n}\n\n\n// ------------------------------------------------\n// Output\n// ------------------------------------------------\n\nmsg.payload = snapshot;\nreturn msg;\n",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
@@ -3454,6 +3584,224 @@
         "libs": [],
         "x": 1190,
         "y": 1060,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "bd6ddec9ef270b69",
+        "type": "mqtt in",
+        "z": "1c0e9aecdf5ec591",
+        "name": "Apollon Q in",
+        "topic": "mioty/00-00-00-00-00-00-00-00/fc-a8-4a-01-00-00-35-9a/uplink",
+        "qos": "0",
+        "datatype": "auto-detect",
+        "broker": "4eca6eb6845b38c5",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 110,
+        "y": 1160,
+        "wires": [
+            [
+                "8981e5adfb9cd39c"
+            ]
+        ]
+    },
+    {
+        "id": "fc3992a6e123a144",
+        "type": "mqtt in",
+        "z": "1c0e9aecdf5ec591",
+        "name": "All mioty in",
+        "topic": "mioty/00-00-00-00-00-00-00-00/#",
+        "qos": "0",
+        "datatype": "auto-detect",
+        "broker": "4eca6eb6845b38c5",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 100,
+        "y": 1240,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "8981e5adfb9cd39c",
+        "type": "function",
+        "z": "1c0e9aecdf5ec591",
+        "name": "Calculate fill level",
+        "func": "const c = msg.payload.components;\n\n// Sensor values\nconst rawDistance = c.Tof_NoHist_Distance.value;\nconst tofStatus = c.TOF_Status?.value;\nconst battery = c.Battery_Voltage?.value;\nconst temperature = c.Temperature?.value;\n\nconst timestamp = msg.payload.baseStations?.[0]?.rxTime || null;\n\nconst bs = msg.payload.baseStations?.[0] || {};\nconst rssi = bs.rssi;\nconst snr = bs.snr;\n\nconst validMeasurement =\n    tofStatus === 0 &&\n    rawDistance > 0 &&\n    rawDistance < 4000;\n\n// --- Deadband filter (3 mm) ---\nconst DEADBAND_MM = 3;\nlet lastAccepted = context.get('lastAcceptedDistance');\nlet distance;\n\nif (!validMeasurement) {\n    distance = lastAccepted ?? null;\n} else if (lastAccepted === undefined || Math.abs(rawDistance - lastAccepted) >= DEADBAND_MM) {\n    context.set('lastAcceptedDistance', rawDistance);\n    distance = rawDistance;\n} else {\n    distance = lastAccepted; // suppress small fluctuation\n}\n// --- End deadband filter ---\n\nlet liters = null;\nlet fillPercent = null;\n\nif (validMeasurement && distance !== null) {\n    const FULL_DISTANCE = 270;\n    const EMPTY_DISTANCE = 1000;\n    const MAX_LITERS = 2000;\n\n    liters = ((EMPTY_DISTANCE - distance) / (EMPTY_DISTANCE - FULL_DISTANCE)) * MAX_LITERS;\n    liters = Math.max(0, Math.min(MAX_LITERS, liters));\n    fillPercent = Math.round((liters / MAX_LITERS) * 100);\n    liters = Math.round(liters);\n}\n\nmsg.payload = {\n    valid: validMeasurement,\n    timestamp,\n    distance_mm: validMeasurement ? distance : null,\n    distance_raw_mm: validMeasurement ? rawDistance : null,  // kept for diagnostics\n    fill_liters: liters,\n    fill_percent: fillPercent,\n    tof_status: tofStatus,\n    battery_v: battery,\n    temperature_c: temperature,\n    signal: {\n        rssi,\n        snr,\n        quality:\n            (snr > 10 && rssi > -100) ? \"excellent\" :\n            (snr > 5  && rssi > -110) ? \"good\" :\n            (snr > 0  && rssi > -120) ? \"fair\" :\n            \"poor\"\n    },\n    uplink_counter: c.Uplink_Counter?.value\n};\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 330,
+        "y": 1160,
+        "wires": [
+            [
+                "5824a12e64b925e8"
+            ]
+        ]
+    },
+    {
+        "id": "5824a12e64b925e8",
+        "type": "function",
+        "z": "1c0e9aecdf5ec591",
+        "name": "Store fill level",
+        "func": "if (!msg.payload?.valid) {\n    return null;\n}\n\nconst currentLevel = msg.payload.fill_liters;\nconst currentPercent = msg.payload.fill_percent;\nconst currentTimestamp = msg.payload.timestamp;\nconst tankTemperature = msg.payload.temperature_c;\n\n// Previous values\nconst previousLevel = flow.get(\"level_liter\");\nlet waterUse = flow.get(\"water_use_l\") || 0;\n\n// Compute delta only if previous exists\nif (typeof previousLevel === \"number\") {\n\n    const delta = previousLevel - currentLevel;\n\n    // Only consumption (tank decreasing)\n    if (delta > 0) {\n        waterUse += delta;\n    }\n}\n\n// Store state\nflow.set(\"level_last_update\", currentTimestamp);\nflow.set(\"level_liter\", currentLevel);\nflow.set(\"level_percent\", currentPercent);\nflow.set(\"water_use_l\", waterUse);\nflow.set(\"tank_temperature\", tankTemperature);\n\n// OUTPUT (IMPORTANT: move into payload)\nmsg.payload = {\n    level_last_update: currentTimestamp,\n    level_liter: currentLevel,\n    level_percent: currentPercent,\n    water_use_l: waterUse,\n    tank_temperature: tankTemperature\n};\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 550,
+        "y": 1160,
+        "wires": [
+            [
+                "17b5449517168695"
+            ]
+        ]
+    },
+    {
+        "id": "17b5449517168695",
+        "type": "link out",
+        "z": "1c0e9aecdf5ec591",
+        "name": "Water consumption",
+        "mode": "link",
+        "links": [
+            "cb1027b5f704be4e"
+        ],
+        "x": 715,
+        "y": 1160,
+        "wires": []
+    },
+    {
+        "id": "cc6e53e822d4e9f2",
+        "type": "function",
+        "z": "1c0e9aecdf5ec591",
+        "name": "Select values",
+        "func": "// Build payload from flow context variables\nconst payload = {\n    temperature_indoor: flow.get(\"temperature_indoor\"),\n    temperature_outdoor: flow.get(\"temperature_outdoor\"),\n\n    humidity_indoor: flow.get(\"humidity_indoor\"),\n\n    co2_indoor: flow.get(\"co2_indoor\"),\n    heating_on: flow.get(\"heating_on\"),\n    solar_power: Math.floor(Number(flow.get(\"solar_power\"))),\n\n    battery_soc: flow.get(\"battery_soc\"),\n    level_liter: flow.get(\"level_liter\"),\n    level_percent: flow.get(\"level_percent\"),\n    tank_temperature: flow.get(\"tank_temperature\")\n};\n\n// Remove undefined/null values\nObject.keys(payload).forEach(key => {\n    if (payload[key] === undefined || payload[key] === null) {\n        delete payload[key];\n    }\n});\n\n// --- Zurich timestamp ---\nconst now = new Date();\nconst tz = \"Europe/Zurich\";\n\n// hour + minute (Zurich time)\nconst timeParts = new Intl.DateTimeFormat(\"en-GB\", {\n    timeZone: tz,\n    hour: \"2-digit\",\n    minute: \"2-digit\",\n    hour12: false\n}).format(now).split(\":\");\n\nconst hour = parseInt(timeParts[0], 10);\nconst minute = parseInt(timeParts[1], 10);\n\n// Day + month number\nconst parts = new Intl.DateTimeFormat(\"de-CH\", {\n    timeZone: tz,\n    weekday: \"short\",\n    day: \"2-digit\",\n    month: \"2-digit\"\n}).formatToParts(now);\n\nconst weekday = parts.find(p => p.type === \"weekday\").value;\nconst day = parts.find(p => p.type === \"day\").value;\nconst monthNum = parseInt(parts.find(p => p.type === \"month\").value, 10);\n\n// Force 3-letter German month abbreviations\nconst months = [\"Jan\", \"Feb\", \"Mär\", \"Apr\", \"Mai\", \"Jun\", \"Jul\", \"Aug\", \"Sep\", \"Okt\", \"Nov\", \"Dez\"];\nconst month = months[monthNum - 1];\n\nconst date = `${weekday} ${day} ${month}`;\n\n// Add timestamp block\npayload.timestamp = {\n    hour,\n    minute,\n    date\n};\n\n// Build MQTT message\nmsg.topic = \"display\";\nmsg.payload = payload;\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 310,
+        "y": 1400,
+        "wires": [
+            [
+                "35097e2894715807"
+            ]
+        ]
+    },
+    {
+        "id": "701b0e1477357326",
+        "type": "comment",
+        "z": "1c0e9aecdf5ec591",
+        "name": "Display Publish",
+        "info": "",
+        "x": 120,
+        "y": 1340,
+        "wires": []
+    },
+    {
+        "id": "35097e2894715807",
+        "type": "mqtt out",
+        "z": "1c0e9aecdf5ec591",
+        "name": "MQTT Publish",
+        "topic": "display/",
+        "qos": "0",
+        "retain": "true",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "4eca6eb6845b38c5",
+        "x": 500,
+        "y": 1400,
+        "wires": []
+    },
+    {
+        "id": "87a0744a3f66c7d3",
+        "type": "cronplus",
+        "z": "1c0e9aecdf5ec591",
+        "name": "Every 15min",
+        "outputField": "payload",
+        "timeZone": "",
+        "storeName": "",
+        "commandResponseMsgOutput": "output1",
+        "defaultLocation": "",
+        "defaultLocationType": "default",
+        "outputs": 1,
+        "options": [
+            {
+                "name": "schedule1",
+                "topic": "topic1",
+                "payloadType": "default",
+                "payload": "",
+                "expressionType": "cron",
+                "expression": "0 */15 * * * *",
+                "location": "",
+                "offset": "0",
+                "solarType": "all",
+                "solarEvents": "sunrise,sunset"
+            }
+        ],
+        "x": 130,
+        "y": 1400,
+        "wires": [
+            [
+                "cc6e53e822d4e9f2"
+            ]
+        ]
+    },
+    {
+        "id": "55b449741f11243a",
+        "type": "inject",
+        "z": "1c0e9aecdf5ec591",
+        "name": "Reset water level",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "0",
+        "payloadType": "num",
+        "x": 940,
+        "y": 1160,
+        "wires": [
+            [
+                "952c1099f845a221"
+            ]
+        ]
+    },
+    {
+        "id": "952c1099f845a221",
+        "type": "function",
+        "z": "1c0e9aecdf5ec591",
+        "name": "Store fill level",
+        "func": "\n// Store state\nflow.set(\"water_use_l\", msg.payload);\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1150,
+        "y": 1160,
         "wires": [
             []
         ]
