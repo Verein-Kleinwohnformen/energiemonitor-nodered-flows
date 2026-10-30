@@ -1,1 +1,4 @@
 *.backup
+# Node-RED erzeugt diese Datei mit verschluesselten Zugangsdaten, nie committen
+flows_cred.json
+*.backup
