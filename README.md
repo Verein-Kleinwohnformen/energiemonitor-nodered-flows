@@ -10,7 +10,7 @@ Die Datei `flows.json` enthält Flows für Node-RED auf der Balena-Umgebung ([Co
 
 | Branch | Inhalt |
 |---|---|
-| `master` | Template: Übersicht der Konnektoren (Shelly Pro 3EM, Netatmo mit eigenem OAuth2-Flow, PZEM-017) |
+| `master` | Template: Übersicht der Konnektoren (Shelly Pro 3EM, Netatmo mit eigenem OAuth2-Flow, PZEM-017 über Modbus, Victron über MQTT), sendet an den KWF-Connector |
 | `weidenbaum` | Konfiguration eines echten Hauses, **enthält zusätzlich persönliche Steuerlogik** (Heizung, Frostschutz, zeitgesteuertes Lüften, Silence-Button). Nur als Beispiel gedacht, nicht als Vorlage zum Messen |
 | `BA_OST` | Ursprungsversion der FH OST (historisch) |
 | `tuya_deprecated` | Version mit Tuya-Sensoren (entfernt wegen schlechter Funkqualität und Datenverlust) |
@@ -26,8 +26,8 @@ Hinweise zu den Sensoren (Shelly, PZEM-017, Netatmo, Victron, Sensirion BLE) ste
 
 ## Status der Funktionen
 
-- Implementiert: Shelly Pro 3EM, Netatmo mit OAuth2-Flow, PZEM-017 (DC), Neustart bei Netzwerkproblemen, Senden an den KWF-Connector.
-- Entfernt: Tuya-Sensoren, Thingsboard und Azure Table Storage. Der offizielle Netatmo-Block wird nicht mehr gepflegt, deshalb der manuelle OAuth2-Flow im Tab "Netatmo Authentication".
+- Implementiert: Shelly Pro 3EM, Netatmo mit OAuth2-Flow, PZEM-017 (DC), Victron über MQTT, Senden an den KWF-Connector.
+- Entfernt: Tuya-Sensoren sowie die frühere Anbindung an Thingsboard und Azure Table Storage. Der offizielle Netatmo-Block wird nicht mehr gepflegt, deshalb der manuelle OAuth2-Flow im Tab "Netatmo Authentication".
 
 ## Lizenz
 
