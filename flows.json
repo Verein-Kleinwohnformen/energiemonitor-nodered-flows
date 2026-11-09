@@ -2050,21 +2050,7 @@
                 "t": "set",
                 "p": "w",
                 "pt": "msg",
-                "to": "{}",
-                "tot": "json"
-            },
-            {
-                "t": "set",
-                "p": "w.level_liter",
-                "pt": "msg",
-                "to": "payload.level_liter",
-                "tot": "msg"
-            },
-            {
-                "t": "set",
-                "p": "w.water_use_l",
-                "pt": "msg",
-                "to": "payload.water_use_l",
+                "to": "payload",
                 "tot": "msg"
             },
             {
@@ -3627,8 +3613,8 @@
         "id": "8981e5adfb9cd39c",
         "type": "function",
         "z": "1c0e9aecdf5ec591",
-        "name": "Calculate fill level",
-        "func": "const c = msg.payload.components;\n\n// Sensor values\nconst rawDistance = c.Tof_NoHist_Distance.value;\nconst tofStatus = c.TOF_Status?.value;\nconst battery = c.Battery_Voltage?.value;\nconst temperature = c.Temperature?.value;\n\nconst timestamp = msg.payload.baseStations?.[0]?.rxTime || null;\n\nconst bs = msg.payload.baseStations?.[0] || {};\nconst rssi = bs.rssi;\nconst snr = bs.snr;\n\nconst validMeasurement =\n    tofStatus === 0 &&\n    rawDistance > 0 &&\n    rawDistance < 4000;\n\n// --- Deadband filter (3 mm) ---\nconst DEADBAND_MM = 3;\nlet lastAccepted = context.get('lastAcceptedDistance');\nlet distance;\n\nif (!validMeasurement) {\n    distance = lastAccepted ?? null;\n} else if (lastAccepted === undefined || Math.abs(rawDistance - lastAccepted) >= DEADBAND_MM) {\n    context.set('lastAcceptedDistance', rawDistance);\n    distance = rawDistance;\n} else {\n    distance = lastAccepted; // suppress small fluctuation\n}\n// --- End deadband filter ---\n\nlet liters = null;\nlet fillPercent = null;\n\nif (validMeasurement && distance !== null) {\n    const FULL_DISTANCE = 260;\n    const EMPTY_DISTANCE = 750;\n    const MAX_LITERS = 2000;\n\n    liters = ((EMPTY_DISTANCE - distance) / (EMPTY_DISTANCE - FULL_DISTANCE)) * MAX_LITERS;\n    liters = Math.max(0, Math.min(MAX_LITERS, liters));\n    fillPercent = Math.round((liters / MAX_LITERS) * 100);\n    liters = Math.round(liters);\n}\n\nmsg.payload = {\n    valid: validMeasurement,\n    timestamp,\n    distance_mm: validMeasurement ? distance : null,\n    distance_raw_mm: validMeasurement ? rawDistance : null,  // kept for diagnostics\n    fill_liters: liters,\n    fill_percent: fillPercent,\n    tof_status: tofStatus,\n    battery_v: battery,\n    temperature_c: temperature,\n    signal: {\n        rssi,\n        snr,\n        quality:\n            (snr > 10 && rssi > -100) ? \"excellent\" :\n            (snr > 5  && rssi > -110) ? \"good\" :\n            (snr > 0  && rssi > -120) ? \"fair\" :\n            \"poor\"\n    },\n    uplink_counter: c.Uplink_Counter?.value\n};\n\nreturn msg;",
+        "name": "Tank filter (6 h)",
+        "func": "// Tank filter (6 h) – Messpunkt D1, Sentinum Apollon über mioty\n// Doku: energiemonitor-docs/docs/rnd-mioty-apollon.md\n//\n// 1. Messung annehmen bei TOF_Status 0 oder 2 (2 = schwaches Signal, als Datenqualität gemeldet)\n// 2. Fenster der letzten 6 h (Distanz Master_value), Ausreisser per Hampel-Filter verwerfen\n// 3. Füllstand = Median des Fensters\n// 4. Verbrauch mit Hysterese (Rauschen wird nicht als Verbrauch gezählt)\n// Zustand im Flow-Kontext \"file\", damit er Neustarts übersteht.\n\n// --- Parameter ---\nconst WINDOW_MS = 6 * 60 * 60 * 1000;  // Länge des Fensters\nconst MIN_SAMPLES = 3;                  // ab so vielen Werten gilt der Fenster-Median als Referenz\nconst GATE_MIN_MM = 20;                 // minimale Ausreisser-Schwelle (≈ 80 L)\nconst HYSTERESIS_L = 20;                // Verbrauch/Nachfüllen erst ab dieser Änderung (≈ 5 mm)\nconst ACCEPTED_STATUS = [0, 2];         // TOF_Status-Werte, die verwendet werden\nconst FULL_DISTANCE = 260;              // mm bei vollem Tank\nconst EMPTY_DISTANCE = 750;             // mm bei leerem Tank\nconst MAX_LITERS = 2000;                // Tankinhalt\nconst STORE = \"file\";                   // Kontextspeicher (settings.js contextStorage)\n\n// --- Helfer ---\nconst c = (msg.payload && msg.payload.components) || {};\nconst val = (name) => (c[name] ? c[name].value : undefined);\nconst median = (arr) => {\n    const s = [...arr].sort((a, b) => a - b);\n    const m = s.length >> 1;\n    return s.length % 2 ? s[m] : (s[m - 1] + s[m]) / 2;\n};\nconst toLiters = (mm) => Math.max(0, Math.min(MAX_LITERS,\n    ((EMPTY_DISTANCE - mm) / (EMPTY_DISTANCE - FULL_DISTANCE)) * MAX_LITERS));\nconst isNum = (x) => typeof x === \"number\" && Number.isFinite(x);\n\nconst now = Date.now();\nconst master = val(\"Master_value\");\nconst tofStatus = val(\"TOF_Status\");\nconst usable = ACCEPTED_STATUS.includes(tofStatus) && isNum(master) && master > 0 && master < 4000;\n\n// --- Zustand laden ---\nlet st = flow.get(\"tank_filter\", STORE);\nif (!st) {\n    st = { window: [], pending: null, lastMm: null, anchorL: null, waterUse: null };\n}\nif (!isNum(st.waterUse)) {\n    // Einmalige Übernahme des bisherigen Zählers aus dem Memory-Kontext\n    st.waterUse = Number(flow.get(\"water_use_l\")) || 0;\n}\nst.window = (st.window || []).filter((s) => now - s.ts <= WINDOW_MS);\nif (st.pending && now - st.pending.ts > WINDOW_MS) st.pending = null;\n\n// --- Ausreisser-Prüfung und Fenster ---\nlet rejected = false;\nif (usable) {\n    const sample = { ts: now, mm: master, status: tofStatus };\n    const mms = st.window.map((s) => s.mm);\n    let ref = st.lastMm;\n    let thr = GATE_MIN_MM;\n    if (mms.length >= MIN_SAMPLES) {\n        ref = median(mms);\n        const mad = median(mms.map((x) => Math.abs(x - ref)));\n        thr = Math.max(3 * 1.4826 * mad, GATE_MIN_MM);\n    }\n    if (isNum(ref) && Math.abs(master - ref) > thr) {\n        if (st.pending && Math.abs(master - st.pending.mm) <= thr) {\n            // Zwei übereinstimmende Abweichungen: echter Sprung (Nachfüllen, grosse Entnahme)\n            st.window = [st.pending, sample];\n            st.pending = null;\n        } else {\n            st.pending = sample;  // zurückhalten, nächste Messung entscheidet\n            rejected = true;\n        }\n    } else {\n        st.window.push(sample);\n        st.pending = null;\n    }\n}\n\n// --- Füllstand und Verbrauch ---\nlet levelL = null;\nif (st.window.length > 0) {\n    const mm = median(st.window.map((s) => s.mm));\n    st.lastMm = mm;\n    levelL = toLiters(mm);\n    if (!isNum(st.anchorL)) st.anchorL = levelL;\n    if (levelL < st.anchorL - HYSTERESIS_L) {\n        st.waterUse += st.anchorL - levelL;\n        st.anchorL = levelL;\n    } else if (levelL > st.anchorL + HYSTERESIS_L) {\n        st.anchorL = levelL;  // nachgefüllt, nichts zählen\n    }\n}\n\n// --- Datenqualität ---\nconst okCount = st.window.filter((s) => s.status === 0).length;\nconst okRatio = st.window.length ? Math.round((okCount / st.window.length) * 100) / 100 : 0;\nlet qStatus = \"ok\";\nif (!usable || st.window.length === 0) qStatus = \"no_valid_data\";\nelse if (okCount < st.window.length) qStatus = \"degraded\";\n\nflow.set(\"tank_filter\", st, STORE);\n\n// --- Werte für andere Flows (Memory-Kontext, z. B. \"Select values\", \"DEBUG\") ---\nconst temperature = val(\"Temperature\");\nif (levelL !== null) {\n    flow.set(\"level_liter\", Math.round(levelL));\n    flow.set(\"level_percent\", Math.round((levelL / MAX_LITERS) * 100));\n    flow.set(\"level_last_update\", now);\n}\nif (isNum(temperature)) flow.set(\"tank_temperature\", temperature);\nflow.set(\"water_use_l\", Math.round(st.waterUse));\n\n// --- Ausgabe: payload = Messwerte für \"Messpunkt D1\" ---\nconst out = {\n    _q_status: qStatus,\n    _q_tof_status: isNum(tofStatus) ? tofStatus : null,\n    _q_ok_ratio: okRatio\n};\nif (usable) {\n    out.distance_master_mm = master;\n    if (isNum(val(\"Tof_Distance\"))) out.distance_tof_mm = val(\"Tof_Distance\");\n    if (isNum(val(\"Tof_NoHist_Distance\"))) out.distance_nohist_mm = val(\"Tof_NoHist_Distance\");\n    if (isNum(val(\"Tof_Hist_Distance\"))) out.distance_hist_mm = val(\"Tof_Hist_Distance\");\n}\nif (levelL !== null && qStatus !== \"no_valid_data\") {\n    out.level_liter = Math.round(levelL);\n    out.level_percent = Math.round((levelL / MAX_LITERS) * 100);\n    out.water_use_l = Math.round(st.waterUse);\n}\nif (isNum(temperature)) out.tank_temperature = temperature;\n\nnode.status({\n    fill: qStatus === \"ok\" ? \"green\" : (qStatus === \"degraded\" ? \"yellow\" : \"red\"),\n    shape: rejected ? \"ring\" : \"dot\",\n    text: `${levelL === null ? \"-\" : Math.round(levelL)} L, ${qStatus}${rejected ? \", Ausreisser\" : \"\"}`\n});\n\nmsg.payload = out;\nreturn msg;\n",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
@@ -3636,26 +3622,6 @@
         "finalize": "",
         "libs": [],
         "x": 330,
-        "y": 1160,
-        "wires": [
-            [
-                "5824a12e64b925e8"
-            ]
-        ]
-    },
-    {
-        "id": "5824a12e64b925e8",
-        "type": "function",
-        "z": "1c0e9aecdf5ec591",
-        "name": "Store fill level",
-        "func": "if (!msg.payload?.valid) {\n    return null;\n}\n\nconst currentLevel = msg.payload.fill_liters;\nconst currentPercent = msg.payload.fill_percent;\nconst currentTimestamp = msg.payload.timestamp;\nconst tankTemperature = msg.payload.temperature_c;\n\n// Previous values\nconst previousLevel = flow.get(\"level_liter\");\nlet waterUse = flow.get(\"water_use_l\") || 0;\n\n// Compute delta only if previous exists\nif (typeof previousLevel === \"number\") {\n\n    const delta = previousLevel - currentLevel;\n\n    // Only consumption (tank decreasing)\n    if (delta > 0) {\n        waterUse += delta;\n    }\n}\n\n// Store state\nflow.set(\"level_last_update\", currentTimestamp);\nflow.set(\"level_liter\", currentLevel);\nflow.set(\"level_percent\", currentPercent);\nflow.set(\"water_use_l\", waterUse);\nflow.set(\"tank_temperature\", tankTemperature);\n\n// OUTPUT (IMPORTANT: move into payload)\nmsg.payload = {\n    level_last_update: currentTimestamp,\n    level_liter: currentLevel,\n    level_percent: currentPercent,\n    water_use_l: waterUse,\n    tank_temperature: tankTemperature\n};\n\nreturn msg;",
-        "outputs": 1,
-        "timeout": 0,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 550,
         "y": 1160,
         "wires": [
             [
@@ -3788,7 +3754,7 @@
         "type": "function",
         "z": "1c0e9aecdf5ec591",
         "name": "Store fill level",
-        "func": "\n// Store state\nflow.set(\"water_use_l\", msg.payload);\n\nreturn msg;",
+        "func": "// Setzt den Wasserverbrauch-Zähler (payload = neuer Stand in L) und den Anker des Tankfilters\nconst st = flow.get(\"tank_filter\", \"file\") || { window: [], pending: null, lastMm: null, anchorL: null };\nst.waterUse = Number(msg.payload) || 0;\nst.anchorL = null;\nflow.set(\"tank_filter\", st, \"file\");\nflow.set(\"water_use_l\", st.waterUse);\n\nreturn msg;",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
