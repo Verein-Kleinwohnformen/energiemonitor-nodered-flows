@@ -2124,6 +2124,200 @@
         "wires": []
     },
     {
+        "id": "b0e1e00000000001",
+        "type": "comment",
+        "z": "3e07724de1527d10",
+        "name": "Shelly Boiler (Warmwasser I1)",
+        "info": "Warmwasser (I1): Shelly 1PM Gen4 am Elektroboiler. Nur Polling, keine Befehle und kein Callback, darum stoert es ein zweites System nicht, das denselben Shelly abfragt oder schaltet. IP als Device-Variable SHELLY_BOILER_IP setzen. Kann auch in einer Zange des Shelly Pro 3EM enthalten sein (dann ist I1 ein Teil davon).",
+        "x": 150,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "b0e1e00000000002",
+        "type": "shelly-gen2",
+        "z": "3e07724de1527d10",
+        "hostname": "${SHELLY_BOILER_IP}",
+        "description": "Shelly 1PM Gen4 Boiler",
+        "mode": "polling",
+        "server": "",
+        "outputmode": "event",
+        "uploadretryinterval": 5000,
+        "pollinginterval": "5000",
+        "pollstatus": true,
+        "getstatusoncommand": true,
+        "devicetype": "Relay",
+        "outputs": 1,
+        "x": 130,
+        "y": 250,
+        "wires": [
+            [
+                "b0e1e00000000003"
+            ]
+        ]
+    },
+    {
+        "id": "b0e1e00000000003",
+        "type": "function",
+        "z": "3e07724de1527d10",
+        "name": "Boiler-Werte",
+        "func": "// Shelly 1PM Gen4 (Boiler), nur lesen: der GX schaltet den Boiler.\nif (msg.error) return null;\nvar p = msg.payload || {};\nvar sw = p.switch0 || p[\"switch:0\"] || (p.apower !== undefined ? p : null);\nif (!sw || sw.apower === undefined) return null;\nvar v = { act_power: Number(sw.apower) };\nif (sw.voltage != null) v.voltage = Number(sw.voltage);\nif (sw.current != null) v.current = Number(sw.current);\nif (sw.aenergy && sw.aenergy.total != null) v.energy_total_wh = Number(sw.aenergy.total);\nv.relay_on = sw.output ? 1 : 0;\nif (sw.temperature && sw.temperature.tC != null) v.device_temperature = Number(sw.temperature.tC);\nmsg.payload = v;\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 330,
+        "y": 250,
+        "wires": [
+            [
+                "b0e1e00000000004"
+            ]
+        ]
+    },
+    {
+        "id": "b0e1e00000000004",
+        "type": "split",
+        "z": "3e07724de1527d10",
+        "name": "Split",
+        "splt": "\n",
+        "spltType": "str",
+        "arraySplt": 1,
+        "arraySpltType": "len",
+        "stream": false,
+        "addname": "topic",
+        "property": "payload",
+        "x": 470,
+        "y": 250,
+        "wires": [
+            [
+                "b0e1e00000000005"
+            ]
+        ]
+    },
+    {
+        "id": "b0e1e00000000005",
+        "type": "aggregator",
+        "z": "3e07724de1527d10",
+        "name": "aggregate per 10s",
+        "topic": "",
+        "intervalCount": "10",
+        "intervalUnits": "s",
+        "submitIncompleteInterval": true,
+        "submitPerTopic": true,
+        "aggregationType": "mean",
+        "x": 610,
+        "y": 250,
+        "wires": [
+            [
+                "b0e1e00000000006"
+            ]
+        ]
+    },
+    {
+        "id": "b0e1e00000000006",
+        "type": "join",
+        "z": "3e07724de1527d10",
+        "name": "Join",
+        "mode": "custom",
+        "build": "object",
+        "property": "payload",
+        "propertyType": "msg",
+        "key": "topic",
+        "joiner": "\n",
+        "joinerType": "str",
+        "useparts": true,
+        "accumulate": false,
+        "timeout": "10",
+        "count": "",
+        "reduceRight": false,
+        "reduceExp": "",
+        "reduceInit": "",
+        "reduceInitType": "",
+        "reduceFixup": "",
+        "x": 770,
+        "y": 250,
+        "wires": [
+            [
+                "b0e1e00000000007"
+            ]
+        ]
+    },
+    {
+        "id": "b0e1e00000000007",
+        "type": "change",
+        "z": "3e07724de1527d10",
+        "name": "Messpunkt I1",
+        "rules": [
+            {
+                "t": "set",
+                "p": "v",
+                "pt": "msg",
+                "to": "payload",
+                "tot": "msg"
+            },
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "{}",
+                "tot": "json"
+            },
+            {
+                "t": "set",
+                "p": "payload.values",
+                "pt": "msg",
+                "to": "v",
+                "tot": "msg"
+            },
+            {
+                "t": "set",
+                "p": "payload.sensor_id",
+                "pt": "msg",
+                "to": "shelly-1pm-gen4",
+                "tot": "str"
+            },
+            {
+                "t": "set",
+                "p": "payload.timestamp",
+                "pt": "msg",
+                "to": "",
+                "tot": "date"
+            },
+            {
+                "t": "set",
+                "p": "payload.metering_point",
+                "pt": "msg",
+                "to": "I1",
+                "tot": "str"
+            },
+            {
+                "t": "delete",
+                "p": "v",
+                "pt": "msg"
+            },
+            {
+                "t": "delete",
+                "p": "topic",
+                "pt": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1080,
+        "y": 250,
+        "wires": [
+            [
+                "78dea314d74e558e",
+                "2c04efba95eae95e"
+            ]
+        ]
+    },
+    {
         "id": "48c9ba7a4d6a5359",
         "type": "http request",
         "z": "72660c1c718b6a08",
