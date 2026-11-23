@@ -2080,27 +2080,53 @@
         "type": "comment",
         "z": "3e07724de1527d10",
         "name": "Shelly Boiler (Warmwasser I1)",
-        "info": "Warmwasser (I1): Shelly 1PM Gen4 am Elektroboiler. Nur Polling, keine Befehle und kein Callback, darum stoert es ein zweites System nicht, das denselben Shelly abfragt oder schaltet. IP als Device-Variable SHELLY_BOILER_IP setzen. Kann auch in einer Zange des Shelly Pro 3EM enthalten sein (dann ist I1 ein Teil davon).",
+        "info": "Warmwasser (I1): Shelly 1PM Gen4 am Elektroboiler. Nur lesend: alle 5 s GET /rpc/Switch.GetStatus?id=0, keine Befehle und kein Callback, darum stoert es ein zweites System nicht, das denselben Shelly abfragt oder schaltet. IP als Device-Variable SHELLY_BOILER_IP setzen. Kann auch in einer Zange des Shelly Pro 3EM enthalten sein (dann ist I1 ein Teil davon). Direkt per HTTP statt mit dem Shelly-Knoten, weil node-red-contrib-shelly erst ab 11.6 Gen4-Geraete kennt.",
         "x": 150,
         "y": 220,
         "wires": []
     },
     {
-        "id": "b0e1e00000000002",
-        "type": "shelly-gen2",
+        "id": "b0e1e00000000008",
+        "type": "inject",
         "z": "3e07724de1527d10",
-        "hostname": "${SHELLY_BOILER_IP}",
-        "description": "Shelly 1PM Gen4 Boiler",
-        "mode": "polling",
-        "server": "",
-        "outputmode": "event",
-        "uploadretryinterval": 5000,
-        "pollinginterval": "5000",
-        "pollstatus": true,
-        "getstatusoncommand": true,
-        "devicetype": "Relay",
-        "outputs": 1,
-        "x": 130,
+        "name": "5s",
+        "props": [
+            {
+                "p": "url",
+                "v": "http://${SHELLY_BOILER_IP}/rpc/Switch.GetStatus?id=0",
+                "vt": "env"
+            }
+        ],
+        "repeat": "5",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "5",
+        "topic": "",
+        "x": 90,
+        "y": 250,
+        "wires": [
+            [
+                "b0e1e00000000002"
+            ]
+        ]
+    },
+    {
+        "id": "b0e1e00000000002",
+        "type": "http request",
+        "z": "3e07724de1527d10",
+        "name": "Shelly 1PM Gen4 Boiler",
+        "method": "GET",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 230,
         "y": 250,
         "wires": [
             [
@@ -2120,7 +2146,7 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 330,
+        "x": 400,
         "y": 250,
         "wires": [
             [
