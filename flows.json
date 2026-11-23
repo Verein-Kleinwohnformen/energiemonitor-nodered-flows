@@ -1302,6 +1302,225 @@
         ]
     },
     {
+        "id": "b0e1e00000000001",
+        "type": "comment",
+        "z": "3e07724de1527d10",
+        "name": "Shelly Boiler (Warmwasser I1)",
+        "info": "Warmwasser (I1): Shelly 1PM Gen4 am Elektroboiler. Nur lesend: alle 5 s GET /rpc/Switch.GetStatus?id=0, keine Befehle und kein Callback, darum stoert es ein zweites System nicht, das denselben Shelly abfragt oder schaltet. IP als Device-Variable SHELLY_BOILER_IP setzen. Kann auch in einer Zange des Shelly Pro 3EM enthalten sein (dann ist I1 ein Teil davon). Direkt per HTTP statt mit dem Shelly-Knoten, weil node-red-contrib-shelly erst ab 11.6 Gen4-Geraete kennt.",
+        "x": 150,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "b0e1e00000000008",
+        "type": "inject",
+        "z": "3e07724de1527d10",
+        "name": "5s",
+        "props": [
+            {
+                "p": "url",
+                "v": "http://${SHELLY_BOILER_IP}/rpc/Switch.GetStatus?id=0",
+                "vt": "env"
+            }
+        ],
+        "repeat": "5",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "5",
+        "topic": "",
+        "x": 90,
+        "y": 250,
+        "wires": [
+            [
+                "b0e1e00000000002"
+            ]
+        ]
+    },
+    {
+        "id": "b0e1e00000000002",
+        "type": "http request",
+        "z": "3e07724de1527d10",
+        "name": "Shelly 1PM Gen4 Boiler",
+        "method": "GET",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 230,
+        "y": 250,
+        "wires": [
+            [
+                "b0e1e00000000003"
+            ]
+        ]
+    },
+    {
+        "id": "b0e1e00000000003",
+        "type": "function",
+        "z": "3e07724de1527d10",
+        "name": "Boiler-Werte",
+        "func": "// Shelly 1PM Gen4 (Boiler), nur lesen: der GX schaltet den Boiler.\nif (msg.error) return null;\nvar p = msg.payload || {};\nvar sw = p.switch0 || p[\"switch:0\"] || (p.apower !== undefined ? p : null);\nif (!sw || sw.apower === undefined) return null;\nvar v = { act_power: Number(sw.apower) };\nif (sw.voltage != null) v.voltage = Number(sw.voltage);\nif (sw.current != null) v.current = Number(sw.current);\nif (sw.aenergy && sw.aenergy.total != null) v.energy_total_wh = Number(sw.aenergy.total);\nv.relay_on = sw.output ? 1 : 0;\nif (sw.temperature && sw.temperature.tC != null) v.device_temperature = Number(sw.temperature.tC);\nmsg.payload = v;\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 400,
+        "y": 250,
+        "wires": [
+            [
+                "b0e1e00000000004"
+            ]
+        ]
+    },
+    {
+        "id": "b0e1e00000000004",
+        "type": "split",
+        "z": "3e07724de1527d10",
+        "name": "Split",
+        "splt": "\n",
+        "spltType": "str",
+        "arraySplt": 1,
+        "arraySpltType": "len",
+        "stream": false,
+        "addname": "topic",
+        "property": "payload",
+        "x": 470,
+        "y": 250,
+        "wires": [
+            [
+                "b0e1e00000000005"
+            ]
+        ]
+    },
+    {
+        "id": "b0e1e00000000005",
+        "type": "aggregator",
+        "z": "3e07724de1527d10",
+        "name": "aggregate per 10s",
+        "topic": "",
+        "intervalCount": "10",
+        "intervalUnits": "s",
+        "submitIncompleteInterval": true,
+        "submitPerTopic": true,
+        "aggregationType": "mean",
+        "x": 610,
+        "y": 250,
+        "wires": [
+            [
+                "b0e1e00000000006"
+            ]
+        ]
+    },
+    {
+        "id": "b0e1e00000000006",
+        "type": "join",
+        "z": "3e07724de1527d10",
+        "name": "Join",
+        "mode": "custom",
+        "build": "object",
+        "property": "payload",
+        "propertyType": "msg",
+        "key": "topic",
+        "joiner": "\n",
+        "joinerType": "str",
+        "useparts": true,
+        "accumulate": false,
+        "timeout": "10",
+        "count": "",
+        "reduceRight": false,
+        "reduceExp": "",
+        "reduceInit": "",
+        "reduceInitType": "",
+        "reduceFixup": "",
+        "x": 770,
+        "y": 250,
+        "wires": [
+            [
+                "b0e1e00000000007"
+            ]
+        ]
+    },
+    {
+        "id": "b0e1e00000000007",
+        "type": "change",
+        "z": "3e07724de1527d10",
+        "name": "Messpunkt I1",
+        "rules": [
+            {
+                "t": "set",
+                "p": "v",
+                "pt": "msg",
+                "to": "payload",
+                "tot": "msg"
+            },
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "{}",
+                "tot": "json"
+            },
+            {
+                "t": "set",
+                "p": "payload.values",
+                "pt": "msg",
+                "to": "v",
+                "tot": "msg"
+            },
+            {
+                "t": "set",
+                "p": "payload.sensor_id",
+                "pt": "msg",
+                "to": "shelly-1pm-gen4",
+                "tot": "str"
+            },
+            {
+                "t": "set",
+                "p": "payload.timestamp",
+                "pt": "msg",
+                "to": "",
+                "tot": "date"
+            },
+            {
+                "t": "set",
+                "p": "payload.metering_point",
+                "pt": "msg",
+                "to": "I1",
+                "tot": "str"
+            },
+            {
+                "t": "delete",
+                "p": "v",
+                "pt": "msg"
+            },
+            {
+                "t": "delete",
+                "p": "topic",
+                "pt": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 1080,
+        "y": 250,
+        "wires": [
+            [
+                "78dea314d74e558e"
+            ]
+        ]
+    },
+    {
         "id": "48c9ba7a4d6a5359",
         "type": "http request",
         "z": "72660c1c718b6a08",
